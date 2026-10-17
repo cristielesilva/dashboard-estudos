@@ -7,6 +7,7 @@ Fontes de dados (mesma pasta deste arquivo):
 - "cronograma - MATÉRIAS.xlsx": grade semanal usada no Plano de hoje (só leitura).
 - pasta "base_estudos": resumos e flashcards (.md, um arquivo por matéria) e suas anotações.
 """
+import base64
 import datetime as dt
 import json
 import re
@@ -14,6 +15,7 @@ import shutil
 from pathlib import Path
 
 import pandas as pd
+import requests
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -338,6 +340,68 @@ def ler_anotacoes():
         return {}
 
 
+# ───────────────────────── Sincronização com o GitHub (versão online) ─────────────────────────
+# Online (Streamlit Cloud) os arquivos do servidor são apagados quando o app reinicia. Por isso, se houver
+# um token em Secrets ([github] token = "..."), a planilha e as anotações são lidas e gravadas no branch
+# "dados" do repositório. Sem token (no computador), nada disso acontece.
+def config_github():
+    try:
+        cfg = st.secrets["github"]
+        return {"token": cfg["token"], "repo": cfg.get("repo", "cristielesilva/dashboard-estudos"),
+                "branch": cfg.get("branch", "dados")}
+    except Exception:
+        return None
+
+
+def _api(cfg, metodo, caminho, **kw):
+    cab = {"Authorization": f"Bearer {cfg['token']}", "Accept": "application/vnd.github+json"}
+    cab.update(kw.pop("headers", {}))
+    return requests.request(metodo, f"https://api.github.com/repos/{cfg['repo']}/{caminho}",
+                            headers=cab, timeout=20, **kw)
+
+
+def _garantir_branch(cfg):
+    if _api(cfg, "GET", f"branches/{cfg['branch']}").status_code == 200:
+        return
+    padrao = _api(cfg, "GET", "").json().get("default_branch", "main")
+    sha = _api(cfg, "GET", f"git/ref/heads/{padrao}").json()["object"]["sha"]
+    _api(cfg, "POST", "git/refs", json={"ref": f"refs/heads/{cfg['branch']}", "sha": sha})
+
+
+@st.cache_resource(show_spinner="Carregando seus dados salvos...")
+def baixar_do_github():
+    """Roda uma vez quando o servidor liga: traz a versão mais recente dos dados."""
+    cfg = config_github()
+    if not cfg:
+        return False
+    _garantir_branch(cfg)
+    for arq in (ARQ, ARQ_ANOTACOES):
+        rel = arq.relative_to(BASE).as_posix()
+        r = _api(cfg, "GET", f"contents/{rel}", params={"ref": cfg["branch"]},
+                 headers={"Accept": "application/vnd.github.raw"})
+        if r.status_code == 200:
+            arq.parent.mkdir(exist_ok=True)
+            arq.write_bytes(r.content)
+    return True
+
+
+def enviar_ao_github(arq):
+    cfg = config_github()
+    if not cfg:
+        return
+    rel = arq.relative_to(BASE).as_posix()
+    try:
+        atual = _api(cfg, "GET", f"contents/{rel}", params={"ref": cfg["branch"]})
+        corpo = {"message": f"Atualiza {arq.name} pelo dashboard", "branch": cfg["branch"],
+                 "content": base64.b64encode(arq.read_bytes()).decode()}
+        if atual.status_code == 200:
+            corpo["sha"] = atual.json()["sha"]
+        r = _api(cfg, "PUT", f"contents/{rel}", json=corpo)
+        r.raise_for_status()
+    except Exception as erro:
+        st.warning(f"Salvo no app, mas não consegui enviar ao GitHub ({erro}). Confira o token em Secrets.")
+
+
 # ───────────────────────── Gravação ─────────────────────────
 def fazer_backup():
     if st.session_state.get("backup_feito"):
@@ -422,6 +486,7 @@ def salvar(alteracoes=(), novos_registros=(), config=None, plano=None):
             ws.cell(2, 2).number_format = "DD/MM/YYYY"
         atualizar_dashboard(wb)
         wb.save(ARQ)
+        enviar_ao_github(ARQ)
     except PermissionError:
         st.error("⚠️ Não consegui salvar: a planilha está aberta no Excel. Feche o arquivo e repita a alteração.")
         return False
@@ -442,6 +507,7 @@ def salvar_anotacao(cod, texto=None, links=None, pdfs=None):
     nota["atualizado"] = dt.date.today().isoformat()
     todas[cod] = nota
     ARQ_ANOTACOES.write_text(json.dumps(todas, ensure_ascii=False, indent=2), encoding="utf-8")
+    enviar_ao_github(ARQ_ANOTACOES)
 
 
 # ───────────────────────── Componentes visuais ─────────────────────────
@@ -664,6 +730,7 @@ def registrar_estudo(topicos, chave, cod_fixo=None):
 
 
 # ───────────────────────── Dados ─────────────────────────
+baixar_do_github()
 if not ARQ.exists():
     st.error(f"Não encontrei a planilha **{ARQ.name}** na pasta {BASE}. Coloque o app.py na mesma pasta dela.")
     st.stop()
