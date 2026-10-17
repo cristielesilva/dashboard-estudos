@@ -1,0 +1,6 @@
+# Materiais do curso (PDFs, vídeos) ficam só no computador
+materiais/
+backup/
+__pycache__/
+~$*.xlsx
+*.zip
