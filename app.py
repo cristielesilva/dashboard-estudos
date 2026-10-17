@@ -356,16 +356,34 @@ def config_github():
 def _api(cfg, metodo, caminho, **kw):
     cab = {"Authorization": f"Bearer {cfg['token']}", "Accept": "application/vnd.github+json"}
     cab.update(kw.pop("headers", {}))
-    return requests.request(metodo, f"https://api.github.com/repos/{cfg['repo']}/{caminho}",
+    url = f"https://api.github.com/repos/{cfg['repo']}" + (f"/{caminho}" if caminho else "")
+    return requests.request(metodo, url,
                             headers=cab, timeout=20, **kw)
 
 
+class ErroGitHub(Exception):
+    pass
+
+
 def _garantir_branch(cfg):
+    repo = _api(cfg, "GET", "")
+    if repo.status_code in (401, 403, 404):
+        raise ErroGitHub(
+            f"O GitHub recusou a chave (código {repo.status_code}). Confira em Settings > Secrets se o token "
+            f"foi colado inteiro, entre aspas, e se ele tem acesso ao repositório {cfg['repo']} "
+            "com a permissão Contents em Read and write.")
     if _api(cfg, "GET", f"branches/{cfg['branch']}").status_code == 200:
         return
-    padrao = _api(cfg, "GET", "").json().get("default_branch", "main")
-    sha = _api(cfg, "GET", f"git/ref/heads/{padrao}").json()["object"]["sha"]
-    _api(cfg, "POST", "git/refs", json={"ref": f"refs/heads/{cfg['branch']}", "sha": sha})
+    padrao = repo.json().get("default_branch", "main")
+    ref = _api(cfg, "GET", f"git/ref/heads/{padrao}")
+    criar = None
+    if ref.status_code == 200:
+        criar = _api(cfg, "POST", "git/refs",
+                     json={"ref": f"refs/heads/{cfg['branch']}", "sha": ref.json()["object"]["sha"]})
+    if criar is None or criar.status_code not in (201, 422):
+        raise ErroGitHub(
+            f"Não consegui criar o branch \"{cfg['branch']}\" no GitHub. Verifique se o token tem a "
+            "permissão Contents em Read and write.")
 
 
 @st.cache_resource(show_spinner="Carregando seus dados salvos...")
@@ -373,8 +391,11 @@ def baixar_do_github():
     """Roda uma vez quando o servidor liga: traz a versão mais recente dos dados."""
     cfg = config_github()
     if not cfg:
-        return False
-    _garantir_branch(cfg)
+        return None
+    try:
+        _garantir_branch(cfg)
+    except (ErroGitHub, requests.RequestException) as erro:
+        return str(erro)
     for arq in (ARQ, ARQ_ANOTACOES):
         rel = arq.relative_to(BASE).as_posix()
         r = _api(cfg, "GET", f"contents/{rel}", params={"ref": cfg["branch"]},
@@ -382,7 +403,7 @@ def baixar_do_github():
         if r.status_code == 200:
             arq.parent.mkdir(exist_ok=True)
             arq.write_bytes(r.content)
-    return True
+    return None
 
 
 def enviar_ao_github(arq):
@@ -730,7 +751,9 @@ def registrar_estudo(topicos, chave, cod_fixo=None):
 
 
 # ───────────────────────── Dados ─────────────────────────
-baixar_do_github()
+erro_sync = baixar_do_github()
+if erro_sync:
+    st.warning(f"⚠️ Suas edições não estão sendo salvas online. {erro_sync}")
 if not ARQ.exists():
     st.error(f"Não encontrei a planilha **{ARQ.name}** na pasta {BASE}. Coloque o app.py na mesma pasta dela.")
     st.stop()
