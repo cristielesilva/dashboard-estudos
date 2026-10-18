@@ -173,8 +173,22 @@ h1, h2, h3, h4 {{ font-family: 'Poppins', sans-serif !important; color: {ESCURO}
 [data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {{ background: {AZUL}; }}
 [data-testid="stSidebar"] [data-testid="stExpander"] {{ border: 1px solid #23233A; border-radius: 12px; background: #121219; }}
 [data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {{ color: #fff; }}
-[data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="input"] {{ color: {ESCURO} !important; }}
-[data-testid="stSidebar"] [data-baseweb="input"] *, [data-testid="stSidebar"] [data-baseweb="input"] input {{ color: {ESCURO} !important; }}
+[data-testid="stSidebar"] [data-testid="stExpander"] details, [data-testid="stSidebar"] [data-testid="stExpander"] summary {{
+  background: #121219 !important; color: #E8E9F2 !important; }}
+[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {{ background: #1C1C2B !important; }}
+/* Campos do menu (metas e datas): fundo escuro e texto branco, sem nada "apagado" */
+[data-testid="stSidebar"] [data-testid="stNumberInputContainer"], [data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="base-input"], [data-testid="stSidebar"] [data-testid="stTextInputRootElement"],
+[data-testid="stSidebar"] [data-testid="stDateInput"] > div > div {{ background: #1C1C2B !important; border-color: #2E2E44 !important; }}
+[data-testid="stSidebar"] input {{ background: #1C1C2B !important; color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important;
+  opacity: 1 !important; }}
+[data-testid="stSidebar"] [data-testid="stNumberInputContainer"] button {{ background: #1C1C2B !important; color: #E8E9F2 !important; }}
+[data-testid="stSidebar"] [data-testid="stNumberInputContainer"] button:hover {{ background: {AZUL} !important; }}
+.st-key-menu_metas button[data-testid^="stBaseButton"] {{ border: 1px solid #2E2E44; background: #1C1C2B;
+  color: #E8E9F2; justify-content: center; }}
+.st-key-menu_metas button[data-testid^="stBaseButton"] * {{ justify-content: center; }}
+.st-key-menu_metas button[data-testid^="stBaseButton"]:hover {{ background: {AZUL}; border-color: {AZUL}; }}
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{ color: #A3A8BF !important; }}
 .logo {{ font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff !important; letter-spacing: 1px; }}
 .logo span {{ color: {AZUL_CLARO} !important; }}
 .logo-sub {{ font-size: .78rem; color: #8B90A5 !important; letter-spacing: 1.2px; text-transform: uppercase; margin-top: -4px; }}
@@ -843,7 +857,7 @@ with st.sidebar:
                           on_click=ir, args=(f"grupo:{chave}",), kwargs={"materia_sel": mat},
                           type="primary" if ativo and mat_ativa == mat else "secondary")
     st.write("")
-    with st.expander("⚙️ Metas e arquivo"):
+    with st.container(key="menu_metas"), st.expander("⚙️ Metas e arquivo"):
         meta = st.number_input("Meta semanal de horas", 1.0, 80.0, float(config["meta"]), 0.5, format="%.1f",
                                help="O plano da planilha: 2h por dia, de segunda a domingo (simulado no domingo).")
         inicio = st.date_input("Início do plano", config["inicio"], format="DD/MM/YYYY")
