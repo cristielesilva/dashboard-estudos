@@ -1,7 +1,7 @@
 # Dashboard de Estudos · 48º Exame de Ordem (OAB · FGV)
 
-Painel em Streamlit para acompanhar o edital verticalizado da 1ª fase do 48º Exame de Ordem.
-Mesmo visual do dashboard da PMPE/PCPE (preto e vinho), adaptado à OAB.
+Painel da **Avany** em Streamlit para acompanhar o edital verticalizado da 1ª fase do 48º Exame de Ordem.
+Visual branco e azul, com menu lateral preto, busca de tópicos no topo e cartões (horas de estudo, situação do edital, plano de hoje com a semana e progresso por matéria).
 
 - 1ª fase: 10/01/2027 · 2ª fase: 28/02/2027 (dá para mudar em "Metas e arquivo").
 - Meta: 40 de 80 acertos.
