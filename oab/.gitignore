@@ -1,0 +1,5 @@
+materiais/
+backup/
+__pycache__/
+~$*.xlsx
+*.zip
