@@ -44,7 +44,8 @@ TOTAL_QUESTOES, META_APROVACAO = 80, 40
 PROVA_PADRAO = dt.date(2027, 1, 10)       # 1ª fase do 48º Exame (edital FGV)
 SEGUNDA_FASE_PADRAO = dt.date(2027, 2, 28)
 
-VINHO, VINHO_CLARO, ROSE, PRETO, TEXTO, APAGADO = "#8E2436", "#C04A5E", "#E8C3CA", "#0A0708", "#EFE6E7", "#A88E93"
+AZUL, AZUL_CLARO, ESCURO, FUNDO, TEXTO, APAGADO = "#1E1EEB", "#5B6BFF", "#11131F", "#F2F3F8", "#1F2233", "#8B90A5"
+AZUL_FUNDO, PRETO_MENU, BORDA = "#EEF0FF", "#0B0B0F", "#E4E6EF"
 
 # Colunas da planilha (posição 1 = coluna A). "% Acerto" (coluna H) é fórmula: o app calcula e nunca grava nela.
 COLUNAS = {
@@ -59,18 +60,18 @@ FEITO = {"Estudado", "Revisado (7d)", "Concluído"}
 
 # Cada matéria (aba da planilha): nome curto, cor, ícone, grupo, questões na prova e meta de acertos
 MATERIAS = {
-    "Ética Profissional": ("Ética Profissional", "#E0B84A", "⚖️", "A", 8, 7),
-    "Direito Constitucional": ("Dir. Constitucional", "#E05A5A", "📜", "A", 6, 4),
-    "Direito Civil": ("Dir. Civil", "#4FA3E0", "🏠", "A", 6, 4),
-    "Processo Civil": ("Processo Civil", "#5DBB63", "📂", "A", 6, 4),
-    "Direito Penal": ("Dir. Penal", "#F08A3C", "🔒", "A", 6, 4),
-    "Processo Penal": ("Processo Penal", "#D97B9C", "🚔", "A", 6, 4),
-    "Direito do Trabalho": ("Dir. do Trabalho", "#A47551", "👷", "A", 5, 4),
-    "Processo do Trabalho": ("Processo do Trabalho", "#C9A0DC", "🏭", "A", 5, 4),
-    "Direito Administrativo": ("Dir. Administrativo", "#A66CD1", "🏛️", "A", 6, 4),
-    "Direito Tributário": ("Dir. Tributário", "#7FD1C7", "💰", "B", 5, 3),
-    "Direito Empresarial": ("Dir. Empresarial", "#AED6F1", "🏢", "B", 4, 2),
-    "Outras Disciplinas OAB": ("Outras disciplinas", "#D9D9D9", "🌐", "B", 18, 9),
+    "Ética Profissional": ("Ética Profissional", "#1E1EEB", "⚖️", "A", 8, 7),
+    "Direito Constitucional": ("Dir. Constitucional", "#3B5BFF", "📜", "A", 6, 4),
+    "Direito Civil": ("Dir. Civil", "#5B8DEF", "🏠", "A", 6, 4),
+    "Processo Civil": ("Processo Civil", "#00A3C4", "📂", "A", 6, 4),
+    "Direito Penal": ("Dir. Penal", "#6C4CF5", "🔒", "A", 6, 4),
+    "Processo Penal": ("Processo Penal", "#8E7CFF", "🚔", "A", 6, 4),
+    "Direito do Trabalho": ("Dir. do Trabalho", "#2E86AB", "👷", "A", 5, 4),
+    "Processo do Trabalho": ("Processo do Trabalho", "#4FC3E0", "🏭", "A", 5, 4),
+    "Direito Administrativo": ("Dir. Administrativo", "#9B5DE5", "🏛️", "A", 6, 4),
+    "Direito Tributário": ("Dir. Tributário", "#14B8A6", "💰", "B", 5, 3),
+    "Direito Empresarial": ("Dir. Empresarial", "#7AA2FF", "🏢", "B", 4, 2),
+    "Outras Disciplinas OAB": ("Outras disciplinas", "#A3AAC4", "🌐", "B", 18, 9),
 }
 GRUPOS = {
     "A": {"nome": "Grupo A · Alta relevância", "icone": "🅰️"},
@@ -86,43 +87,103 @@ PALAVRAS_MATERIA = [
     ("empresarial", "Direito Empresarial"), ("societ", "Direito Empresarial"),
 ]
 
-st.set_page_config(page_title="Dashboard OAB 48", page_icon="⚖️", layout="wide")
+st.set_page_config(page_title="Avany · OAB 48", page_icon="⚖️", layout="wide")
 
-# ───────────────────────── Estilo preto & vinho ─────────────────────────
+# Tema claro (branco e azul). No Streamlit Cloud vale o config.toml da raiz do repositório (tema escuro do outro
+# dashboard), então o app aplica o tema dele mesmo aqui e recarrega uma vez.
+TEMA = {"base": "light", "primaryColor": "#1E1EEB", "backgroundColor": "#F2F3F8",
+        "secondaryBackgroundColor": "#FFFFFF", "textColor": "#1F2233"}
+if any(st.get_option(f"theme.{k}") != v for k, v in TEMA.items()) and not st.session_state.get("_tema_ok"):
+    st.session_state._tema_ok = True
+    try:
+        for k, v in TEMA.items():
+            st._config.set_option(f"theme.{k}", v)
+        st.rerun()
+    except Exception:
+        pass
+
+# ───────────────────────── Estilo branco & azul ─────────────────────────
 st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 html, body, [class*="css"], .stMarkdown, p, label {{ font-family: 'Inter', sans-serif; }}
-.stApp {{ background: radial-gradient(circle at 15% 0%, #2a0d14 0%, {PRETO} 50%); }}
-h1, h2, h3 {{ font-family: 'Playfair Display', serif !important; color: {ROSE} !important; letter-spacing: .3px; }}
-.block-container {{ padding-top: 3.2rem; max-width: 1250px; }}
-.titulo {{ font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: {ROSE}; margin-bottom: 0; }}
-.titulo span {{ color: {VINHO_CLARO}; }}
+.stApp {{ background: {FUNDO}; color: {TEXTO}; }}
+.stApp p, .stApp li, .stApp label, .stApp span {{ color: inherit; }}
+h1, h2, h3, h4 {{ font-family: 'Poppins', sans-serif !important; color: {ESCURO} !important; letter-spacing: .2px; }}
+[data-testid="stHeader"] {{ background: transparent; }}
+.block-container {{ padding-top: 2.2rem; max-width: 1300px; }}
+.titulo {{ font-family: 'Poppins', sans-serif; font-size: 1.9rem; font-weight: 700; color: {ESCURO}; margin-bottom: 0; }}
+.titulo span {{ color: {AZUL}; }}
 .sub {{ color: {APAGADO}; font-size: .95rem; margin-top: -4px; }}
-.kpi {{ background: linear-gradient(160deg, #1d0b10 0%, #0f0b0c 100%); border: 1px solid #4a1a24;
-  border-radius: 16px; padding: 18px 20px; height: 100%; box-shadow: 0 8px 24px rgba(0,0,0,.45); }}
-.kpi .rot {{ color: {APAGADO}; font-size: .76rem; text-transform: uppercase; letter-spacing: 1.4px; }}
-.kpi .val {{ color: {ROSE}; font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1.15; }}
-.kpi .det {{ color: {TEXTO}; font-size: .85rem; opacity: .75; }}
-.barra {{ height: 6px; background: #2a1218; border-radius: 6px; margin-top: 10px; overflow: hidden; }}
-.barra > div {{ height: 100%; background: linear-gradient(90deg, #5c1422, {VINHO}, {VINHO_CLARO}); }}
-.chip {{ display: inline-block; border: 1px solid #5a2030; border-radius: 999px; padding: 4px 12px; margin: 4px 6px 0 0;
-  color: {TEXTO}; font-size: .82rem; background: #140a0d; }}
-.chip b {{ color: {VINHO_CLARO}; }}
-.resumo {{ background: #120c0e; border: 1px solid #3a1820; border-radius: 14px; padding: 18px 22px; color: {TEXTO}; line-height: 1.6; }}
-.flash {{ background: linear-gradient(160deg, #2a0f17, #120a0c); border: 1px solid {VINHO}; border-radius: 18px;
-  padding: 34px 28px; text-align: center; font-size: 1.15rem; color: {TEXTO}; min-height: 150px; }}
+/* Cartões brancos (containers com borda) */
+[class*="st-key-card_"] {{ background: #fff; border: 1px solid {BORDA} !important; border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(20,24,60,.06); padding: 18px 20px !important; }}
+[class*="st-key-card_"] h4 {{ font-size: 1.08rem !important; font-weight: 600 !important; padding: 0 !important; }}
+.kpi {{ background: #fff; border: 1px solid {BORDA}; border-radius: 16px; padding: 16px 18px; height: 100%;
+  box-shadow: 0 6px 18px rgba(20,24,60,.06); display: flex; gap: 14px; align-items: flex-start; }}
+.kpi .ic {{ min-width: 42px; height: 42px; border-radius: 12px; background: {AZUL_FUNDO}; display: flex; align-items: center;
+  justify-content: center; font-size: 1.25rem; }}
+.kpi .rot {{ color: {APAGADO}; font-size: .74rem; text-transform: uppercase; letter-spacing: 1.1px; }}
+.kpi .val {{ color: {ESCURO}; font-family: 'Poppins', sans-serif; font-size: 1.7rem; font-weight: 700; line-height: 1.2; }}
+.kpi .det {{ color: {APAGADO}; font-size: .82rem; }}
+.kpi.destaque {{ background: {AZUL}; border-color: {AZUL}; box-shadow: 0 10px 24px rgba(30,30,235,.35); }}
+.kpi.destaque .rot, .kpi.destaque .det {{ color: #D9DCFF; }}
+.kpi.destaque .val {{ color: #fff; }}
+.kpi.destaque .ic {{ background: rgba(255,255,255,.18); }}
+.barra {{ height: 6px; background: {AZUL_FUNDO}; border-radius: 6px; margin-top: 10px; overflow: hidden; }}
+.barra > div {{ height: 100%; background: {AZUL}; border-radius: 6px; }}
+.kpi.destaque .barra {{ background: rgba(255,255,255,.25); }}
+.kpi.destaque .barra > div {{ background: #fff; }}
+.chip {{ display: inline-block; border: 1px solid {BORDA}; border-radius: 999px; padding: 4px 12px; margin: 4px 6px 0 0;
+  color: {TEXTO}; font-size: .82rem; background: #fff; }}
+.chip b {{ color: {AZUL}; }}
+.topo {{ display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 6px; }}
+.usuaria {{ display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid {BORDA}; border-radius: 999px;
+  padding: 5px 6px 5px 16px; font-weight: 600; font-size: .85rem; letter-spacing: .8px; color: {ESCURO}; }}
+.usuaria .av {{ width: 32px; height: 32px; border-radius: 50%; background: {AZUL}; color: #fff; display: flex;
+  align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; }}
+.cal {{ display: flex; gap: 8px; justify-content: space-between; margin: 6px 0 4px; }}
+.cal div {{ flex: 1; text-align: center; padding: 8px 0; border-radius: 999px; color: {APAGADO}; font-size: .78rem; }}
+.cal div b {{ display: block; color: {ESCURO}; font-size: 1.05rem; font-family: 'Poppins', sans-serif; }}
+.cal div.hoje {{ background: {AZUL}; color: #D9DCFF; box-shadow: 0 6px 16px rgba(30,30,235,.35); }}
+.cal div.hoje b {{ color: #fff; }}
+.fonte {{ display: flex; align-items: center; gap: 12px; margin: 9px 0; font-size: .86rem; color: {TEXTO}; }}
+.fonte .nome {{ width: 44%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+.fonte .trilho {{ flex: 1; height: 5px; background: {AZUL_FUNDO}; border-radius: 6px; overflow: hidden; }}
+.fonte .trilho div {{ height: 100%; background: {AZUL}; border-radius: 6px; }}
+.fonte .pct {{ width: 40px; text-align: right; color: {APAGADO}; font-size: .8rem; }}
+.legenda {{ font-size: .85rem; color: {TEXTO}; line-height: 1.9; }}
+.legenda i {{ display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; }}
+.resumo {{ background: #fff; border: 1px solid {BORDA}; border-radius: 14px; padding: 18px 22px; color: {TEXTO}; line-height: 1.6; }}
+.flash {{ background: #fff; border: 2px solid {AZUL}; border-radius: 18px; box-shadow: 0 8px 22px rgba(30,30,235,.12);
+  padding: 34px 28px; text-align: center; font-size: 1.15rem; color: {ESCURO}; min-height: 150px; }}
 .flash small {{ display:block; color: {APAGADO}; font-size: .75rem; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 12px; }}
-.stButton > button, .stFormSubmitButton > button {{ border: 1px solid {VINHO}; color: {ROSE}; background: transparent; border-radius: 10px; }}
-.stButton > button:hover, .stFormSubmitButton > button:hover {{ background: {VINHO}; color: #fff; border-color: {VINHO}; }}
-.stButton > button[kind="primary"] {{ background: {VINHO}; color: #fff; border-color: {VINHO}; }}
-[data-testid="stSidebar"] {{ background: #0d0809; border-right: 1px solid #3a1820; }}
-[data-testid="stSidebar"] .stButton > button {{ border: none; justify-content: flex-start; text-align: left; color: {TEXTO}; }}
-[data-testid="stSidebar"] .stButton > button[kind="primary"] {{ background: #3a121c; color: {ROSE}; border-left: 3px solid {VINHO_CLARO}; }}
-[data-testid="stSidebar"] .stButton > button:hover {{ background: #2a0f17; color: {ROSE}; }}
-[data-testid="stExpander"] {{ border: 1px solid #3a1820; border-radius: 12px; }}
+.stButton > button, .stFormSubmitButton > button, .stDownloadButton > button {{ border: 1px solid {AZUL}; color: {AZUL};
+  background: #fff; border-radius: 10px; }}
+.stButton > button:hover, .stFormSubmitButton > button:hover, .stDownloadButton > button:hover {{ background: {AZUL}; color: #fff; border-color: {AZUL}; }}
+.stButton > button[kind="primary"] {{ background: {AZUL}; color: #fff; border-color: {AZUL}; }}
+[data-testid="stSidebar"] {{ background: {PRETO_MENU}; border-right: none; }}
+[data-testid="stSidebar"] * {{ color: #E8E9F2; }}
+[data-testid="stSidebar"] .stButton > button {{ border: none; background: transparent; justify-content: flex-start;
+  text-align: left; color: #E8E9F2; border-radius: 10px; }}
+[data-testid="stSidebar"] .stButton > button, [data-testid="stSidebar"] .stButton > button * {{ justify-content: flex-start; text-align: left; }}
+[data-testid="stSidebar"] .stButton > button {{ padding-left: 16px; }}
+[data-testid="stSidebar"] .stButton > button[kind="primary"] {{ background: {AZUL}; color: #fff; }}
+[data-testid="stSidebar"] .stButton > button:hover {{ background: #1C1C2B; color: #fff; }}
+[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {{ background: {AZUL}; }}
+[data-testid="stSidebar"] [data-testid="stExpander"] {{ border: 1px solid #23233A; border-radius: 12px; background: #121219; }}
+[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {{ color: #fff; }}
+[data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="input"] {{ color: {ESCURO} !important; }}
+[data-testid="stSidebar"] [data-baseweb="input"] *, [data-testid="stSidebar"] [data-baseweb="input"] input {{ color: {ESCURO} !important; }}
+.logo {{ font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff !important; letter-spacing: 1px; }}
+.logo span {{ color: {AZUL_CLARO} !important; }}
+.logo-sub {{ font-size: .78rem; color: #8B90A5 !important; letter-spacing: 1.2px; text-transform: uppercase; margin-top: -4px; }}
+.st-key-busca [data-testid="stTextInputRootElement"] {{ border-radius: 999px; border: 1.5px solid {AZUL}; background: #fff;
+  overflow: hidden; }}
+.st-key-busca input {{ background: #fff; padding-left: 16px; }}
+[data-testid="stExpander"] {{ border: 1px solid {BORDA}; border-radius: 12px; background: #fff; }}
 [data-testid="stCheckbox"] label p {{ font-size: .95rem; }}
-hr {{ border-color: #3a1820 !important; }}
+hr {{ border-color: {BORDA} !important; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -169,7 +230,7 @@ def para_num(v):
 def info_materia(aba):
     if aba in MATERIAS:
         return MATERIAS[aba]
-    extras = ["#7FD1C7", "#C9A0DC", "#F5B7B1", "#AED6F1"]
+    extras = ["#14B8A6", "#4FC3E0", "#7AA2FF", "#9B5DE5"]
     return (aba, extras[sum(map(ord, aba)) % len(extras)], "📘", "B", 0, 0)
 
 
@@ -506,22 +567,23 @@ def salvar_anotacao(cod, texto=None, links=None, pdfs=None):
 
 
 # ───────────────────────── Componentes visuais ─────────────────────────
-def kpi(rotulo, valor, detalhe="", progresso=None):
+def kpi(rotulo, valor, detalhe="", progresso=None, icone="📌", destaque=False):
     barra = ""
     if progresso is not None:
         p = max(0, min(100, progresso))
         barra = f'<div class="barra"><div style="width:{p:.0f}%"></div></div>'
-    st.markdown(f'<div class="kpi"><div class="rot">{rotulo}</div><div class="val">{valor}</div>'
-                f'<div class="det">{detalhe}</div>{barra}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="kpi{" destaque" if destaque else ""}"><div class="ic">{icone}</div>'
+                f'<div style="flex:1"><div class="rot">{rotulo}</div><div class="val">{valor}</div>'
+                f'<div class="det">{detalhe}</div>{barra}</div></div>', unsafe_allow_html=True)
 
 
 def estilo(fig, altura=330, titulo=None):
-    fig.update_layout(template="plotly_dark", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    fig.update_layout(template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                       font=dict(color=TEXTO, family="Inter"), height=altura, showlegend=False,
                       margin=dict(l=10, r=20, t=50 if titulo else 10, b=10),
-                      title=dict(text=titulo, font=dict(color=ROSE, size=16, family="Playfair Display")))
-    fig.update_xaxes(gridcolor="#2a1218", zerolinecolor="#2a1218")
-    fig.update_yaxes(gridcolor="#2a1218", zerolinecolor="#2a1218")
+                      title=dict(text=titulo, font=dict(color=ESCURO, size=16, family="Poppins")))
+    fig.update_xaxes(gridcolor="#ECEEF5", zerolinecolor="#ECEEF5", linecolor=BORDA)
+    fig.update_yaxes(gridcolor="#ECEEF5", zerolinecolor="#ECEEF5", linecolor=BORDA)
     return fig
 
 
@@ -643,10 +705,10 @@ POMODORO_HTML = f"""
     <button class="m" data-m="25">Foco 25</button><button class="m" data-m="5">Pausa 5</button><button class="m" data-m="15">Pausa 15</button>
   </div>
   <svg width="200" height="200" viewBox="0 0 230 230">
-    <circle cx="115" cy="115" r="100" stroke="#2a1218" stroke-width="12" fill="none"/>
-    <circle id="arc" cx="115" cy="115" r="100" stroke="{VINHO_CLARO}" stroke-width="12" fill="none" stroke-linecap="round"
+    <circle cx="115" cy="115" r="100" stroke="{AZUL_FUNDO}" stroke-width="12" fill="none"/>
+    <circle id="arc" cx="115" cy="115" r="100" stroke="{AZUL}" stroke-width="12" fill="none" stroke-linecap="round"
       transform="rotate(-90 115 115)" stroke-dasharray="628.3" stroke-dashoffset="0"/>
-    <text id="t" x="115" y="125" text-anchor="middle" font-size="46" fill="{ROSE}" font-family="Playfair Display,serif">25:00</text>
+    <text id="t" x="115" y="125" text-anchor="middle" font-size="46" fill="{ESCURO}" font-family="Poppins,sans-serif" font-weight="700">25:00</text>
     <text id="lbl" x="115" y="155" text-anchor="middle" font-size="13" fill="{APAGADO}">FOCO</text>
   </svg>
   <div style="display:flex;gap:10px;justify-content:center;margin-top:6px">
@@ -655,8 +717,8 @@ POMODORO_HTML = f"""
   <div id="msg" style="margin-top:8px;font-size:.85rem;color:{APAGADO}">Ciclos de foco nesta sessão: 0</div>
 </div>
 <style>
- button{{background:transparent;border:1px solid {VINHO};color:{ROSE};border-radius:10px;padding:6px 14px;cursor:pointer;font-size:.9rem}}
- button:hover,button.on{{background:{VINHO};color:#fff}}
+ button{{background:#fff;border:1px solid {AZUL};color:{AZUL};border-radius:10px;padding:6px 14px;cursor:pointer;font-size:.9rem}}
+ button:hover,button.on{{background:{AZUL};color:#fff}}
 </style>
 <script>
 const K='pomodoro_oab_v1', C=628.3;
@@ -751,7 +813,8 @@ if "aviso" in st.session_state:
 
 # ───────────────────────── Menu lateral ─────────────────────────
 with st.sidebar:
-    st.markdown(f"<div class='titulo' style='font-size:1.5rem'>Rumo à <span>OAB</span></div>", unsafe_allow_html=True)
+    st.markdown("<div class='logo'>AVANY<span>.</span></div><div class='logo-sub'>Rumo à OAB · 48º Exame</div>",
+                unsafe_allow_html=True)
     st.write("")
     st.button("🏠 Início", on_click=ir, args=("inicio",), width="stretch",
               type="primary" if pagina == "inicio" else "secondary")
@@ -800,9 +863,41 @@ with st.sidebar:
         st.caption("Feche a planilha no Excel enquanto usa o app, senão o salvamento é bloqueado.")
 
 
+# ═════════════ Barra do topo: busca + usuária ═════════════
+MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
+         "novembro", "dezembro"]
+CORES_STATUS = {"Não Iniciado": "#D9DCF5", "Em Teoria": "#9AA4FF", "Estudado": "#5B6BFF",
+                "Revisado (7d)": "#2F3CF0", "Concluído": "#10129A"}
+
+
+def barra_topo():
+    c1, c2 = st.columns([3, 1], vertical_alignment="center")
+    busca = c1.text_input("Buscar", placeholder="🔍  Buscar tópico, código ou matéria (ex.: honorários, ETI.04)",
+                          key="busca", label_visibility="collapsed")
+    c2.markdown("<div style='display:flex;justify-content:flex-end'><div class='usuaria'>AVANY"
+                "<div class='av'>A</div></div></div>", unsafe_allow_html=True)
+    termo = busca.strip().lower()
+    if len(termo) >= 2:
+        alvo = (topicos["Tópico"].astype(str) + " " + topicos["Cód"].astype(str) + " " + topicos["Matéria"]).str.lower()
+        achados = topicos[alvo.str.contains(re.escape(termo))].head(8)
+        with st.container(border=True, key="card_1"):
+            if achados.empty:
+                st.caption("Nenhum tópico encontrado.")
+            for ident, r in achados.iterrows():
+                st.button(f"{r['Cód']} · {str(r['Tópico'])[:80]} · {r['Matéria']} · {r['Status']}",
+                          key=f"busca_{ident}", on_click=ir, args=("estudar",),
+                          kwargs={"estudo_id": ident, "busca": ""})
+
+
+def cartao_titulo(texto, detalhe=""):
+    st.markdown(f"<div style='display:flex;justify-content:space-between;align-items:baseline'>"
+                f"<h4 style='margin:0 0 4px'>{texto}</h4><span style='color:{APAGADO};font-size:.82rem'>{detalhe}</span>"
+                f"</div>", unsafe_allow_html=True)
+
+
 # ═════════════ Página: Início ═════════════
 def pagina_inicio():
-    st.markdown('<div class="titulo">Bom estudo, <span>Chris</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="titulo">Bom estudo, <span>Avany</span></div>', unsafe_allow_html=True)
     st.markdown(f'<span class="chip">⚖️ 1ª fase · <b>{(prova - hoje).days} dias</b> ({prova:%d/%m/%Y})</span>'
                 f'<span class="chip">✍️ 2ª fase · <b>{(fase2 - hoje).days} dias</b> ({fase2:%d/%m/%Y})</span>'
                 f'<span class="chip">🎯 Meta <b>{META_APROVACAO} de {TOTAL_QUESTOES}</b> acertos</span>'
@@ -816,34 +911,64 @@ def pagina_inicio():
     acerto = taxa_acerto(topicos)
     k1, k2, k3, k4 = st.columns(4)
     with k1:
-        kpi("Horas estudadas × planejadas", fmt_h(horas), f"de {fmt_h(planejadas)} até hoje",
-            horas / planejadas * 100 if planejadas else 0)
+        kpi("Edital estudado", fmt_p(pct), f"{feitos} de {len(topicos)} tópicos", pct, "📚", destaque=True)
     with k2:
-        kpi("Edital estudado", fmt_p(pct), f"{feitos} de {len(topicos)} tópicos", pct)
+        kpi("Horas estudadas", fmt_h(horas), f"de {fmt_h(planejadas)} planejadas até hoje",
+            horas / planejadas * 100 if planejadas else 0, "⏱️")
     with k3:
-        kpi("Taxa de acertos", fmt_p(acerto), f"{int(topicos['Nº Questões'].sum())} questões · meta 50%", acerto)
+        kpi("Taxa de acertos", fmt_p(acerto), f"{int(topicos['Nº Questões'].sum())} questões · meta 50%", acerto, "🎯")
     with k4:
         if len(simulados):
             ult = simulados.iloc[-1]
             kpi("Último simulado", f"{ult['Acertos']}/{TOTAL_QUESTOES}",
                 "✅ acima da meta" if ult["Acertos"] >= META_APROVACAO
                 else f"faltam {META_APROVACAO - ult['Acertos']} para os {META_APROVACAO}",
-                ult["Acertos"] / TOTAL_QUESTOES * 100)
+                ult["Acertos"] / TOTAL_QUESTOES * 100, "🧪")
         else:
-            kpi("Último simulado", "—", "registre o simulado de domingo")
+            kpi("Último simulado", "—", "registre o simulado de domingo", None, "🧪")
     st.write("")
 
-    esq, dir_ = st.columns([1, 1.15], gap="large")
-    with esq:
-        st.markdown("### 🍅 Pomodoro")
-        pomodoro()
-        hoje_reg = registros[registros["Data"] == hoje] if len(registros) else registros
-        mins_hoje = hoje_reg["Minutos"].sum() if len(hoje_reg) else 0
-        n_pomo = int((hoje_reg["Tipo"] == "Pomodoro").sum()) if len(hoje_reg) else 0
-        st.caption(f"Hoje: **{fmt_h(mins_hoje / 60)}** de {fmt_h(meta / 7)} · {n_pomo} pomodoro(s)")
-        registrar_estudo(topicos, "inicio")
-    with dir_:
-        st.markdown("### 🎯 Plano de hoje")
+    # Linha 1: horas por dia (área azul) + situação do edital (rosca)
+    g1, g2 = st.columns([1.75, 1], gap="medium")
+    with g1, st.container(border=True, key="card_2"):
+        dias30 = pd.date_range(hoje - dt.timedelta(days=29), hoje).date
+        por_dia = registros.groupby("Data")["Minutos"].sum() / 60 if len(registros) else pd.Series(dtype=float)
+        serie = pd.DataFrame({"Dia": dias30, "Horas": [round(por_dia.get(d, 0.0), 2) for d in dias30]})
+        cartao_titulo("Horas de estudo", f"últimos 30 dias · total {fmt_h(serie['Horas'].sum())}")
+        fig = go.Figure(go.Scatter(
+            x=serie["Dia"], y=serie["Horas"], mode="lines", line=dict(color=AZUL, width=3, shape="spline"),
+            fill="tozeroy", fillgradient=dict(type="vertical", colorscale=[[0, "rgba(30,30,235,0.02)"],
+                                                                           [1, "rgba(30,30,235,0.45)"]]),
+            hovertemplate="%{x|%d/%m}: %{y:.1f} h<extra></extra>"))
+        fig.add_hline(y=meta / 7, line_dash="dot", line_color=APAGADO,
+                      annotation_text=f"meta diária {meta / 7:.1f}h", annotation_font_color=APAGADO)
+        fig.update_xaxes(tickformat="%d/%m", showgrid=False)
+        fig.update_yaxes(rangemode="tozero")
+        st.plotly_chart(estilo(fig, 300), width="stretch")
+    with g2, st.container(border=True, key="card_3"):
+        cartao_titulo("Situação do edital", f"{len(topicos)} tópicos")
+        cont = topicos["Status"].value_counts().reindex(STATUS, fill_value=0)
+        fig = go.Figure(go.Pie(labels=cont.index, values=cont.values, hole=.68, sort=False,
+                               marker=dict(colors=[CORES_STATUS[k] for k in cont.index]),
+                               textinfo="none", hovertemplate="%{label}: %{value}<extra></extra>"))
+        fig.add_annotation(text=f"<b>{fmt_p(pct)}</b><br><span style='font-size:11px'>estudado</span>",
+                           showarrow=False, font=dict(size=20, color=ESCURO, family="Poppins"))
+        st.plotly_chart(estilo(fig, 200), width="stretch")
+        st.markdown("<div class='legenda'>" + "".join(
+            f"<div><i style='background:{CORES_STATUS[k]}'></i>{k} <b style='float:right'>{v}</b></div>"
+            for k, v in cont.items()) + "</div>", unsafe_allow_html=True)
+    st.write("")
+
+    # Linha 2: plano de hoje (com a semana) + progresso por matéria
+    p1, p2 = st.columns([1.15, 1], gap="medium")
+    with p1, st.container(border=True, key="card_4"):
+        cartao_titulo("🎯 Plano de hoje", f"{MESES[hoje.month - 1]} de {hoje.year}")
+        segunda = hoje - dt.timedelta(days=hoje.weekday())
+        siglas = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+        st.markdown("<div class='cal'>" + "".join(
+            f"<div class='{'hoje' if d == hoje else ''}'>{siglas[i]}<b>{d.day:02d}</b></div>"
+            for i, d in enumerate(segunda + dt.timedelta(days=n) for n in range(7))) + "</div>",
+            unsafe_allow_html=True)
         dias = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"]
         dia = dias[hoje.weekday()]
         if hoje <= prova and dia in grade:
@@ -867,39 +992,53 @@ def pagina_inicio():
             if not vazio(obs):
                 st.caption(f"💡 {obs}")
             if dia == "Domingo":
-                st.button("🧪 Registrar o simulado de hoje", on_click=ir, args=("simulados",), width="stretch")
+                st.button("🧪 Registrar o simulado de hoje", on_click=ir, args=("simulados",), width="stretch",
+                          type="primary")
         elif hoje <= fase2:
             st.info("1ª fase concluída. Agora o foco é a peça e as questões discursivas da 2ª fase.")
         else:
             st.info("Exame concluído. Parabéns pelo caminho!")
         if n_rev:
             st.button(f"🔁 Você tem {n_rev} revisão(ões) para hoje", on_click=ir, args=("revisoes",), width="stretch")
+    with p2, st.container(border=True, key="card_5"):
+        res = resumo_materias(topicos)
+        cartao_titulo("Progresso por matéria", "% do edital estudado")
+        st.markdown("".join(
+            f"<div class='fonte'><span class='nome' title='{r['Matéria']}'>{r['Matéria']}</span>"
+            f"<span class='trilho'><div style='width:{r['% Concluído']:.0f}%'></div></span>"
+            f"<span class='pct'>{r['% Concluído']:.0f}%</span></div>" for _, r in res.iterrows()),
+            unsafe_allow_html=True)
+    st.write("")
 
+    # Linha 3: pomodoro + lançar estudo
+    c1, c2 = st.columns([1, 1.15], gap="medium")
+    with c1, st.container(border=True, key="card_6"):
+        cartao_titulo("🍅 Pomodoro")
+        pomodoro()
+    with c2, st.container(border=True, key="card_7"):
+        hoje_reg = registros[registros["Data"] == hoje] if len(registros) else registros
+        mins_hoje = hoje_reg["Minutos"].sum() if len(hoje_reg) else 0
+        n_pomo = int((hoje_reg["Tipo"] == "Pomodoro").sum()) if len(hoje_reg) else 0
+        cartao_titulo("⏱️ Lançar estudo", f"hoje: {fmt_h(mins_hoje / 60)} de {fmt_h(meta / 7)} · {n_pomo} pomodoro(s)")
+        registrar_estudo(topicos, "inicio")
     st.write("")
     with st.expander("📊 Ver gráficos de desempenho"):
         res = resumo_materias(topicos)
         mapa = cores(res)
         g1, g2 = st.columns(2)
-        with g1:
-            fig = px.bar(res, x="% Concluído", y="Matéria", orientation="h", color="Matéria",
-                         color_discrete_map=mapa, text="% Concluído", range_x=[0, 100])
-            fig.update_traces(texttemplate="%{text:.0f}%", textposition="outside")
-            fig.update_yaxes(autorange="reversed", title=None)
-            st.plotly_chart(estilo(fig, 420, "Progresso do edital por matéria"), width="stretch")
         with g2:
             com_q = res[res["questoes"] > 0]
             if len(com_q):
                 fig = px.bar(com_q, x="Matéria", y="% Acerto", color="Matéria", color_discrete_map=mapa,
                              text="% Acerto", range_y=[0, 105])
-                fig.add_hline(y=50, line_dash="dot", line_color=VINHO_CLARO, annotation_text="meta 50%",
-                              annotation_font_color=VINHO_CLARO)
+                fig.add_hline(y=50, line_dash="dot", line_color=AZUL, annotation_text="meta 50%",
+                              annotation_font_color=AZUL)
                 fig.update_traces(texttemplate="%{text:.0f}%", textposition="outside")
                 fig.update_xaxes(title=None, tickangle=-25)
                 st.plotly_chart(estilo(fig, 420, "Taxa de acertos por matéria"), width="stretch")
             else:
                 st.caption("Preencha **Questões** e **Acertos** nas tabelas para ver a taxa de acertos por matéria.")
-        g3, g4 = st.columns(2)
-        with g3:
+        with g1:
             if len(registros):
                 nome_cor = {v[0]: v[1] for v in MATERIAS.values()}
                 hm = registros.groupby("Matéria", as_index=False)["Minutos"].sum()
@@ -910,15 +1049,6 @@ def pagina_inicio():
                 st.plotly_chart(estilo(fig, titulo="Horas estudadas por matéria"), width="stretch")
             else:
                 st.caption("Registre pomodoros para ver as horas por matéria.")
-        with g4:
-            dias14 = pd.date_range(hoje - dt.timedelta(days=13), hoje).date
-            por_dia = registros.groupby("Data")["Minutos"].sum() / 60 if len(registros) else pd.Series(dtype=float)
-            serie = pd.DataFrame({"Dia": dias14, "Horas": [round(por_dia.get(d, 0.0), 2) for d in dias14]})
-            fig = go.Figure(go.Bar(x=serie["Dia"], y=serie["Horas"], marker_color=VINHO_CLARO))
-            fig.add_hline(y=meta / 7, line_dash="dot", line_color=APAGADO,
-                          annotation_text=f"meta diária {meta / 7:.1f}h", annotation_font_color=APAGADO)
-            fig.update_xaxes(tickformat="%d/%m")
-            st.plotly_chart(estilo(fig, titulo="Horas por dia · últimos 14 dias"), width="stretch")
         peso = res.copy()
         fig = px.scatter(peso, x="Na prova", y="% Concluído", color="Matéria", color_discrete_map=mapa,
                          text="Matéria", size=[max(q, 1) for q in peso["Na prova"]], range_y=[-5, 110])
@@ -954,11 +1084,11 @@ def pagina_grupo(chave):
     p_ = f_ / len(vis) * 100 if len(vis) else 0
     a1, a2, a3 = st.columns(3)
     with a1:
-        kpi("Edital estudado", fmt_p(p_), f"{f_} de {len(vis)} tópicos", p_)
+        kpi("Edital estudado", fmt_p(p_), f"{f_} de {len(vis)} tópicos", p_, "📚", destaque=True)
     with a2:
-        kpi("Taxa de acertos", fmt_p(taxa_acerto(vis)), f"{int(vis['Nº Questões'].sum())} questões", taxa_acerto(vis))
+        kpi("Taxa de acertos", fmt_p(taxa_acerto(vis)), f"{int(vis['Nº Questões'].sum())} questões", taxa_acerto(vis), "🎯")
     with a3:
-        kpi("Revisões para hoje", f"{len(revisoes_pendentes(vis, hoje))}", "deste grupo" if not mat else "desta matéria")
+        kpi("Revisões para hoje", f"{len(revisoes_pendentes(vis, hoje))}", "deste grupo" if not mat else "desta matéria", None, "🔁")
     st.write("")
 
     if mat:
@@ -1111,7 +1241,7 @@ def pagina_estudar():
             st.markdown(f"<div class='flash'><small>Cartão {i + 1} de {len(cartas)}</small>{pergunta}</div>",
                         unsafe_allow_html=True)
             if mostrar:
-                st.markdown(f"<div class='flash' style='margin-top:10px;border-color:{VINHO_CLARO}'>"
+                st.markdown(f"<div class='flash' style='margin-top:10px;border-color:{AZUL_CLARO}'>"
                             f"<small>Resposta</small>{resposta}</div>", unsafe_allow_html=True)
             st.write("")
             b1, b2, b3 = st.columns(3)
@@ -1222,17 +1352,17 @@ def pagina_simulados():
     m1, m2, m3 = st.columns(3)
     with m1:
         kpi("Último simulado", f"{ult['Acertos']}/{TOTAL_QUESTOES}", f"{ult['Data']:%d/%m/%Y}",
-            ult["Acertos"] / TOTAL_QUESTOES * 100)
+            ult["Acertos"] / TOTAL_QUESTOES * 100, "🧪", destaque=True)
     with m2:
-        kpi("Melhor resultado", f"{melhor}/{TOTAL_QUESTOES}", "", melhor / TOTAL_QUESTOES * 100)
+        kpi("Melhor resultado", f"{melhor}/{TOTAL_QUESTOES}", "", melhor / TOTAL_QUESTOES * 100, "🏆")
     with m3:
         acima = int((simulados["Acertos"] >= META_APROVACAO).sum())
         kpi("Simulados aprovados", f"{acima} de {len(simulados)}", f"com {META_APROVACAO}+ acertos",
-            acima / len(simulados) * 100)
+            acima / len(simulados) * 100, "✅")
     st.write("")
     fig = go.Figure(go.Scatter(x=simulados["Data"], y=simulados["Acertos"], mode="lines+markers+text",
                                text=simulados["Acertos"], textposition="top center",
-                               line=dict(color=VINHO_CLARO, width=3), marker=dict(size=9, color=ROSE)))
+                               line=dict(color=AZUL, width=3), marker=dict(size=9, color=AZUL)))
     fig.add_hline(y=META_APROVACAO, line_dash="dot", line_color=APAGADO,
                   annotation_text=f"aprovação: {META_APROVACAO}", annotation_font_color=APAGADO)
     fig.update_yaxes(range=[0, TOTAL_QUESTOES])
@@ -1304,6 +1434,7 @@ def pagina_resumo_dia():
                        mime="text/markdown")
 
 
+barra_topo()
 if pagina.startswith("grupo:"):
     pagina_grupo(pagina.split(":", 1)[1])
 elif pagina == "estudar":
