@@ -1,0 +1,1702 @@
+{
+ "pdfs": {
+  "estatuto": {
+   "titulo": "Estatuto da Advocacia e da OAB (Lei 8.906/1994)",
+   "fonte": "Conselho Federal da OAB",
+   "ano": "atualizado",
+   "url": "https://www.oab.org.br/publicacoes/AbrirPDF?LivroId=0000002837",
+   "arquivo": "Etica_Profissional/Estatuto da Advocacia e da OAB.pdf"
+  },
+  "ced": {
+   "titulo": "Código de Ética e Disciplina da OAB",
+   "fonte": "Conselho Federal da OAB",
+   "ano": "atualizado",
+   "url": "https://www.oab.org.br/publicacoes/AbrirPDF?LivroId=0000004085",
+   "arquivo": "Etica_Profissional/Codigo de Etica e Disciplina da OAB.pdf"
+  },
+  "regulamento": {
+   "titulo": "Regulamento Geral do Estatuto da Advocacia e da OAB",
+   "fonte": "Conselho Federal da OAB",
+   "ano": "atualizado",
+   "url": "https://www.oab.org.br/publicacoes/AbrirPDF?LivroId=0000004095",
+   "arquivo": "Etica_Profissional/Regulamento Geral da OAB.pdf"
+  },
+  "cf": {
+   "titulo": "Constituição Federal (até a EC 138/2025)",
+   "fonte": "Senado Federal",
+   "ano": "2025",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/817051/1/CF88_EC138_livro.pdf",
+   "arquivo": "Direito_Constitucional/Constituicao Federal.pdf"
+  },
+  "cc": {
+   "titulo": "Código Civil e normas correlatas · 16ª ed. (inclui LINDB)",
+   "fonte": "Senado Federal",
+   "ano": "2025",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/757270/1/Codigo_civil_normas_correlatas_16ed.pdf",
+   "arquivo": "Direito_Civil/Codigo Civil e normas correlatas.pdf"
+  },
+  "cpc": {
+   "titulo": "Código de Processo Civil e normas correlatas · 16ª ed.",
+   "fonte": "Senado Federal",
+   "ano": "2023",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/644042/2/CPC_normas_correlatas_16ed.pdf",
+   "arquivo": "Processo_Civil/Codigo de Processo Civil.pdf"
+  },
+  "penal": {
+   "titulo": "Coletânea básica penal · 16ª ed. (Código Penal, CPP, LEP e leis penais)",
+   "fonte": "Senado Federal",
+   "ano": "2026",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/863851/1/Coletanea_basica_penal_16ed.pdf",
+   "arquivo": "Direito_Penal/Coletanea basica penal.pdf"
+  },
+  "cpp": {
+   "titulo": "Código de Processo Penal · 6ª ed.",
+   "fonte": "Senado Federal",
+   "ano": "2024",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/648190/2/Codigo_processo_penal_6ed.pdf",
+   "arquivo": "Processo_Penal/Codigo de Processo Penal.pdf"
+  },
+  "clt": {
+   "titulo": "CLT e normas correlatas · 8ª ed. (direito e processo do trabalho)",
+   "fonte": "Senado Federal",
+   "ano": "2025",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/799978/1/CLT_normas_correlatas_8ed.pdf",
+   "arquivo": "Direito_do_Trabalho/CLT e normas correlatas.pdf"
+  },
+  "licitacoes": {
+   "titulo": "Licitações e contratos administrativos · 8ª ed. (Lei 14.133/2021)",
+   "fonte": "Senado Federal",
+   "ano": "2026",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/962234/1/Licitacoes_contratos_administrativos_8ed_2026.pdf",
+   "arquivo": "Direito_Administrativo/Licitacoes e contratos administrativos.pdf"
+  },
+  "ctn": {
+   "titulo": "Código Tributário Nacional · 5ª ed.",
+   "fonte": "Senado Federal",
+   "ano": "2024",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/658690/1/Codigo_tributario_nacional_5ed.pdf",
+   "arquivo": "Direito_Tributario/Codigo Tributario Nacional.pdf"
+  },
+  "cdc": {
+   "titulo": "Código de Defesa do Consumidor e normas correlatas · 7ª ed.",
+   "fonte": "Senado Federal",
+   "ano": "2023",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/608968/1/CDC_normas_correlatas_7ed.pdf",
+   "arquivo": "Outras_Disciplinas/Codigo de Defesa do Consumidor.pdf"
+  },
+  "eca": {
+   "titulo": "Estatuto da Criança e do Adolescente e normas correlatas · 5ª ed.",
+   "fonte": "Senado Federal",
+   "ano": "2026",
+   "url": "https://www2.senado.leg.br/jspui/bitstream/id/933081/1/Eca_normas_correlatas_5ed.pdf",
+   "arquivo": "Outras_Disciplinas/ECA e normas correlatas.pdf"
+  },
+  "prova47": {
+   "titulo": "47º Exame de Ordem · Caderno de prova Tipo 1",
+   "fonte": "OAB / FGV",
+   "ano": "2026",
+   "url": "https://s.oab.org.br/arquivos/2026/09/7d502f11-d906-4378-bd43-27e0c854b981.pdf",
+   "arquivo": "Provas_FGV/47 Exame - Prova Tipo 1.pdf"
+  },
+  "gab47": {
+   "titulo": "47º Exame de Ordem · Gabarito preliminar",
+   "fonte": "OAB / FGV",
+   "ano": "2026",
+   "url": "https://s.oab.org.br/arquivos/2026/09/9dceea61-7c73-435e-9d4e-7f25522e0fd4.pdf",
+   "arquivo": "Provas_FGV/47 Exame - Gabarito.pdf"
+  },
+  "prova46": {
+   "titulo": "46º Exame de Ordem · Caderno de prova Tipo 1",
+   "fonte": "OAB / FGV",
+   "ano": "2026",
+   "url": "https://s.oab.org.br/arquivos/2026/05/b5f2a4bd-8885-4f42-909f-a2ecac329dab.pdf",
+   "arquivo": "Provas_FGV/46 Exame - Prova Tipo 1.pdf"
+  },
+  "gab46": {
+   "titulo": "46º Exame de Ordem · Gabarito preliminar",
+   "fonte": "OAB / FGV",
+   "ano": "2026",
+   "url": "https://s.oab.org.br/arquivos/2026/05/96ee98eb-891b-4ad4-9fa0-fa20b96c3847.pdf",
+   "arquivo": "Provas_FGV/46 Exame - Gabarito.pdf"
+  },
+  "gab45": {
+   "titulo": "45º Exame de Ordem · Gabarito preliminar",
+   "fonte": "OAB / FGV",
+   "ano": "2025",
+   "url": "https://s.oab.org.br/arquivos/2025/12/9e6cd2b9-bafc-4b04-bbf4-61c996afcd2d.pdf",
+   "arquivo": "Provas_FGV/45 Exame - Gabarito.pdf"
+  }
+ },
+ "leis_online": {
+  "8906": {
+   "titulo": "Lei 8.906/1994 (Estatuto)",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8906.htm"
+  },
+  "lgpd": {
+   "titulo": "LGPD · Lei 13.709/2018",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+  },
+  "arbitragem": {
+   "titulo": "Lei de Arbitragem · 9.307/1996",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9307.htm"
+  },
+  "mediacao": {
+   "titulo": "Lei de Mediação · 13.140/2015",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13140.htm"
+  },
+  "jec": {
+   "titulo": "Juizados Especiais · Lei 9.099/1995",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9099.htm"
+  },
+  "acp": {
+   "titulo": "Ação Civil Pública · Lei 7.347/1985",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l7347orig.htm"
+  },
+  "ms": {
+   "titulo": "Mandado de Segurança · Lei 12.016/2009",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/lei/l12016.htm"
+  },
+  "adi": {
+   "titulo": "ADI e ADC · Lei 9.868/1999",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9868.htm"
+  },
+  "adpf": {
+   "titulo": "ADPF · Lei 9.882/1999",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9882.htm"
+  },
+  "lindb": {
+   "titulo": "LINDB · Decreto-Lei 4.657/1942",
+   "url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del4657compilado.htm"
+  },
+  "8112": {
+   "titulo": "Servidores federais · Lei 8.112/1990",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8112cons.htm"
+  },
+  "concessoes": {
+   "titulo": "Concessões · Lei 8.987/1995",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8987cons.htm"
+  },
+  "improbidade": {
+   "titulo": "Improbidade · Lei 8.429/1992",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8429.htm"
+  },
+  "9784": {
+   "titulo": "Processo administrativo · Lei 9.784/1999",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm"
+  },
+  "lef": {
+   "titulo": "Execução fiscal · Lei 6.830/1980",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l6830.htm"
+  },
+  "sa": {
+   "titulo": "Sociedades anônimas · Lei 6.404/1976",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l6404consol.htm"
+  },
+  "falencia": {
+   "titulo": "Falência e recuperação · Lei 11.101/2005",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11101.htm"
+  },
+  "lpi": {
+   "titulo": "Propriedade industrial · Lei 9.279/1996",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9279.htm"
+  },
+  "concorrencia": {
+   "titulo": "Defesa da concorrência · Lei 12.529/2011",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12529.htm"
+  },
+  "cheque": {
+   "titulo": "Lei do Cheque · 7.357/1985",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l7357.htm"
+  },
+  "duplicata": {
+   "titulo": "Lei das Duplicatas · 5.474/1968",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l5474.htm"
+  },
+  "lrf": {
+   "titulo": "Responsabilidade Fiscal · LC 101/2000",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp101.htm"
+  },
+  "4320": {
+   "titulo": "Normas de orçamento · Lei 4.320/1964",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l4320.htm"
+  },
+  "8213": {
+   "titulo": "Benefícios da Previdência · Lei 8.213/1991",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8213cons.htm"
+  },
+  "8212": {
+   "titulo": "Custeio da Seguridade · Lei 8.212/1991",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8212cons.htm"
+  },
+  "inelegibilidade": {
+   "titulo": "Inelegibilidades · LC 64/1990",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp64.htm"
+  },
+  "partidos": {
+   "titulo": "Partidos políticos · Lei 9.096/1995",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9096.htm"
+  },
+  "ambiental": {
+   "titulo": "Política Nacional do Meio Ambiente · Lei 6.938/1981",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l6938.htm"
+  },
+  "crimes_amb": {
+   "titulo": "Crimes ambientais · Lei 9.605/1998",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l9605.htm"
+  },
+  "sanjose": {
+   "titulo": "Pacto de San José · Decreto 678/1992",
+   "url": "https://www.planalto.gov.br/ccivil_03/decreto/d0678.htm"
+  }
+ },
+ "provas": [
+  "prova47",
+  "gab47",
+  "prova46",
+  "gab46",
+  "gab45"
+ ],
+ "topicos": {
+  "ETI.01": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 1º a 7º-B (atividade de advocacia, direitos e prerrogativas)",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=hRmPBtMDwY0",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Ética e Estatuto | Maria Christina",
+    "tipo": "materia"
+   }
+  },
+  "ETI.02": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 8º a 14 (inscrição, cancelamento e licenciamento)",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=hiEDwmRiqlw",
+    "titulo": "1ª fase do 39º Exame OAB - Ética e Estatuto: Advogados e Estagiários",
+    "tipo": "topico"
+   }
+  },
+  "ETI.03": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 15 a 21 (sociedade de advogados e advogado empregado)",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=oC37OzdI-ts",
+    "titulo": "1ª Fase do 38º Exame OAB | 8 dias com Ética e Estatuto: Tipos de Advogado e Sociedade de Advogados",
+    "tipo": "topico"
+   }
+  },
+  "ETI.04": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 22 a 26; Código de Ética, arts. 48 a 54 (honorários)",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=VSFCbfoc2Ak",
+    "titulo": "Estatuto e Ética - Honorários Advocatícios",
+    "tipo": "topico"
+   }
+  },
+  "ETI.05": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 27 a 30 (incompatibilidades e impedimentos)",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=7Sr5NvD1C5s",
+    "titulo": "1ª Fase do 38º Exame - 8 dias com Ética e Estatuto: Incompatibilidade e Impedimento",
+    "tipo": "topico"
+   }
+  },
+  "ETI.06": {
+   "pdf": "estatuto",
+   "artigos": "Estatuto, arts. 34 a 43 e 68 a 77; Código de Ética, arts. 55 a 69",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=h4CCghcP3r4",
+    "titulo": "1ª fase do 45º Exame OAB | Ética Profissional em Mapas Mentais | Maria Christina",
+    "tipo": "materia"
+   }
+  },
+  "ETI.07": {
+   "pdf": "ced",
+   "artigos": "Código de Ética, arts. 1º a 47 (deveres) e 39 a 47 (publicidade); Provimento 205/2021",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=T1kuQTmCKBo",
+    "titulo": "1ª fase do Exame 41º OAB: Imersão em Ética e Estatuto | Publicidade com Maria Christina",
+    "tipo": "topico"
+   }
+  },
+  "ETI.08": {
+   "pdf": "regulamento",
+   "artigos": "Estatuto, arts. 44 a 67; Regulamento Geral, arts. 62 a 127",
+   "leis": [
+    "8906"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=jOgkU_Fxi0Y",
+    "titulo": "1ª fase do 46º Exame OAB | Aprovado em Ética e Estatuto em 8 dias | Órgãos da OAB | Maria Christina",
+    "tipo": "topico"
+   }
+  },
+  "CRFB.01": {
+   "pdf": "cf",
+   "artigos": "CF, Preâmbulo e arts. 1º a 4º (estrutura da Constituição)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.02": {
+   "pdf": "cf",
+   "artigos": "CF, art. 5º, § 1º (aplicabilidade imediata) e normas programáticas",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.03": {
+   "pdf": "cf",
+   "artigos": "CF, ADCT e a evolução das Constituições de 1824 a 1988",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Uzc67BDfjlY",
+    "titulo": "1ª fase do 40º Exame OAB - Quiz da Aprovação | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.04": {
+   "pdf": "cf",
+   "artigos": "CF, art. 60 (emendas e cláusulas pétreas) e art. 25 (poder decorrente)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.05": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 1º a 4º (princípios fundamentais)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.06": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 97, 102, 103 e 103-A (controle e súmula vinculante)",
+   "leis": [
+    "adi",
+    "adpf"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=JqNv3vdfQBg",
+    "titulo": "1ª fase do 44º Exame OAB: Direito Constitucional | Controle de constitucionalidade",
+    "tipo": "topico"
+   }
+  },
+  "CRFB.07": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 5º a 11 (direitos individuais e sociais)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.08": {
+   "pdf": "cf",
+   "artigos": "CF, art. 5º, LXVIII a LXXIII, e art. 129, III (remédios constitucionais)",
+   "leis": [
+    "ms",
+    "acp"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.09": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 12 a 17 (nacionalidade, direitos políticos e partidos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4QQMxLynohQ",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Constitucional | Flavia Bahia",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.10": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 18 a 36 (organização do Estado e intervenção)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Rfh8kIwcPBw",
+    "titulo": "1ª Fase do 38º Exame OAB - Semana decisiva | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.11": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 44 a 75 (Poder Legislativo e processo legislativo)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Rfh8kIwcPBw",
+    "titulo": "1ª Fase do 38º Exame OAB - Semana decisiva | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.12": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 76 a 126 (Executivo e Judiciário)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Rfh8kIwcPBw",
+    "titulo": "1ª Fase do 38º Exame OAB - Semana decisiva | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.13": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 127 a 144 (funções essenciais e defesa do Estado)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Rfh8kIwcPBw",
+    "titulo": "1ª Fase do 38º Exame OAB - Semana decisiva | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CRFB.14": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 170 a 232 (ordem econômica, financeira e social)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Uzc67BDfjlY",
+    "titulo": "1ª fase do 40º Exame OAB - Quiz da Aprovação | Direito Constitucional",
+    "tipo": "materia"
+   }
+  },
+  "CIV.01": {
+   "pdf": "cc",
+   "artigos": "LINDB, arts. 1º a 6º; Código Civil, arts. 1º a 21 (início do Código)",
+   "leis": [
+    "lindb"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=IlfLFHbBjRg",
+    "titulo": "1ª Fase OAB - Direito Civil com Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.02": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1º a 39 (pessoa natural e personalidade)",
+   "leis": [
+    "lgpd"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=IlfLFHbBjRg",
+    "titulo": "1ª Fase OAB - Direito Civil com Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.03": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 40 a 103 (pessoa jurídica, domicílio e bens)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=IlfLFHbBjRg",
+    "titulo": "1ª Fase OAB - Direito Civil com Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.04": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 104 a 188 (negócio jurídico e atos ilícitos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=q8UuH_G9xOA",
+    "titulo": "1ª fase do 41º Exame OAB: Olha a prova! É mentira! | Direito Civil",
+    "tipo": "materia"
+   }
+  },
+  "CIV.05": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 189 a 211 (prescrição e decadência)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=q8UuH_G9xOA",
+    "titulo": "1ª fase do 41º Exame OAB: Olha a prova! É mentira! | Direito Civil",
+    "tipo": "materia"
+   }
+  },
+  "CIV.06": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 233 a 420 (obrigações)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=kM8iJsZh424",
+    "titulo": "OAB 1ª Fase: Treinamento por Questões Objetivas - Direito Civil com Prof. Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.07": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 854 a 926 (atos unilaterais e títulos de crédito)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=kM8iJsZh424",
+    "titulo": "OAB 1ª Fase: Treinamento por Questões Objetivas - Direito Civil com Prof. Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.08": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 421 a 853 (contratos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=kM8iJsZh424",
+    "titulo": "OAB 1ª Fase: Treinamento por Questões Objetivas - Direito Civil com Prof. Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.09": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 186, 187 e 927 a 954 (responsabilidade civil)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=RIW3uHkFFic",
+    "titulo": "1ª fase do 46º Exame OAB | Roberta Queiroz e as 6 Questões | Responsabilidade Civil",
+    "tipo": "topico"
+   }
+  },
+  "CIV.10": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1.196 a 1.510 (posse, propriedade e direitos reais)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=kM8iJsZh424",
+    "titulo": "OAB 1ª Fase: Treinamento por Questões Objetivas - Direito Civil com Prof. Roberta Queiroz",
+    "tipo": "materia"
+   }
+  },
+  "CIV.11": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1.511 a 1.638 e 1.723 a 1.727 (família)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=WXcQySdDoUU",
+    "titulo": "1ª fase do 46º Exame OAB | Roberta Queiroz e as 6 Questões | Família",
+    "tipo": "topico"
+   }
+  },
+  "CIV.12": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1.639 a 1.783-A (regimes de bens, alimentos, tutela e curatela)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=gxrhpWdYP0g",
+    "titulo": "OAB Express: Dicas sobre Regime de Bens para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "CIV.13": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1.784 a 2.027 (sucessões)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Dmu8T12k6o0",
+    "titulo": "1ª Fase do 40º Exame da OAB - Roberta de Neve e as seis questões | Sucessões",
+    "tipo": "topico"
+   }
+  },
+  "CIV.14": {
+   "pdf": "cdc",
+   "artigos": "CDC, arts. 1º a 54 (relação de consumo e responsabilidade)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=KZkUQqfytuo",
+    "titulo": "1ª fase do 46º Exame OAB | Revisão Express: Tira-Dúvidas de ECA e CDC",
+    "tipo": "materia"
+   }
+  },
+  "CPC.01": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 1º a 15 (normas fundamentais)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=TdAF737ZBEg",
+    "titulo": "1ª fase do Exame OAB 47 | Iniciando o estudo de Direito Processual Civil com Raquel Bueno",
+    "tipo": "topico"
+   }
+  },
+  "CPC.02": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 3º e 165 a 175 (conciliação e mediação)",
+   "leis": [
+    "arbitragem",
+    "mediacao"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=M3SgqdM5fYA",
+    "titulo": "OAB: Conte-me mais - Direito Processual Civil com Prof. Raquel Bueno",
+    "tipo": "materia"
+   }
+  },
+  "CPC.03": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 16 a 69 (jurisdição, ação e competência)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=3ZkoOJHvfvs",
+    "titulo": "Preparação - 1ª Fase OAB - Direito Processual Civil - Profª. Raquel Bueno",
+    "tipo": "materia"
+   }
+  },
+  "CPC.04": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 70 a 138 (partes, litisconsórcio e intervenção de terceiros)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=a6_yQ2CIgPc",
+    "titulo": "1ª fase do 46º Exame OAB | Código de Processo Civil: Resumão Esquematizado!",
+    "tipo": "materia"
+   }
+  },
+  "CPC.05": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 139 a 187 (juiz, auxiliares, MP, Defensoria e Advocacia Pública)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPC.06": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 188 a 293 (atos, prazos, citação e intimação)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Vfb_uAKUBkQ",
+    "titulo": "1ª fase do Exame OAB 47 | 300 Questões em 1 Semana | Direito Processual Civil com Raquel Bueno",
+    "tipo": "materia"
+   }
+  },
+  "CPC.07": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 294 a 311 (tutela provisória)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=ZclljpMFTOY",
+    "titulo": "1ª Fase do 37º Exame da OAB: Semana decisiva - Direito Processual Civil com Raquel Bueno",
+    "tipo": "materia"
+   }
+  },
+  "CPC.08": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 318 a 346 (petição inicial, improcedência liminar, contestação e revelia)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=n8U3PJAqx4Y",
+    "titulo": "Fazendo as pazes com o Processo Civil com Prof. Raquel Bueno",
+    "tipo": "materia"
+   }
+  },
+  "CPC.09": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 347 a 484 (saneamento e provas)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPC.10": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 485 a 508 e 926 a 928 (sentença, coisa julgada e precedentes)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPC.11": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 929 a 1.044 (tribunais e recursos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HVuNklqLXMM",
+    "titulo": "Rodada de Questões - Recursos no Processo Civil com Prof. Patrícia Dreyer",
+    "tipo": "topico"
+   }
+  },
+  "CPC.12": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 966 a 993 (rescisória, IRDR e reclamação)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPC.13": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 771 a 925 e 513 a 538 (execução e cumprimento de sentença)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=AnQGO7Z8dj0",
+    "titulo": "OAB Express: Dica sobre Cumprimento de Sentença para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "CPC.14": {
+   "pdf": "cpc",
+   "artigos": "CPC, arts. 539 a 770 (procedimentos especiais)",
+   "leis": [
+    "jec"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPC.15": {
+   "pdf": "cpc",
+   "artigos": "Processo coletivo: Lei 7.347/1985 e CDC, arts. 81 a 104",
+   "leis": [
+    "acp",
+    "ms"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cASaNYFm_7AQEaX1TW9nAa",
+    "titulo": "Direito Civil e Processo Civil para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.01": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 1º a 12 (aplicação da lei penal)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=ksWn4F5eD1s",
+    "titulo": "OAB Express: Dicas Sobre Princípio da Insignificância no Direito Penal!",
+    "tipo": "topico"
+   }
+  },
+  "PEN.02": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 13 a 19 (crime, conduta e causalidade)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Fwv9HQ0ycos",
+    "titulo": "Direito Penal para a 1ª fase da OAB: Temas mais importantes!",
+    "tipo": "materia"
+   }
+  },
+  "PEN.03": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 18 e 20 a 28 (dolo, culpa, ilicitude e culpabilidade)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=OKQ34NrTxBI",
+    "titulo": "1ª Fase do 37º Exame da OAB: Estudando só o que cai em Direito Penal com Michelle Tonon",
+    "tipo": "materia"
+   }
+  },
+  "PEN.04": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 14 a 16 (consumação, tentativa e arrependimento)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=E6aqNopIWzU",
+    "titulo": "1ª fase do 44º Exame OAB | Semana Decisiva | Direito Penal com Michelle Tonon",
+    "tipo": "materia"
+   }
+  },
+  "PEN.05": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 17, 20 e 21 (crime impossível e erro)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Lm_PWIiZZ4k",
+    "titulo": "Revisão POWER de reta final! Direito Penal com Michelle Tonon",
+    "tipo": "materia"
+   }
+  },
+  "PEN.06": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 29 a 31 (concurso de pessoas)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=NYxyJgJIE_E",
+    "titulo": "1ª fase do 46º Exame OAB | Top 5: O que mais cai na OAB em Direito Penal",
+    "tipo": "materia"
+   }
+  },
+  "PEN.07": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 32 a 68 (penas e dosimetria)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.08": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 69 a 76 (concurso de crimes)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.09": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 77 a 99 (sursis, efeitos da condenação e medida de segurança)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.10": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 107 a 120 (extinção da punibilidade e prescrição)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=t4HY0bQNYJE",
+    "titulo": "1ª fase do 46º Exame OAB | O que a FGV realmente cobra em Direito Penal e Direito Processual Penal",
+    "tipo": "materia"
+   }
+  },
+  "PEN.11": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 121 a 183 (crimes contra a pessoa e o patrimônio)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Ng289aDcGTU",
+    "titulo": "1ª fase do 45º Exame OAB | Direito Penal e Processo Penal em Mapas Mentais",
+    "tipo": "materia"
+   }
+  },
+  "PEN.12": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 213 a 234-C e 289 a 311-A",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.13": {
+   "pdf": "penal",
+   "artigos": "Código Penal, arts. 312 a 359-H; Lei de Drogas e outras leis da coletânea",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "PEN.14": {
+   "pdf": "penal",
+   "artigos": "Lei de Execução Penal (Lei 7.210/1984), dentro da coletânea",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=dIfuYfJ7AEk",
+    "titulo": "Sexta Extravagante: Lei de Execução Penal • Pontos Essenciais (Aula 1)",
+    "tipo": "topico"
+   }
+  },
+  "CPP.01": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 1º a 3º-F (aplicação e sistema acusatório) e CF, art. 5º",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=9YwPOlOw9_s",
+    "titulo": "1ª fase do 42º Exame OAB: Iniciando os Estudos em Direito Processual Penal com Lorena Ocampos",
+    "tipo": "topico"
+   }
+  },
+  "CPP.02": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 4º a 23 (inquérito policial)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=h_NMchPClrw",
+    "titulo": "Temas Essenciais de Direito Processual Penal: Inquérito Policial - Prof. Lorena Ocampos",
+    "tipo": "topico"
+   }
+  },
+  "CPP.03": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 24 a 62 e 28-A (ação penal e ANPP)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Ktjy-1x9CMM",
+    "titulo": "Maratonas por disciplinas: Processo Penal - Ação penal com Prof. Lorena Ocampos",
+    "tipo": "topico"
+   }
+  },
+  "CPP.04": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 63 a 91 (ação civil ex delicto, jurisdição e competência)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=vJYA2ne6Fug",
+    "titulo": "Lei seca: Artigo por Artigo - Processo Penal com Prof. Lorena Ocampos",
+    "tipo": "materia"
+   }
+  },
+  "CPP.05": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 251 a 372 (juiz, MP, acusado, defensor, citações e intimações)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=TK86QCys_YU",
+    "titulo": "Direito Processual Penal - Projeto “80 pontos em 100 dicas e macetes” com Lorena Ocampos",
+    "tipo": "materia"
+   }
+  },
+  "CPP.06": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 282 a 350 (prisões, cautelares e liberdade provisória)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=_SxQALOyBSk",
+    "titulo": "Processo Penal OAB 47: Prisões e Liberdade Provisória com Lorena Ocampos",
+    "tipo": "topico"
+   }
+  },
+  "CPP.07": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 155 a 250 e 158-A a 158-F (provas e cadeia de custódia)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=0yPVOnyQ4Zc",
+    "titulo": "1ª fase do Exame OAB 47 | 300 Questões em 1 Semana | Direito Processual Penal com Lorena Ocampos",
+    "tipo": "materia"
+   }
+  },
+  "CPP.08": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 394 a 497 e 531 a 538 (procedimentos e júri)",
+   "leis": [
+    "jec"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPP.09": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 381 a 393 e 563 a 573 (sentença e nulidades)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPP.10": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 574 a 646 (recursos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=gy4qaO5EZ_A",
+    "titulo": "Maratonas por disciplinas: Processo Penal - Recursos com Prof. Lorena Ocampos",
+    "tipo": "topico"
+   }
+  },
+  "CPP.11": {
+   "pdf": "cpp",
+   "artigos": "CPP, arts. 621 a 667 (revisão criminal e habeas corpus)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_fnAvX1DcAxIjUsJ_UtYIVP",
+    "titulo": "Direito Penal e Processo Penal para OAB",
+    "tipo": "playlist"
+   }
+  },
+  "CPP.12": {
+   "pdf": "penal",
+   "artigos": "Lei de Execução Penal e leis especiais, dentro da coletânea penal",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=-uxNJLCOrAk",
+    "titulo": "Sexta Extravagante - Lei de Execução Penal (LEP) - Trabalho do Preso e Remição",
+    "tipo": "topico"
+   }
+  },
+  "TRB.01": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 8º e 9º; CF, art. 7º (princípios e fontes)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=LOEiESX3F70",
+    "titulo": "1ª fase do Exame OAB 47 (Começando os estudos em Direito do Trabalho e Processo do Trabalho)",
+    "tipo": "materia"
+   }
+  },
+  "TRB.02": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 2º e 3º (empregado e empregador)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=LOEiESX3F70",
+    "titulo": "1ª fase do Exame OAB 47 (Começando os estudos em Direito do Trabalho e Processo do Trabalho)",
+    "tipo": "materia"
+   }
+  },
+  "TRB.03": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 2º, §§ 2º e 3º, 10, 448 e 448-A; Lei 6.019/1974 (terceirização)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_dFTFVElhbRIGkSsQrLq3oG",
+    "titulo": "Direito do Trabalho e Processo do Trabalho para OAB | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "TRB.04": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 442 a 476-A (contrato, alteração, suspensão e interrupção)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=1HPB481mZg0",
+    "titulo": "1ª fase do 41º Exame OAB: Os temas que MAIS caem! | Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.05": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 57 a 75-F (jornada, horas extras e teletrabalho)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=1HPB481mZg0",
+    "titulo": "1ª fase do 41º Exame OAB: Os temas que MAIS caem! | Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.06": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 66 a 72 e 129 a 153 (intervalos e férias)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HGTeY-y1e3k",
+    "titulo": "1ª fase do Exame 39º OAB - Semana Decisiva em Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.07": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 457 a 467 (remuneração e equiparação salarial)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HGTeY-y1e3k",
+    "titulo": "1ª fase do Exame 39º OAB - Semana Decisiva em Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.08": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 477 a 491 (rescisão e aviso prévio)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=1HPB481mZg0",
+    "titulo": "1ª fase do 41º Exame OAB: Os temas que MAIS caem! | Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.09": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 165, 492 a 500 e 543; ADCT, art. 10 (estabilidades)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HGTeY-y1e3k",
+    "titulo": "1ª fase do Exame 39º OAB - Semana Decisiva em Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "TRB.10": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 154 a 201 (segurança e medicina do trabalho); Lei 8.036/1990 (FGTS)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_dFTFVElhbRIGkSsQrLq3oG",
+    "titulo": "Direito do Trabalho e Processo do Trabalho para OAB | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "TRB.11": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 511 a 625 (direito coletivo); Lei 7.783/1989 (greve)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HGTeY-y1e3k",
+    "titulo": "1ª fase do Exame 39º OAB - Semana Decisiva em Direito do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.01": {
+   "pdf": "clt",
+   "artigos": "CF, art. 114; CLT, arts. 643 a 702 (organização e competência)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=MrRP6Ivig7c",
+    "titulo": "1ª fase do 46º Exame OAB | Semana Decisiva: Revisão de Direito Processual do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.02": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 770 a 798 (atos, prazos, custas e nulidades)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=a_GvMOxDu9U",
+    "titulo": "1ª fase do 45º Exame OAB | Direito Processual do Trabalho em Mapas Mentais | Leandro Alencar",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.03": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 791 e 791-A (jus postulandi e honorários)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=hvhpypC4XQs",
+    "titulo": "1ª fase do 47º Exame OAB (Semana Decisiva em Direito Processual do Trabalho com Aryanna Linhares)",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.04": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 837 a 852-I (dissídio individual e sumaríssimo)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=QCsZA9k0WVk",
+    "titulo": "OAB Express: Dicas sobre Procedimento Sumaríssimo para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "PTRB.05": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 840 a 852 (petição inicial, audiência e revelia)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=HZ7IXLKTCus",
+    "titulo": "1ª fase do 42º Exame OAB: Semana Decisiva em Direito Processual do Trabalho com Aryanna Linhares",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.06": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 799 a 802 e 846 a 847 (exceções, contestação e conciliação)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=2cphO1VTkVM",
+    "titulo": "Preparação - 1ª Fase OAB - Direito Processual do Trabalho - Profª. Aryanna Linhares",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.07": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 818 a 830 (provas e ônus da prova)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=MrRP6Ivig7c",
+    "titulo": "1ª fase do 46º Exame OAB | Semana Decisiva: Revisão de Direito Processual do Trabalho",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.08": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 831 a 836 e 893 a 902 (sentença e recursos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=hvhpypC4XQs",
+    "titulo": "1ª fase do 47º Exame OAB (Semana Decisiva em Direito Processual do Trabalho com Aryanna Linhares)",
+    "tipo": "materia"
+   }
+  },
+  "PTRB.09": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 876 a 892 (execução, liquidação e embargos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=J501KajKggE",
+    "titulo": "OAB Express: Dicas sobre Execução para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "PTRB.10": {
+   "pdf": "clt",
+   "artigos": "CLT, arts. 836 e 856 a 875 (rescisória e dissídio coletivo)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=a_GvMOxDu9U",
+    "titulo": "1ª fase do 45º Exame OAB | Direito Processual do Trabalho em Mapas Mentais | Leandro Alencar",
+    "tipo": "materia"
+   }
+  },
+  "ADM.01": {
+   "pdf": "cf",
+   "artigos": "CF, art. 37, caput; LINDB, arts. 20 a 30",
+   "leis": [
+    "lindb"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=a2MUCpc3RVE",
+    "titulo": "1ª fase do 46º Exame OAB | O que a FGV realmente cobra em Direito Administrativo | Gustavo Brígido",
+    "tipo": "materia"
+   }
+  },
+  "ADM.02": {
+   "pdf": "cf",
+   "artigos": "CF, art. 37, XIX e XX; Decreto-Lei 200/1967; Lei 13.019/2014",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=2LyBzffycLY",
+    "titulo": "Domingão da OAB: Direito Administrativo para a 1ª Fase com Nilton Coutinho",
+    "tipo": "materia"
+   }
+  },
+  "ADM.03": {
+   "pdf": "cf",
+   "artigos": "CF, art. 37; CTN, art. 78 (poder de polícia)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=I6vgJJqKPOc",
+    "titulo": "1ª Fase do 35º Exame da OAB-Gabaritando Direito Administrativo: Super Revisão com Ana Paula Blazute",
+    "tipo": "materia"
+   }
+  },
+  "ADM.04": {
+   "pdf": "cf",
+   "artigos": "Lei 9.784/1999, arts. 50 a 55 (motivação, anulação e convalidação); Súmula 473 do STF",
+   "leis": [
+    "9784"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=qs1XCfDVVf4",
+    "titulo": "Administrativo OAB 47: Agentes Públicos e Atos Administrativos do Zero",
+    "tipo": "topico"
+   }
+  },
+  "ADM.05": {
+   "pdf": "licitacoes",
+   "artigos": "Lei 14.133/2021 inteira (dentro da coletânea)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_d8aUljIHjoA8x_y2xH7XcR",
+    "titulo": "Direito Administrativo (playlist Gran Cursos OAB)",
+    "tipo": "playlist"
+   }
+  },
+  "ADM.06": {
+   "pdf": "cf",
+   "artigos": "CF, art. 175; Lei 8.987/1995; Lei 11.079/2004 (PPP)",
+   "leis": [
+    "concessoes"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_d8aUljIHjoA8x_y2xH7XcR",
+    "titulo": "Direito Administrativo (playlist Gran Cursos OAB)",
+    "tipo": "playlist"
+   }
+  },
+  "ADM.07": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 37 a 41 (agentes públicos)",
+   "leis": [
+    "8112"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=qs1XCfDVVf4",
+    "titulo": "Administrativo OAB 47: Agentes Públicos e Atos Administrativos do Zero",
+    "tipo": "topico"
+   }
+  },
+  "ADM.08": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 5º, XXIV e XXV, 182, 184 e 216; Código Civil, arts. 98 a 103",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_d8aUljIHjoA8x_y2xH7XcR",
+    "titulo": "Direito Administrativo (playlist Gran Cursos OAB)",
+    "tipo": "playlist"
+   }
+  },
+  "ADM.09": {
+   "pdf": "cf",
+   "artigos": "CF, art. 37, § 4º; Lei 8.429/1992",
+   "leis": [
+    "improbidade"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=a2MUCpc3RVE",
+    "titulo": "1ª fase do 46º Exame OAB | O que a FGV realmente cobra em Direito Administrativo | Gustavo Brígido",
+    "tipo": "materia"
+   }
+  },
+  "ADM.10": {
+   "pdf": "cf",
+   "artigos": "CF, art. 37, § 6º; Código Civil, art. 43",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=I2600d3puhk",
+    "titulo": "OAB Express: Dicas sobre Responsabilidade Civil do Estado para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "ADM.11": {
+   "pdf": "cf",
+   "artigos": "Lei 9.784/1999 inteira; CF, arts. 70 a 75 (controle)",
+   "leis": [
+    "9784"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=2LyBzffycLY",
+    "titulo": "Domingão da OAB: Direito Administrativo para a 1ª Fase com Nilton Coutinho",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.01": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 3º a 5º e 16 a 82; CF, arts. 145 a 149-A",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=_NWTJpnAJ8c",
+    "titulo": "1ª Fase OAB | Aula Resumo - Direito Tributário com Maria Christina (2026)",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.02": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 145, § 1º, 150 e 151 (princípios)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=3FStLQ5YE98",
+    "titulo": "OAB Express: Princípio da Legalidade em Direito Tributário para a 1ª fase do Exame da OAB!",
+    "tipo": "topico"
+   }
+  },
+  "TRIB.03": {
+   "pdf": "cf",
+   "artigos": "CF, art. 150, VI, e §§ 2º a 7º (imunidades)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=6aZmlc6DHBA",
+    "titulo": "1ª fase do 42º Exame OAB: Semana Decisiva em Direito Tributário com Maria Christina",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.04": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 153 a 162 (competência e repartição de receitas)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cmiDqiFWDs-xTiH2sxkia2",
+    "titulo": "Playlist Direito Tributário | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "TRIB.05": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 113 a 127 (obrigação, fato gerador e sujeitos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=5oRE5BMPce4",
+    "titulo": "1ª fase do 46º Exame OAB | Praticando para o Exame: resolução de questões de Direito Tributário",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.06": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 128 a 138 (responsabilidade)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=MujGSMERlbY",
+    "titulo": "OAB 1ª Fase: Treinamento por Questões Objetivas - Direito Tributário com Prof. Maria Christina",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.07": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 139 a 182 (crédito, suspensão, extinção e exclusão)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Pai_XEUoYw8",
+    "titulo": "Semana de Exercícios OAB 1ª fase do Exame XXXII - Direito Tributário com Prof. Maria Christina",
+    "tipo": "materia"
+   }
+  },
+  "TRIB.08": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 183 a 208 (garantias, privilégios e dívida ativa)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cmiDqiFWDs-xTiH2sxkia2",
+    "titulo": "Playlist Direito Tributário | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "TRIB.09": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 196 a 208; Lei 6.830/1980 (execução fiscal)",
+   "leis": [
+    "lef"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cmiDqiFWDs-xTiH2sxkia2",
+    "titulo": "Playlist Direito Tributário | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "TRIB.10": {
+   "pdf": "ctn",
+   "artigos": "CTN, arts. 165 a 169 (repetição); Lei 12.016/2009 e Lei 6.830/1980",
+   "leis": [
+    "ms",
+    "lef"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cmiDqiFWDs-xTiH2sxkia2",
+    "titulo": "Playlist Direito Tributário | Gran OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.01": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 966 a 980-A (empresário) e 1.052 (SLU)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.02": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 981 a 1.141 (sociedades); Lei 6.404/1976",
+   "leis": [
+    "sa"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=AH7aaZQCdbA",
+    "titulo": "1ª fase do 46º Exame OAB | Praticando para o Exame: resolução de questões de Direito Empresarial",
+    "tipo": "materia"
+   }
+  },
+  "EMP.03": {
+   "pdf": "cc",
+   "artigos": "Código Civil, art. 50; CDC, art. 28; Lei 6.404/1976, arts. 220 a 234",
+   "leis": [
+    "sa"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.04": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 1.142 a 1.168 (estabelecimento e nome empresarial)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.05": {
+   "pdf": "cc",
+   "artigos": "Código Civil, arts. 887 a 926; Lei do Cheque e Lei das Duplicatas",
+   "leis": [
+    "cheque",
+    "duplicata"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.06": {
+   "pdf": "cc",
+   "artigos": "Lei 9.279/1996 (marcas e patentes) e contratos empresariais do Código Civil",
+   "leis": [
+    "lpi"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "EMP.07": {
+   "pdf": "cc",
+   "artigos": "Lei 11.101/2005 inteira (falência e recuperação)",
+   "leis": [
+    "falencia"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=AH7aaZQCdbA",
+    "titulo": "1ª fase do 46º Exame OAB | Praticando para o Exame: resolução de questões de Direito Empresarial",
+    "tipo": "materia"
+   }
+  },
+  "EMP.08": {
+   "pdf": "cc",
+   "artigos": "Lei 12.529/2011; Lei 9.279/1996, arts. 195 e 209",
+   "leis": [
+    "concorrencia",
+    "lpi"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_cJrDZ-0fcL7DWgfXqrhLcR",
+    "titulo": "Playlist Direito Empresarial | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "OUT.01": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 4º, 5º, §§ 2º a 4º, e 109, V-A; Pacto de San José",
+   "leis": [
+    "sanjose"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=k-zy7CknbDw",
+    "titulo": "OAB 1ª Fase do Exame XXXII: Semana Decisiva - Direitos Humanos e Direito Internacional; Alice Rocha",
+    "tipo": "materia"
+   }
+  },
+  "OUT.02": {
+   "pdf": "cc",
+   "artigos": "LINDB, arts. 7º a 19; CF, arts. 49, I, e 84, VIII",
+   "leis": [
+    "lindb"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/playlist?list=PLCOG5PFn8E_dINn1-z8deP0YHT5LGdgj4",
+    "titulo": "Playlist Direitos Humanos e Direito Internacional | Gran Cursos OAB",
+    "tipo": "playlist"
+   }
+  },
+  "OUT.03": {
+   "pdf": "cdc",
+   "artigos": "CDC, arts. 2º, 3º, 6º, 12 a 27 e 49 (direitos, fato e vício, prazos)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=KZkUQqfytuo",
+    "titulo": "1ª fase do 46º Exame OAB | Revisão Express: Tira-Dúvidas de ECA e CDC",
+    "tipo": "materia"
+   }
+  },
+  "OUT.04": {
+   "pdf": "cf",
+   "artigos": "CF, art. 225; Lei 6.938/1981; Lei 9.605/1998",
+   "leis": [
+    "ambiental",
+    "crimes_amb"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=Jsys968zXkg",
+    "titulo": "1ª fase do 44º Exame OAB | Semana Decisiva: Direito Ambiental com Odair José",
+    "tipo": "materia"
+   }
+  },
+  "OUT.05": {
+   "pdf": "cf",
+   "artigos": "Filosofia do Direito não tem lei seca: use o resumo e a videoaula",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=_0Qp6LyUrnI",
+    "titulo": "1ª fase do 42º Exame OAB: Semana Decisiva em Direito Eleitoral e Filosofia do Direito com Odair José",
+    "tipo": "materia"
+   }
+  },
+  "OUT.06": {
+   "pdf": "eca",
+   "artigos": "ECA, arts. 1º a 69 (direitos fundamentais) e 103 a 128 (ato infracional)",
+   "leis": [],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=4xwDQnXYyNg",
+    "titulo": "1ª fase do Exame OAB: Aula Gratuita de ECA: Pontos Essenciais com Patrícia Dreyer",
+    "tipo": "topico"
+   }
+  },
+  "OUT.07": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 163 a 169; LC 101/2000; Lei 4.320/1964",
+   "leis": [
+    "lrf",
+    "4320"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=sjx3Hwup46w",
+    "titulo": "1ª fase do 42º Exame OAB: Semana Decisiva em Direito Financeiro com Anderson Ferreira",
+    "tipo": "materia"
+   }
+  },
+  "OUT.08": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 194 a 204; Leis 8.212 e 8.213/1991",
+   "leis": [
+    "8212",
+    "8213"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=NbQEwy85C9c",
+    "titulo": "1ª fase do 46º Exame OAB: O que a FGV realmente cobra em Direito Previdenciário e Direito Financeiro",
+    "tipo": "materia"
+   }
+  },
+  "OUT.09": {
+   "pdf": "cf",
+   "artigos": "CF, arts. 14 a 17; LC 64/1990; Lei 9.096/1995",
+   "leis": [
+    "inelegibilidade",
+    "partidos"
+   ],
+   "video": {
+    "url": "https://www.youtube.com/watch?v=CTgdVXI9LX4",
+    "titulo": "1ª fase do 46º Exame OAB | Praticando com questões de Filosofia do Direito e Direito Eleitoral",
+    "tipo": "materia"
+   }
+  }
+ }
+}
