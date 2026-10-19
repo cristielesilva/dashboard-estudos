@@ -23,6 +23,10 @@ O primeiro comando só precisa rodar uma vez.
   O "Plano de hoje" vem do cronograma semanal da aba "Painel e Cronograma".
 - `base_estudos/`: resumos e flashcards por matéria (`.md`), palavras-chave e como a FGV cobra (`analise_banca.md`)
   e as suas anotações (`anotacoes.json`).
+- `materiais_catalogo.json`: a lista de PDFs gratuitos de fonte oficial (Senado Federal, Conselho Federal da OAB e
+  provas da FGV) e, para cada tópico, o PDF, os artigos para ler, links da lei no Planalto e uma videoaula do Gran Cursos
+  no YouTube. No menu, **📂 Materiais** tem o botão "Baixar todos os PDFs", que salva tudo em `materiais/<matéria>/`.
+  Se algum site pedir verificação de segurança, abra o link, salve o PDF pelo navegador e envie em "Já baixei um PDF".
 - `materiais/`: PDFs do curso. Ficam só no computador e não vão para o GitHub. Ponha o código do tópico no nome
   do arquivo (ex.: `ETI.04 Honorários.pdf`) para ele aparecer sozinho no tópico.
 

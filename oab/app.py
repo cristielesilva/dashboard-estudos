@@ -5,6 +5,7 @@ Rodar (dentro da pasta oab):  streamlit run app.py
 Fontes de dados (mesma pasta deste arquivo):
 - "EDITAL OAB 48.xlsx": edital verticalizado, cronograma semanal e progresso. Toda edição feita no app é gravada nela.
 - pasta "base_estudos": resumos e flashcards (.md, um arquivo por matéria), como a FGV cobra e suas anotações.
+- "materiais_catalogo.json": PDFs gratuitos de fonte oficial e a videoaula do Gran Cursos de cada tópico.
 """
 import base64
 import datetime as dt
@@ -29,6 +30,7 @@ PASTA_ESTUDOS = BASE / "base_estudos"
 ARQ_ANOTACOES = PASTA_ESTUDOS / "anotacoes.json"
 ARQ_BANCA = PASTA_ESTUDOS / "analise_banca.md"
 PASTA_MATERIAIS = BASE / "materiais"  # PDFs baixados do curso: ficam só no computador (fora do GitHub)
+ARQ_CATALOGO = BASE / "materiais_catalogo.json"  # PDFs oficiais e videoaulas por tópico
 PERFIL_FGV = ("Múltipla escolha com 4 alternativas (A a D) e o erro não desconta acerto: nunca deixe em branco. "
               "Enunciados longos em forma de caso prático (\"Maria, advogada, ...\"), pedindo a solução "
               "\"de acordo com o CPC/CF/Estatuto\". Cobra muito a letra da lei, súmulas e teses recentes do STF e do STJ. "
@@ -391,6 +393,13 @@ def carregar_banca(_mtime):
                 item["FGV"] = valor.strip()
         dados[cod.strip()] = item
     return dados
+
+
+@st.cache_data(show_spinner=False)
+def carregar_catalogo(_mtime):
+    if not ARQ_CATALOGO.exists():
+        return {"pdfs": {}, "leis_online": {}, "provas": [], "topicos": {}}
+    return json.loads(ARQ_CATALOGO.read_text(encoding="utf-8"))
 
 
 def pontos_do_resumo(resumo):
@@ -816,6 +825,7 @@ if not ARQ.exists():
 topicos, registros, plano_feito, simulados, config = carregar(ARQ.stat().st_mtime)
 grade = plano_semanal(ARQ.stat().st_mtime)
 banca = carregar_banca(ARQ_BANCA.stat().st_mtime if ARQ_BANCA.exists() else 0)
+catalogo = carregar_catalogo(ARQ_CATALOGO.stat().st_mtime if ARQ_CATALOGO.exists() else 0)
 base_estudos = carregar_base(tuple(f.stat().st_mtime for f in sorted(PASTA_ESTUDOS.glob("*.md"))))
 hoje = dt.date.today()
 st.session_state.setdefault("pagina", "inicio")
@@ -841,6 +851,8 @@ with st.sidebar:
               type="primary" if pagina == "revisoes" else "secondary")
     st.button("🧪 Simulados", on_click=ir, args=("simulados",), width="stretch",
               type="primary" if pagina == "simulados" else "secondary")
+    st.button("📂 Materiais", on_click=ir, args=("materiais",), width="stretch",
+              type="primary" if pagina == "materiais" else "secondary")
     st.write("")
     for chave, grp in GRUPOS.items():
         df_g = topicos[topicos["Grupo"] == chave]
@@ -1132,10 +1144,90 @@ def pagina_grupo(chave):
 
 
 # ═════════════ Materiais do curso (videoaulas e PDFs) ═════════════
+def pdf_local(pid):
+    return PASTA_MATERIAIS / catalogo["pdfs"][pid]["arquivo"]
+
+
+def baixar_pdf(pid):
+    """Baixa um PDF do catálogo para a pasta materiais. Devolve (deu certo, mensagem)."""
+    info = catalogo["pdfs"][pid]
+    try:
+        r = requests.get(info["url"], timeout=90, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        r.raise_for_status()
+    except requests.RequestException as erro:
+        return False, f"o site não respondeu ({erro.__class__.__name__})"
+    if not r.content.startswith(b"%PDF"):
+        return False, "o site pediu uma verificação de segurança"
+    destino = pdf_local(pid)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_bytes(r.content)
+    return True, f"{destino.name} · {len(r.content) / 1e6:.1f} MB"
+
+
+def bloco_pdf(pid, chave, ver_aberto=False):
+    """Mostra um PDF do catálogo: ler aqui e salvar se já baixado; senão, baixar ou abrir no site oficial."""
+    info = catalogo["pdfs"].get(pid)
+    if not info:
+        return
+    local = pdf_local(pid)
+    st.markdown(f"**📘 {info['titulo']}**  \n<span style='color:{APAGADO};font-size:.85rem'>"
+                f"{info['fonte']} · {info['ano']}</span>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    if local.exists():
+        dados = local.read_bytes()
+        ver = c1.toggle("👀 Ler aqui", value=ver_aberto, key=f"ver_{chave}")
+        c2.download_button("⬇️ Salvar PDF", dados, file_name=local.name, mime="application/pdf",
+                           key=f"dl_{chave}", width="stretch")
+        c3.link_button("🌐 Site oficial", info["url"], width="stretch")
+        if ver:
+            try:
+                st.pdf(dados, height=700)
+            except Exception:
+                st.caption("Para ver o PDF aqui dentro, rode uma vez: pip install streamlit-pdf")
+    else:
+        if c1.button("⬇️ Baixar para o computador", key=f"baixar_{chave}", width="stretch"):
+            with st.spinner("Baixando..."):
+                ok, msg = baixar_pdf(pid)
+            if ok:
+                avisar(f"PDF salvo: {msg}", "✅")
+                st.rerun()
+            st.warning(f"Não deu para baixar sozinho: {msg}. Abra no site oficial, salve o PDF e envie em "
+                       f"**📂 Materiais**.")
+        c2.link_button("🌐 Abrir no site oficial", info["url"], width="stretch")
+
+
+def video_indicado(video, chave):
+    if not video:
+        return
+    tipo = {"topico": "Aula deste tópico", "materia": "Aula da matéria", "playlist": "Playlist da matéria"}
+    st.markdown(f"**▶ {tipo.get(video.get('tipo'), 'Videoaula')} · Gran Cursos**  \n{video.get('titulo', '')}")
+    if "watch?v=" in video["url"] or "youtu.be/" in video["url"]:
+        st.video(video["url"])
+    st.link_button("Abrir no YouTube", video["url"])
+
+
+def indicados_do_topico(cod):
+    item = catalogo["topicos"].get(cod)
+    if not item:
+        return
+    st.markdown("#### ⭐ Indicados para este tópico")
+    with st.container(border=True, key=f"card_ind_{cod}"):
+        video_indicado(item.get("video"), cod)
+    with st.container(border=True, key=f"card_lei_{cod}"):
+        st.markdown(f"🔎 **O que ler:** {item['artigos']}")
+        bloco_pdf(item["pdf"], f"top_{cod}")
+        leis = [catalogo["leis_online"][k] for k in item.get("leis", []) if k in catalogo["leis_online"]]
+        if leis:
+            st.caption("Lei atualizada no site do Planalto:")
+            for lei in leis:
+                st.link_button(f"📜 {lei['titulo']}", lei["url"])
+
+
 def materiais(cod):
     nota = ler_anotacoes().get(cod, {})
     links = nota.get("links", [])
-    st.markdown("#### 🎬 Videoaulas e links")
+    indicados_do_topico(cod)
+    st.markdown("#### 🎬 Minhas videoaulas e links")
     if links:
         for n, link in enumerate(links, 1):
             st.link_button(f"▶ Abrir aula {n} · {link[:60]}", link, width="stretch")
@@ -1448,6 +1540,83 @@ def pagina_resumo_dia():
                        mime="text/markdown")
 
 
+# ═════════════ Página: Materiais (PDFs oficiais e videoaulas) ═════════════
+def pagina_materiais():
+    st.markdown('<div class="titulo">📂 <span>Materiais</span></div>', unsafe_allow_html=True)
+    st.caption("PDFs gratuitos de fonte oficial (Senado Federal, Conselho Federal da OAB e provas da FGV) e uma "
+               "videoaula do Gran Cursos no YouTube para cada tópico. Os PDFs ficam salvos na pasta "
+               f"**materiais**, dentro de {BASE.name}, separados por matéria.")
+    pdfs = catalogo["pdfs"]
+    baixados = [k for k in pdfs if pdf_local(k).exists()]
+    com_video = sum(1 for t in catalogo["topicos"].values() if t.get("video"))
+    k1, k2, k3 = st.columns(3)
+    with k1:
+        kpi("PDFs no computador", f"{len(baixados)} de {len(pdfs)}", "leis, códigos e provas",
+            len(baixados) / len(pdfs) * 100 if pdfs else 0, "📘", destaque=True)
+    with k2:
+        kpi("Videoaulas", f"{com_video}", f"de {len(catalogo['topicos'])} tópicos · Gran Cursos", None, "▶️")
+    with k3:
+        kpi("Provas anteriores", f"{len(catalogo['provas'])}", "cadernos e gabaritos da FGV", None, "🧪")
+    st.write("")
+    faltam = [k for k in pdfs if k not in baixados]
+    if faltam and st.button(f"⬇️ Baixar todos os PDFs que faltam ({len(faltam)})", type="primary"):
+        barra = st.progress(0.0)
+        erros = []
+        for n, pid in enumerate(faltam, 1):
+            barra.progress(n / len(faltam), text=f"Baixando {pdfs[pid]['titulo']}...")
+            ok, msg = baixar_pdf(pid)
+            if not ok:
+                erros.append((pid, msg))
+        if erros:
+            st.warning("Estes não baixaram sozinhos. Abra no site oficial, salve e envie aqui embaixo:")
+            for pid, msg in erros:
+                st.link_button(f"🌐 {pdfs[pid]['titulo']} ({msg})", pdfs[pid]["url"])
+        else:
+            avisar("Todos os PDFs foram salvos na pasta materiais.", "✅")
+            st.rerun()
+
+    mats = list(dict.fromkeys(topicos["Matéria"]))
+    mat = st.pills("Matéria", mats + ["Provas da FGV"], default=mats[0], key="mat_materiais") or mats[0]
+    st.write("")
+    if mat == "Provas da FGV":
+        st.caption("Resolva no domingo, cronometrando 5 horas, e registre o resultado em 🧪 Simulados.")
+        for pid in catalogo["provas"]:
+            with st.container(border=True, key=f"card_prova_{pid}"):
+                bloco_pdf(pid, f"prova_{pid}")
+        return
+
+    df = topicos[topicos["Matéria"] == mat]
+    ids_pdf = list(dict.fromkeys(catalogo["topicos"].get(c, {}).get("pdf") for c in df["Cód"]))
+    st.markdown(f"#### 📘 PDFs de {mat}")
+    for pid in [p for p in ids_pdf if p]:
+        with st.container(border=True, key=f"card_mat_{pid}"):
+            bloco_pdf(pid, f"mat_{pid}")
+    st.markdown("#### ▶️ Uma videoaula e um PDF por tópico")
+    linhas = []
+    for _, r in df.iterrows():
+        item = catalogo["topicos"].get(r["Cód"], {})
+        video = item.get("video") or {}
+        pid = item.get("pdf")
+        linhas.append({"Cód": r["Cód"], "Tópico": r["Tópico"], "Videoaula": video.get("url"),
+                       "PDF": pdfs[pid]["titulo"] if pid in pdfs else "", "O que ler": item.get("artigos", "")})
+    st.dataframe(pd.DataFrame(linhas), hide_index=True, width="stretch",
+                 column_config={"Videoaula": st.column_config.LinkColumn("Videoaula", display_text="▶ Assistir"),
+                                "Tópico": st.column_config.TextColumn(width="large")})
+    st.caption("Para ver a aula e o PDF juntos, abra o tópico em 📚 Estudar > 🎬 Materiais.")
+
+    with st.expander("📤 Já baixei um PDF pelo navegador"):
+        st.caption("Se algum site pediu verificação e não deixou o app baixar, salve o PDF pelo navegador e envie aqui.")
+        escolha = st.selectbox("Qual PDF é este?", [p for p in ids_pdf if p in pdfs],
+                               format_func=lambda p: pdfs[p]["titulo"], key=f"up_sel_{mat}")
+        enviado = st.file_uploader("Arquivo PDF", type="pdf", key=f"up_{mat}")
+        if enviado and st.button("💾 Guardar na pasta materiais", key=f"up_btn_{mat}"):
+            destino = pdf_local(escolha)
+            destino.parent.mkdir(parents=True, exist_ok=True)
+            destino.write_bytes(enviado.getvalue())
+            avisar(f"PDF guardado em materiais/{catalogo['pdfs'][escolha]['arquivo']}", "✅")
+            st.rerun()
+
+
 barra_topo()
 if pagina.startswith("grupo:"):
     pagina_grupo(pagina.split(":", 1)[1])
@@ -1459,5 +1628,7 @@ elif pagina == "revisoes":
     pagina_revisoes()
 elif pagina == "simulados":
     pagina_simulados()
+elif pagina == "materiais":
+    pagina_materiais()
 else:
     pagina_inicio()
