@@ -11,6 +11,7 @@ import base64
 import datetime as dt
 import json
 import re
+from urllib.parse import quote_plus
 import shutil
 from pathlib import Path
 
@@ -31,6 +32,9 @@ PASTA_ESTUDOS = BASE / "base_estudos"
 ARQ_ANOTACOES = PASTA_ESTUDOS / "anotacoes.json"
 ARQ_BANCA = PASTA_ESTUDOS / "analise_banca.md"
 PASTA_MATERIAIS = BASE / "materiais"  # PDFs baixados do curso: ficam só no computador (fora do GitHub)
+PASTA_CURSO = Path.home() / "Documents" / "PC-PE"  # pasta do curso, organizada por matéria
+ARQ_MAPA = PASTA_ESTUDOS / "materiais_mapa.json"  # tópico -> PDFs da PASTA_CURSO
+ARQ_VIDEOS = PASTA_ESTUDOS / "videos.json"  # tópico -> videoaulas do YouTube
 PERFIL_BANCA = {
     "AOCP": "Múltipla escolha com 5 alternativas, e o erro não anula acerto. Cobra muito a letra da lei, "
             "conceitos diretos e \"de acordo com o texto\". Leia todas as alternativas.",
@@ -972,42 +976,66 @@ def pagina_concurso(chave):
 
 
 # ═════════════ Materiais do curso (videoaulas e PDFs) ═════════════
-def materiais(cod):
+def ler_json(arq):
+    return json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {}
+
+
+def materiais(cod, topico=""):
     nota = ler_anotacoes().get(cod, {})
     links = nota.get("links", [])
-    st.markdown("#### 🎬 Videoaulas e links")
-    if links:
-        for n, link in enumerate(links, 1):
-            st.link_button(f"▶ Abrir aula {n} · {link[:60]}", link, width="stretch")
-    else:
-        st.caption("Nenhum link ainda. Copie o endereço da aula no Gran Cursos e cole abaixo.")
+
+    st.markdown("#### 🎬 Videoaulas")
+    videos = ler_json(ARQ_VIDEOS).get(cod, [])
+    for v in videos:
+        canal = v.get("canal", "")
+        rotulo = v["titulo"] + (f" · {canal}" if canal and canal != "Não identificado" else "")
+        if "watch?v=" in v["url"] or "youtu.be/" in v["url"]:
+            with st.expander(f"▶ {rotulo}"):
+                st.video(v["url"])
+        else:  # playlist: abre no YouTube
+            st.link_button(f"📃 Playlist: {rotulo}", v["url"], width="stretch")
+    busca = "https://www.youtube.com/results?search_query=" + quote_plus(f"{topico or cod} aula concurso")
+    st.link_button("🔎 Buscar mais aulas no YouTube", busca, width="stretch")
+    for n, link in enumerate(links, 1):
+        st.link_button(f"🔗 Meu link {n} · {link[:60]}", link, width="stretch")
     with st.form(f"link_{cod}", clear_on_submit=True):
-        novo = st.text_input("Colar link da videoaula", placeholder="https://...")
+        novo = st.text_input("Colar link de outra aula (Gran Cursos, YouTube...)", placeholder="https://...")
         if st.form_submit_button("➕ Adicionar link") and novo.strip():
             salvar_anotacao(cod, links=links + [novo.strip()])
             st.rerun()
 
     st.markdown("#### 📄 PDFs")
+    # PDFs do curso (pasta PC-PE), já ligados a cada tópico em base_estudos/materiais_mapa.json
+    opcoes = {}
+    for rel in ler_json(ARQ_MAPA).get(cod, []):
+        caminho = PASTA_CURSO / rel
+        if caminho.exists():
+            opcoes[caminho.stem] = caminho
+    # PDFs avulsos na pasta materiais: entram os que têm o código no nome ou que foram vinculados
     PASTA_MATERIAIS.mkdir(exist_ok=True)
-    todos_pdfs = sorted(p.relative_to(PASTA_MATERIAIS).as_posix() for p in PASTA_MATERIAIS.rglob("*.pdf"))
-    # Entram sozinhos os PDFs com o código do tópico no nome (ex.: "PENAL-08 Furto e Roubo.pdf").
+    avulsos = sorted(p.relative_to(PASTA_MATERIAIS).as_posix() for p in PASTA_MATERIAIS.rglob("*.pdf"))
     marcador = cod.replace("/", "-").lower()
-    vinculados = [p for p in todos_pdfs if marcador in p.lower()] + \
-        [p for p in nota.get("pdfs", []) if p in todos_pdfs and marcador not in p.lower()]
-    if not todos_pdfs:
-        st.caption(f"Coloque os PDFs baixados do curso na pasta **materiais**, dentro de {BASE.name}. "
-                   f"Se o nome do arquivo tiver o código {cod}, ele aparece aqui sozinho.")
-    if vinculados:
-        escolhido = st.selectbox("PDF", vinculados, key=f"pdf_sel_{cod}") if len(vinculados) > 1 else vinculados[0]
-        caminho = PASTA_MATERIAIS / escolhido
+    for rel in avulsos:
+        if marcador in rel.lower() or rel in nota.get("pdfs", []):
+            opcoes[Path(rel).stem] = PASTA_MATERIAIS / rel
+    if not opcoes:
+        if ler_json(ARQ_MAPA).get(cod) and not PASTA_CURSO.exists():
+            st.caption(f"Os PDFs deste tópico estão na pasta {PASTA_CURSO} do seu computador. "
+                       "Eles aparecem quando você abre o dashboard no PC.")
+        else:
+            st.caption("Nenhum PDF para este tópico ainda. Coloque o arquivo na pasta **materiais** "
+                       f"com o código {cod} no nome, ou vincule abaixo.")
+    else:
+        nome = st.selectbox(f"PDF ({len(opcoes)} disponíveis)", list(opcoes), key=f"pdf_sel_{cod}")
+        caminho = opcoes[nome]
         dados = caminho.read_bytes()
         try:
             st.pdf(dados, height=700)
         except Exception:
             st.caption("Para ver o PDF aqui dentro, rode uma vez: pip install streamlit-pdf")
-        st.download_button(f"⬇️ Abrir {caminho.name}", dados, file_name=caminho.name, mime="application/pdf",
+        st.download_button(f"⬇️ Baixar {caminho.name}", dados, file_name=caminho.name, mime="application/pdf",
                            key=f"pdf_dl_{cod}")
-    outros = [p for p in todos_pdfs if p not in vinculados]
+    outros = [p for p in avulsos if Path(p).stem not in opcoes]
     if outros:
         with st.expander("Vincular outro PDF da pasta materiais a este tópico"):
             extra = st.selectbox("Arquivo", outros, key=f"pdf_add_{cod}")
@@ -1048,7 +1076,7 @@ def pagina_estudar():
         ["📖 Resumo", "📌 Pontos para anotar", "🎯 Como a banca cobra", "🎬 Materiais", "🃏 Flashcards",
          "✍️ Minhas anotações", "✅ Progresso"])
     with aba_mat:
-        materiais(cod)
+        materiais(cod, t["Tópico"])
     with aba_res:
         if analise["palavras"]:
             st.markdown("🔑 " + "".join(f"<span class='chip'>{p}</span>" for p in analise["palavras"]),
