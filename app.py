@@ -8,6 +8,7 @@ Fontes de dados (mesma pasta deste arquivo):
 - pasta "base_estudos": resumos e flashcards (.md, um arquivo por matéria) e suas anotações.
 """
 import base64
+import hashlib
 import datetime as dt
 import json
 import re
@@ -348,10 +349,22 @@ def ler_anotacoes():
 # Online (Streamlit Cloud) os arquivos do servidor são apagados quando o app reinicia. Por isso, se houver
 # um token em Secrets ([github] token = "..."), a planilha e as anotações são lidas e gravadas no branch
 # "dados" do repositório. Sem token (no computador), nada disso acontece.
+def limpar_token(bruto):
+    """Tira espaços, quebras de linha, aspas e prefixos ("Bearer ", "token ") colados junto com a chave."""
+    t = str(bruto or "").strip().strip('"').strip("'").strip()
+    for prefixo in ("bearer ", "token "):
+        if t.lower().startswith(prefixo):
+            t = t[len(prefixo):].strip()
+    return "".join(t.split())
+
+
 def config_github():
     try:
         cfg = st.secrets["github"]
-        return {"token": cfg["token"], "repo": cfg.get("repo", "cristielesilva/dashboard-estudos"),
+        token = limpar_token(cfg["token"])
+        if not token:
+            return None
+        return {"token": token, "repo": cfg.get("repo", "cristielesilva/dashboard-estudos"),
                 "branch": cfg.get("branch", "dados")}
     except Exception:
         return None
@@ -371,11 +384,15 @@ class ErroGitHub(Exception):
 
 def _garantir_branch(cfg):
     repo = _api(cfg, "GET", "")
-    if repo.status_code in (401, 403, 404):
+    if repo.status_code == 401:
         raise ErroGitHub(
-            f"O GitHub recusou a chave (código {repo.status_code}). Confira em Settings > Secrets se o token "
-            f"foi colado inteiro, entre aspas, e se ele tem acesso ao repositório {cfg['repo']} "
-            "com a permissão Contents em Read and write.")
+            "O GitHub recusou a chave (código 401): o token está errado, venceu ou foi apagado. "
+            "Gere um token novo no GitHub e cole em Settings > Secrets no lugar do antigo.")
+    if repo.status_code in (403, 404):
+        raise ErroGitHub(
+            f"O GitHub aceitou a chave, mas ela não abre o repositório {cfg['repo']} "
+            f"(código {repo.status_code}). Ao criar o token, escolha esse repositório e dê a permissão "
+            "Contents em Read and write.")
     if _api(cfg, "GET", f"branches/{cfg['branch']}").status_code == 200:
         return
     padrao = repo.json().get("default_branch", "main")
@@ -390,12 +407,19 @@ def _garantir_branch(cfg):
             "permissão Contents em Read and write.")
 
 
-@st.cache_resource(show_spinner="Carregando seus dados salvos...")
 def baixar_do_github():
-    """Roda uma vez quando o servidor liga: traz a versão mais recente dos dados."""
+    """Traz a versão mais recente dos dados. Se o token for trocado em Secrets, tenta de novo na hora."""
     cfg = config_github()
     if not cfg:
         return None
+    chave = hashlib.sha256(cfg["token"].encode()).hexdigest()
+    return _baixar_do_github(chave)
+
+
+@st.cache_resource(show_spinner="Carregando seus dados salvos...")
+def _baixar_do_github(chave_token):
+    """Roda uma vez por token quando o servidor liga."""
+    cfg = config_github()
     try:
         _garantir_branch(cfg)
     except (ErroGitHub, requests.RequestException) as erro:
