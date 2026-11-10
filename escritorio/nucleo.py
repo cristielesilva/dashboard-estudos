@@ -2,6 +2,7 @@
 Núcleo da dashboard CSA Advocacia: dados, captura de intimações no DJEN (CNJ), cálculo de prazos e petições.
 Usado pelo app (app.py) e pela captura diária automática (capturar.py).
 """
+import base64
 import datetime as dt
 import json
 import os
@@ -12,6 +13,11 @@ import uuid
 from pathlib import Path
 
 import requests
+
+try:
+    import tomllib
+except ImportError:  # Python < 3.11
+    tomllib = None
 
 BASE = Path(__file__).parent
 PASTA_DADOS = Path(os.environ.get("CSA_DADOS", BASE / "dados"))
@@ -50,7 +56,7 @@ CONFIG_PADRAO = {
 
 def novo_banco():
     return {"config": dict(CONFIG_PADRAO), "intimacoes": {}, "processos": {}, "prazos": [], "tarefas": [],
-            "rascunhos": [], "modelos_custom": {}, "ultima_busca": None, "log_buscas": [], "clientes": {}}
+            "rascunhos": [], "modelos_custom": {}, "ultima_busca": None, "log_buscas": [], "clientes": {}, "apagados": []}
 
 
 def ler_dados():
@@ -69,7 +75,7 @@ def ler_dados():
     return banco
 
 
-def gravar_dados(banco):
+def gravar_dados(banco, enviar=True):
     PASTA_DADOS.mkdir(parents=True, exist_ok=True)
     if ARQ_DADOS.exists():
         PASTA_BACKUP.mkdir(exist_ok=True)
@@ -82,6 +88,231 @@ def gravar_dados(banco):
     tmp = ARQ_DADOS.with_suffix(".tmp")
     tmp.write_text(json.dumps(banco, ensure_ascii=False, indent=1), encoding="utf-8")
     tmp.replace(ARQ_DADOS)
+    if enviar and NUVEM:
+        return NUVEM.enviar_banco(banco)
+    return None
+
+
+def apagar(banco, ident):
+    """Marca um item como apagado, para ele não voltar na sincronização com a outra cópia (PC/online)."""
+    banco.setdefault("apagados", [])
+    if ident not in banco["apagados"]:
+        banco["apagados"].append(ident)
+        banco["apagados"] = banco["apagados"][-3000:]
+
+
+def mesclar(local, remoto):
+    """Junta as duas cópias. Itens só de um lado entram; no mesmo item, vale a cópia local (a última editada)."""
+    out = dict(remoto)
+    apag = set(local.get("apagados") or []) | set(remoto.get("apagados") or [])
+    for chave in ("intimacoes", "processos", "clientes", "modelos_custom"):
+        junto = dict(remoto.get(chave) or {})
+        junto.update(local.get(chave) or {})
+        out[chave] = {k: v for k, v in junto.items() if k not in apag}
+    for chave in ("prazos", "tarefas", "rascunhos"):
+        loc = [x for x in local.get(chave) or [] if x.get("id") not in apag]
+        ids = {x.get("id") for x in loc}
+        out[chave] = loc + [x for x in remoto.get(chave) or [] if x.get("id") not in ids and x.get("id") not in apag]
+    for chave in ("config", "log_buscas"):
+        out[chave] = local.get(chave) or remoto.get(chave)
+    out["ultima_busca"] = max(filter(None, [local.get("ultima_busca"), remoto.get("ultima_busca")]), default=None)
+    out["apagados"] = sorted(apag)
+    return out
+
+
+# ───────────────────────── Cópia online (GitHub privado, branch "dados") ─────────────────────────
+# Com um token em [github] nos Secrets (online) ou em .streamlit/secrets.toml (computador), os dados e os
+# documentos dos clientes ficam também no repositório privado, no branch "dados". Assim o painel do computador e
+# o online mostram a mesma coisa. Sem token, tudo fica só no computador.
+NUVEM = None
+ARQ_SYNC = PASTA_DADOS / ".sincronizacao.json"
+
+
+def limpar_token(bruto):
+    t = str(bruto or "").strip().strip('"').strip("'").strip()
+    for prefixo in ("bearer ", "token "):
+        if t.lower().startswith(prefixo):
+            t = t[len(prefixo):].strip()
+    return "".join(t.split())
+
+
+def segredos_locais():
+    arq = BASE / ".streamlit" / "secrets.toml"
+    if not arq.exists() or tomllib is None:
+        return {}
+    try:
+        return tomllib.loads(arq.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+class ErroNuvem(Exception):
+    pass
+
+
+class Nuvem:
+    def __init__(self, segredos):
+        gh = segredos.get("github") or {}
+        self.token = limpar_token(gh.get("token"))
+        self.repo = gh.get("repo", "cristielesilva/dashboard-estudos")
+        self.branch = gh.get("branch", "dados")
+        self.pasta = (gh.get("pasta_escritorio") or "escritorio").strip("/") + "/dados"
+        self.ultimo_erro = None
+
+    def _api(self, metodo, caminho, **kw):
+        cab = {"Authorization": f"Bearer {self.token}", "Accept": "application/vnd.github+json"}
+        cab.update(kw.pop("headers", {}))
+        url = f"https://api.github.com/repos/{self.repo}" + (f"/{caminho}" if caminho else "")
+        return requests.request(metodo, url, headers=cab, timeout=30, **kw)
+
+    def garantir_branch(self):
+        r = self._api("GET", "")
+        if r.status_code == 401:
+            raise ErroNuvem("O GitHub recusou o token (401): ele venceu ou foi apagado. Gere outro e troque nos Secrets.")
+        if r.status_code in (403, 404):
+            raise ErroNuvem(f"O token não abre o repositório {self.repo}. Dê a permissão Contents: Read and write.")
+        if self._api("GET", f"branches/{self.branch}").status_code == 200:
+            return
+        padrao = r.json().get("default_branch", "main")
+        ref = self._api("GET", f"git/ref/heads/{padrao}")
+        if ref.status_code == 200:
+            self._api("POST", "git/refs", json={"ref": f"refs/heads/{self.branch}", "sha": ref.json()["object"]["sha"]})
+
+    def _sha(self, rel):
+        r = self._api("GET", f"contents/{self.pasta}/{rel}", params={"ref": self.branch})
+        return r.json().get("sha") if r.status_code == 200 else None
+
+    def baixar(self, rel):
+        r = self._api("GET", f"contents/{self.pasta}/{rel}", params={"ref": self.branch},
+                      headers={"Accept": "application/vnd.github.raw"})
+        return r.content if r.status_code == 200 else None
+
+    def enviar(self, rel, dados, sha=None, msg=None):
+        corpo = {"message": msg or f"Atualiza {rel} pelo painel", "branch": self.branch,
+                 "content": base64.b64encode(dados).decode()}
+        if sha:
+            corpo["sha"] = sha
+        r = self._api("PUT", f"contents/{self.pasta}/{rel}", json=corpo)
+        if r.status_code not in (200, 201):
+            raise ErroNuvem(f"O GitHub não aceitou o arquivo (código {r.status_code}).")
+        return r.json()["content"]["sha"]
+
+    def apagar_arquivo(self, rel):
+        sha = self._sha(rel)
+        if sha:
+            self._api("DELETE", f"contents/{self.pasta}/{rel}",
+                      json={"message": f"Apaga {rel}", "sha": sha, "branch": self.branch})
+
+    # Estado da sincronização: o último sha conhecido do escritorio.json online e se há envio pendente
+    def _estado(self):
+        try:
+            return json.loads(ARQ_SYNC.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+
+    def _guardar_estado(self, **kw):
+        est = self._estado()
+        est.update(kw)
+        PASTA_DADOS.mkdir(parents=True, exist_ok=True)
+        ARQ_SYNC.write_text(json.dumps(est), encoding="utf-8")
+
+    def puxar(self):
+        """Traz a versão online. Se a cópia local tem algo que não subiu, junta as duas e envia."""
+        try:
+            sha = self._sha("escritorio.json")
+            est = self._estado()
+            if not sha or sha == est.get("sha"):
+                if est.get("pendente") and ARQ_DADOS.exists():
+                    self.enviar_banco(ler_dados())
+                return False
+            remoto = json.loads(self.baixar("escritorio.json") or b"{}")
+            if est.get("pendente") and ARQ_DADOS.exists():
+                junto = mesclar(ler_dados(), remoto)
+                gravar_dados(junto, enviar=False)
+                self._guardar_estado(sha=sha)
+                self.enviar_banco(junto)
+            else:
+                gravar_dados(remoto, enviar=False)
+                self._guardar_estado(sha=sha, pendente=False)
+            self.ultimo_erro = None
+            return True
+        except (requests.RequestException, ErroNuvem, ValueError) as erro:
+            self.ultimo_erro = str(erro)
+            return False
+
+    def enviar_banco(self, banco):
+        """Envia o escritorio.json. Se alguém mudou a versão online nesse meio-tempo, junta antes de enviar."""
+        try:
+            est = self._estado()
+            sha = self._sha("escritorio.json")
+            if sha and sha != est.get("sha"):
+                remoto = json.loads(self.baixar("escritorio.json") or b"{}")
+                banco.update(mesclar(banco, remoto))
+                gravar_dados(banco, enviar=False)
+            novo = self.enviar("escritorio.json", json.dumps(banco, ensure_ascii=False, indent=1).encode("utf-8"), sha,
+                               "Atualiza os dados do escritório")
+            self._guardar_estado(sha=novo, pendente=False)
+            self.ultimo_erro = None
+        except (requests.RequestException, ErroNuvem, ValueError, KeyError) as erro:
+            self._guardar_estado(pendente=True)
+            self.ultimo_erro = f"Salvo neste aparelho, mas não consegui enviar para a cópia online ({erro})."
+        return self.ultimo_erro
+
+
+def ativar_nuvem(segredos):
+    """Liga a cópia online quando há token. Devolve a mensagem de erro (ou None)."""
+    global NUVEM
+    if not limpar_token((segredos.get("github") or {}).get("token")):
+        NUVEM = None
+        return None
+    NUVEM = Nuvem(segredos)
+    try:
+        NUVEM.garantir_branch()
+    except (requests.RequestException, ErroNuvem) as erro:
+        NUVEM = None
+        return str(erro)
+    return None
+
+
+def doc_rel(cid, arquivo):
+    return f"clientes/{cid}/{arquivo}"
+
+
+def guardar_documento(cid, arquivo, dados):
+    pasta = PASTA_CLIENTES / cid
+    pasta.mkdir(parents=True, exist_ok=True)
+    (pasta / arquivo).write_bytes(dados)
+    if NUVEM:
+        try:
+            NUVEM.enviar(doc_rel(cid, arquivo), dados, msg="Documento de cliente")
+        except (requests.RequestException, ErroNuvem) as erro:
+            return f"Arquivo salvo neste aparelho, mas não subiu para a cópia online ({erro})."
+    return None
+
+
+def ler_documento(cid, arquivo):
+    arq = PASTA_CLIENTES / cid / arquivo
+    if arq.exists():
+        return arq.read_bytes()
+    if NUVEM:
+        try:
+            dados = NUVEM.baixar(doc_rel(cid, arquivo))
+        except requests.RequestException:
+            dados = None
+        if dados is not None:
+            arq.parent.mkdir(parents=True, exist_ok=True)
+            arq.write_bytes(dados)
+            return dados
+    return None
+
+
+def apagar_documento(cid, arquivo):
+    (PASTA_CLIENTES / cid / arquivo).unlink(missing_ok=True)
+    if NUVEM:
+        try:
+            NUVEM.apagar_arquivo(doc_rel(cid, arquivo))
+        except requests.RequestException:
+            pass
 
 
 def novo_id():
