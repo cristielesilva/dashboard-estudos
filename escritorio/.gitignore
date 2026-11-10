@@ -1,0 +1,4 @@
+# Dados do escritório (clientes, processos, intimações): ficam só no computador (LGPD)
+dados/
+captura.log
+__pycache__/
