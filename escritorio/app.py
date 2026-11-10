@@ -10,6 +10,7 @@ Rodar (dentro da pasta escritorio):  streamlit run app.py
 import calendar
 import datetime as dt
 import html
+import re
 
 import pandas as pd
 import streamlit as st
@@ -113,6 +114,7 @@ h1, h2, h3, h4 {{ color: #111827 !important; }}
 """, unsafe_allow_html=True)
 
 PAGINAS = [("painel", "🏠", "Painel"), ("intimacoes", "🔔", "Intimações"), ("processos", "📁", "Processos"),
+           ("clientes", "👥", "Clientes"), ("prospeccao", "🎯", "Prospecção"), ("parceiros", "🤝", "Parceiros"),
            ("prazos", "⏰", "Prazos"), ("agenda", "📅", "Agenda"), ("tarefas", "☑️", "Tarefas"),
            ("peticoes", "📝", "Petições"), ("config", "⚙️", "Configurações")]
 DIAS_SEMANA = ["D", "S", "T", "Q", "Q", "S", "S"]
@@ -373,7 +375,8 @@ def pagina_painel():
             st.button("🔔  Ver intimações", width="stretch", on_click=ir, args=("intimacoes",))
             st.button("⏰  Novo prazo ou audiência", width="stretch", on_click=ir, args=("prazos",))
             st.button("📝  Nova petição", width="stretch", on_click=ir, args=("peticoes",))
-            st.button("📁  Novo processo", width="stretch", on_click=ir, args=("processos",))
+            st.button("👥  Novo cliente", width="stretch", on_click=ir, args=("clientes",), kwargs={"aba_clientes": "novo"})
+            st.button("🎯  Prospecção", width="stretch", on_click=ir, args=("prospeccao",))
 
 
 # ═════════════ Intimações ═════════════
@@ -431,6 +434,7 @@ def cartao_intimacao(i, chave):
                 polo = next((p.get("polo") for p in i["partes"] if p["nome"] == cli), "")
                 outro = next((p["nome"] for p in i["partes"] if p["nome"] != cli and (not polo or p.get("polo") != polo)), "")
                 proc["cliente"], proc["parte_contraria"] = cli, proc.get("parte_contraria") or outro
+                garantir_cliente(cli, proc)
                 salvar(f"Cliente salvo: {cli}.")
                 st.rerun()
         with st.expander("Ler a intimação completa"):
@@ -560,6 +564,7 @@ def ficha_processo():
             if (cli and cli != p.get("cliente")) or (contra and contra != p.get("parte_contraria")):
                 if st.button("💾 Salvar partes", key=f"svp_{num}"):
                     p["cliente"], p["parte_contraria"] = cli or p.get("cliente", ""), contra or p.get("parte_contraria", "")
+                    garantir_cliente(p["cliente"], p)
                     salvar("Partes salvas.")
                     st.rerun()
         t1, t2, t3 = st.tabs(["🔔 Intimações", "⏰ Prazos", "📝 Petições"])
@@ -608,6 +613,7 @@ def pagina_processos():
                                          "tribunal": trib, "orgao": orgao, "classe": "", "tipo": tipo, "parceiro": parc,
                                          "honorarios": hon, "status": "Ativo", "observacoes": obs, "partes": [],
                                          "criado": HOJE.isoformat()}
+                garantir_cliente(cli, banco["processos"][d])
                 salvar("Processo adicionado.")
                 st.rerun()
     st.write("")
@@ -833,7 +839,7 @@ def pagina_peticoes():
             st.rerun()
     with t3:
         st.caption("Os campos entre chaves duplas são preenchidos sozinhos: {{processo}}, {{orgao}}, {{tribunal}}, {{cliente}}, "
-                   "{{parte_contraria}}, {{advogada}}, {{oab}}, {{cidade}}, {{data}}, {{data_intimacao}}, {{resumo_intimacao}}.")
+                   "{{parte_contraria}}, {{advogada}}, {{oab}}, {{cidade}}, {{data}}, {{data_intimacao}}, {{resumo_intimacao}}, {{endereco_escritorio}}.")
         nome = st.selectbox("Modelo", list(modelos) + ["➕ Criar modelo novo"], key="md_sel")
         if nome == "➕ Criar modelo novo":
             novo = st.text_input("Nome do modelo", placeholder="ex.: Procuração ad judicia, Contestação trabalhista")
@@ -857,6 +863,423 @@ def pagina_peticoes():
                 st.rerun()
 
 
+# ═════════════ Parceiros ═════════════
+def processos_do_parceiro(nome):
+    return [p for p in banco["processos"].values() if p.get("tipo") == "Parceria" and nc.sem_acento(p.get("parceiro")) == nc.sem_acento(nome)]
+
+
+def pagina_parceiros():
+    topo()
+    st.markdown("### 🤝 Advogados parceiros")
+    st.caption("Cadastre aqui seus parceiros. Com **Buscar intimações** ligado, o painel também busca as intimações da OAB "
+               "do parceiro e coloca esses processos na aba Parcerias.")
+    parceiros = cfg.get("parceiros") or []
+    procs_parc = [p for p in banco["processos"].values() if p.get("tipo") == "Parceria"]
+    k = st.columns(3)
+    with k[0]:
+        kpi("🤝", "#EEF4FF", "Parceiros cadastrados", len(parceiros), f"<b>{sum(1 for p in parceiros if p.get('buscar', True))}</b> com busca de intimações")
+    with k[1]:
+        kpi("📁", "#FEF3C7", "Processos em parceria", len(procs_parc), f"<b>{sum(1 for p in procs_parc if p.get('status') != 'Arquivado')}</b> ativos")
+    with k[2]:
+        n = sum(1 for i in banco["intimacoes"].values() if i.get("origem") != "patrona")
+        kpi("🔔", "#FEE2E2", "Intimações via parceiros", n, "pelas OABs cadastradas")
+    st.write("")
+    with st.container(border=True, key="card_parc"):
+        cabecalho("Cadastro", "clique na última linha vazia para adicionar")
+        df = pd.DataFrame(parceiros, columns=["nome", "numero", "uf", "telefone", "email", "area", "divisao", "buscar", "obs"])
+        df["buscar"] = df["buscar"].map(lambda v: v is not False)
+        for col in ["nome", "numero", "uf", "telefone", "email", "area", "divisao", "obs"]:
+            df[col] = df[col].fillna("").astype(str)
+        ed = st.data_editor(df, num_rows="dynamic", key="ed_parceiros", width="stretch", hide_index=True, column_config={
+            "nome": st.column_config.TextColumn("Nome", required=True, width="medium"),
+            "numero": st.column_config.TextColumn("Nº OAB"), "uf": st.column_config.TextColumn("UF", default="PE", max_chars=2),
+            "telefone": st.column_config.TextColumn("Telefone / WhatsApp"), "email": st.column_config.TextColumn("E-mail"),
+            "area": st.column_config.TextColumn("Área de atuação"),
+            "divisao": st.column_config.TextColumn("Divisão de honorários", help="ex.: 50/50, 30% para o parceiro"),
+            "buscar": st.column_config.CheckboxColumn("Buscar intimações", default=True),
+            "obs": st.column_config.TextColumn("Observações", width="medium")})
+        if st.button("💾 Salvar parceiros", type="primary"):
+            novos = []
+            for _, l in ed.iterrows():
+                nome = str(l.get("nome") or "").strip()
+                if not nome or nome == "nan":
+                    continue
+                item = {c: ("" if pd.isna(l.get(c)) else str(l.get(c)).strip()) for c in ["nome", "telefone", "email", "area", "divisao", "obs"]}
+                item.update({"numero": nc.so_digitos(l.get("numero") if not pd.isna(l.get("numero")) else ""),
+                             "uf": (str(l.get("uf") or "PE") if not pd.isna(l.get("uf")) else "PE").upper()[:2],
+                             "buscar": bool(l.get("buscar")) if not pd.isna(l.get("buscar")) else True})
+                novos.append(item)
+            cfg["parceiros"] = novos
+            salvar("Parceiros salvos.")
+            st.rerun()
+    for p in parceiros:
+        procs = processos_do_parceiro(p["nome"])
+        with st.container(border=True, key=f"card_pc_{nc.so_digitos(p.get('numero')) or nc.sem_acento(p['nome']).replace(' ', '_')}"):
+            c1, c2 = st.columns([3, 1], vertical_alignment="center")
+            c1.markdown(f"**{esc(p['nome'])}** · OAB/{esc(p.get('uf'))} {esc(p.get('numero'))} · {esc(p.get('area'))}  \n"
+                        f"<span style='color:{APAGADO};font-size:.85rem'>Divisão: {esc(p.get('divisao') or '—')} · "
+                        f"{len(procs)} processo(s) em parceria</span>", unsafe_allow_html=True)
+            tel = nc.so_digitos(p.get("telefone"))
+            if tel:
+                c2.link_button("💬 WhatsApp", f"https://wa.me/{tel if tel.startswith('55') else '55' + tel}", width="stretch")
+            if procs:
+                for pr in procs:
+                    st.caption(f"📁 {pr.get('numero_fmt')} · {cliente_proc(pr['numero']) or 'sem cliente'} · {pr.get('status')}")
+
+
+# ═════════════ Clientes e prospecção ═════════════
+def lista_clientes(filtro=None):
+    return sorted((c for c in banco["clientes"].values() if filtro is None or filtro(c)),
+                  key=lambda c: c.get("atualizado") or "", reverse=True)
+
+
+def novo_cliente(nome, etapa="Primeiro contato", **campos):
+    c = {"id": nc.novo_id(), "nome": nome.strip(), "etapa": etapa, "segmento": "", "origem": "", "telefone": "",
+         "email": "", "cpf_cnpj": "", "rg": "", "estado_civil": "", "profissao": "", "nacionalidade": "",
+         "endereco": "", "assunto": "", "valor": "", "honorarios": "", "proximo_passo": "", "data_proximo": None,
+         "data_contato": HOJE.isoformat(), "data_fechamento": HOJE.isoformat() if etapa == "Contrato fechado" else None,
+         "obs": "", "documentos": [], "atualizado": dt.datetime.now().isoformat(timespec="minutes")}
+    c.update({k: v for k, v in campos.items() if v not in (None, "")})
+    banco["clientes"][c["id"]] = c
+    return c
+
+
+def garantir_cliente(nome, proc=None):
+    """Quem já tem processo com você vira cliente com contrato fechado (se ainda não estiver cadastrado)."""
+    if not nome:
+        return None
+    c = next((c for c in banco["clientes"].values() if nc.sem_acento(c["nome"]) == nc.sem_acento(nome)), None)
+    if not c:
+        c = novo_cliente(nome.title() if nome.isupper() else nome, "Contrato fechado", origem="Processo existente")
+    if proc is not None:
+        proc["cliente_id"] = c["id"]
+    return c
+
+
+def processos_do_cliente(c):
+    return [p for p in banco["processos"].values()
+            if p.get("cliente_id") == c["id"] or (p.get("cliente") and nc.sem_acento(p["cliente"]) == nc.sem_acento(c["nome"]))]
+
+
+def mudar_etapa(c, etapa):
+    c["etapa"] = etapa
+    c["atualizado"] = dt.datetime.now().isoformat(timespec="minutes")
+    if etapa == "Contrato fechado":
+        c["data_fechamento"] = HOJE.isoformat()
+    salvar(f"{c['nome']}: {etapa}.")
+
+
+def valor_num(v):
+    t = str(v or "").replace("R$", "").replace(" ", "")
+    if "," in t or re.fullmatch(r"\d{1,3}(\.\d{3})+", t):
+        t = t.replace(".", "").replace(",", ".")
+    try:
+        return float(t)
+    except ValueError:
+        return 0.0
+
+
+def moeda(v):
+    return "R$ " + f"{v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def form_novo_contato(chave, etapa_padrao="Primeiro contato"):
+    with st.form(f"novo_contato_{chave}", clear_on_submit=True):
+        c1, c2, c3 = st.columns(3)
+        nome = c1.text_input("Nome *")
+        tel = c2.text_input("Telefone / WhatsApp")
+        email = c3.text_input("E-mail")
+        seg = c1.selectbox("Segmento", cfg.get("segmentos") or ["Outros"])
+        orig = c2.selectbox("Como chegou", nc.ORIGENS)
+        etapa = c3.selectbox("Etapa", nc.ETAPAS[:5], index=nc.ETAPAS.index(etapa_padrao))
+        assunto = st.text_input("Assunto / caso", placeholder="ex.: aposentadoria negada pelo INSS, revisão de juros do financiamento")
+        c1, c2, c3 = st.columns(3)
+        valor = c1.text_input("Valor da proposta (R$)")
+        prox = c2.text_input("Próximo passo", placeholder="ex.: enviar proposta, ligar")
+        data = c3.date_input("Quando", value=None, format="DD/MM/YYYY")
+        if st.form_submit_button("Adicionar", type="primary"):
+            if not nome.strip():
+                st.error("Escreva o nome.")
+                return
+            novo_cliente(nome, etapa, telefone=tel, email=email, segmento=seg, origem=orig, assunto=assunto, valor=valor,
+                         proximo_passo=prox, data_proximo=data.isoformat() if data else None)
+            salvar(f"{nome} adicionado(a).")
+            st.rerun()
+
+
+def cartao_lead(c, chave):
+    with st.container(border=True, key=f"card_ld_{chave}"):
+        prox = ""
+        if c.get("proximo_passo") or c.get("data_proximo"):
+            atrasado = c.get("data_proximo") and nc.para_data(c["data_proximo"]) < HOJE
+            prox = (f"<div class='sub' style='color:{VERMELHO if atrasado else APAGADO}'>➡ {esc(c.get('proximo_passo'))} "
+                    f"{nc.br(c.get('data_proximo'))}</div>")
+        st.markdown(f"<div class='tit'>{esc(c['nome'])}</div><span class='chip'>{esc(c.get('segmento') or 'sem segmento')}</span>"
+                    f"<span class='chip cinza'>{esc(c.get('origem'))}</span>"
+                    f"<div class='sub'>{esc(nc.resumo(c.get('assunto'), 80))}</div>"
+                    f"{'<div class=sub><b>' + moeda(valor_num(c.get('valor'))) + '</b></div>' if valor_num(c.get('valor')) else ''}{prox}",
+                    unsafe_allow_html=True)
+        i = nc.ETAPAS.index(c["etapa"]) if c["etapa"] in nc.ETAPAS else 0
+        b1, b2, b3 = st.columns(3)
+        if i > 0 and b1.button("◀", key=f"lv_{chave}", help="Voltar etapa", width="stretch"):
+            mudar_etapa(c, nc.ETAPAS[i - 1])
+            st.rerun()
+        if i < 4 and b2.button("▶", key=f"la_{chave}", help=f"Avançar para {nc.ETAPAS[i + 1]}", width="stretch"):
+            mudar_etapa(c, nc.ETAPAS[i + 1])
+            st.rerun()
+        b3.button("📂", key=f"lp_{chave}", help="Abrir a pasta do cliente", width="stretch", on_click=ir,
+                  args=("clientes",), kwargs={"cliente_aberto": c["id"], "aba_clientes": "pasta", "sel_cliente": c["id"]})
+
+
+def pagina_prospeccao():
+    topo()
+    st.markdown("### 🎯 Prospecção e fechamento de contratos")
+    segs = cfg.get("segmentos") or []
+    seg = st.pills("Segmento", ["Todos"] + segs, default="Todos", key="f_seg") or "Todos"
+    todos = [c for c in banco["clientes"].values() if seg == "Todos" or c.get("segmento") == seg]
+    abertos = [c for c in todos if c["etapa"] in nc.ETAPAS_ABERTAS]
+    fechados = [c for c in todos if c["etapa"] == "Contrato fechado" and c.get("origem") != "Processo existente"]
+    perdidos = [c for c in todos if c["etapa"] == "Perdido"]
+    mes = [c for c in fechados if (c.get("data_fechamento") or "")[:7] == HOJE.isoformat()[:7]]
+    conv = len(fechados) / (len(fechados) + len(perdidos)) * 100 if (fechados or perdidos) else 0
+    k = st.columns(4)
+    with k[0]:
+        kpi("🎯", "#EEF4FF", "Em negociação", len(abertos), f"<b>{moeda(sum(valor_num(c.get('valor')) for c in abertos))}</b> em propostas")
+    with k[1]:
+        kpi("✍️", "#DCFCE7", "Contratos fechados no mês", len(mes), f"<b>{moeda(sum(valor_num(c.get('valor')) for c in mes))}</b>")
+    with k[2]:
+        kpi("📈", "#FEF3C7", "Taxa de fechamento", f"{conv:.0f}%", f"<b>{len(fechados)}</b> fechados · <b>{len(perdidos)}</b> perdidos")
+    with k[3]:
+        atras = sum(1 for c in abertos if c.get("data_proximo") and nc.para_data(c["data_proximo"]) <= HOJE)
+        kpi("⏰", "#FEE2E2", "Retornos para hoje", atras, "contatos com próximo passo vencido")
+    st.write("")
+    with st.expander("➕ Novo contato / possível cliente"):
+        form_novo_contato("prosp")
+    cols = st.columns(5)
+    for col, etapa in zip(cols, nc.ETAPAS[:5]):
+        lista = [c for c in todos if c["etapa"] == etapa]
+        if etapa == "Contrato fechado":
+            lista = [c for c in lista if (c.get("data_fechamento") or "") >= (HOJE - dt.timedelta(days=30)).isoformat()]
+        with col:
+            st.markdown(f"<div class='cab'><h4>{etapa}</h4><span>{len(lista)}</span></div>", unsafe_allow_html=True)
+            for n, c in enumerate(sorted(lista, key=lambda c: c.get("data_proximo") or "9999")[:15]):
+                cartao_lead(c, f"{c['id']}_{n}")
+            if etapa == "Negociação" and lista:
+                st.caption("No ▶ o contrato é marcado como fechado.")
+    if perdidos:
+        with st.expander(f"✖ Perdidos ({len(perdidos)})"):
+            for c in perdidos:
+                c1, c2 = st.columns([4, 1])
+                c1.markdown(f"{esc(c['nome'])} · {esc(c.get('segmento'))} · {esc(c.get('obs'))[:80]}")
+                if c2.button("Reabrir", key=f"rp_{c['id']}"):
+                    mudar_etapa(c, "Negociação")
+                    st.rerun()
+    st.write("")
+    with st.container(border=True, key="card_segmentos"):
+        cabecalho("📊 Resultado por segmento", "o que está trazendo contrato")
+        linhas = []
+        for s in segs:
+            g = [c for c in banco["clientes"].values() if c.get("segmento") == s and c.get("origem") != "Processo existente"]
+            f = [c for c in g if c["etapa"] == "Contrato fechado"]
+            p = [c for c in g if c["etapa"] == "Perdido"]
+            if g:
+                linhas.append({"Segmento": s, "Contatos": len(g), "Em aberto": len(g) - len(f) - len(p), "Fechados": len(f),
+                               "Perdidos": len(p), "Taxa de fechamento": (len(f) / (len(f) + len(p)) * 100) if (f or p) else 0.0,
+                               "Valor fechado": sum(valor_num(c.get("valor")) for c in f)})
+        if linhas:
+            st.dataframe(pd.DataFrame(linhas).sort_values("Fechados", ascending=False), hide_index=True, width="stretch",
+                         column_config={"Taxa de fechamento": st.column_config.ProgressColumn(format="%.0f%%", min_value=0, max_value=100),
+                                        "Valor fechado": st.column_config.NumberColumn(format="R$ %.2f")})
+            orig = pd.DataFrame([{"Origem": c.get("origem") or "—", "Fechado": c["etapa"] == "Contrato fechado"}
+                                 for c in banco["clientes"].values() if c.get("origem") != "Processo existente"])
+            st.caption("De onde vêm os contatos: " + " · ".join(
+                f"**{o}** {len(g)} ({int(g['Fechado'].sum())} fechados)" for o, g in orig.groupby("Origem")))
+        else:
+            st.caption("Os números aparecem quando você cadastrar os primeiros contatos.")
+
+
+def lista_simples(clientes, chave, mostrar_fechar=False):
+    if not clientes:
+        st.caption("Ninguém aqui ainda.")
+    for c in clientes:
+        with st.container(border=True, key=f"card_cl_{chave}_{c['id']}"):
+            c1, c2, c3 = st.columns([4, 1.1, 1.1], vertical_alignment="center")
+            procs = processos_do_cliente(c)
+            docs = len(c.get("documentos", []))
+            info = (f"Fechado em {nc.br(c.get('data_fechamento'))} · " if c["etapa"] == "Contrato fechado" else f"{esc(c['etapa'])} · ")
+            c1.markdown(f"**{esc(c['nome'])}** <span class='chip'>{esc(c.get('segmento') or 'sem segmento')}</span>  \n"
+                        f"<span style='color:{APAGADO};font-size:.85rem'>{info}{len(procs)} processo(s) · {docs} documento(s) · "
+                        f"{esc(c.get('telefone'))} · {esc(nc.resumo(c.get('assunto'), 70))}</span>", unsafe_allow_html=True)
+            c2.button("📂 Pasta", key=f"ab_{chave}_{c['id']}", width="stretch", on_click=ir, args=("clientes",),
+                      kwargs={"cliente_aberto": c["id"], "aba_clientes": "pasta", "sel_cliente": c["id"]})
+            if mostrar_fechar and c3.button("✍️ Fechou", key=f"fc_{chave}_{c['id']}", width="stretch", help="Contrato assinado"):
+                mudar_etapa(c, "Contrato fechado")
+                st.rerun()
+
+
+def pasta_cliente(c):
+    with st.container(border=True, key="card_pasta"):
+        c1, c2 = st.columns([3, 1], vertical_alignment="center")
+        c1.markdown(f"<div class='ola'>📂 {esc(c['nome'])}</div><div class='ola-sub'>{esc(c.get('segmento'))} · "
+                    f"{esc(c.get('origem'))} · " + (f"contrato fechado em {nc.br(c.get('data_fechamento'))}"
+                    if c["etapa"] == "Contrato fechado" else f"primeiro contato em {nc.br(c.get('data_contato'))}") + "</div>",
+                    unsafe_allow_html=True)
+        etapa = c2.selectbox("Situação", nc.ETAPAS, index=nc.ETAPAS.index(c["etapa"]) if c["etapa"] in nc.ETAPAS else 0,
+                             key=f"et_{c['id']}")
+        if etapa != c["etapa"]:
+            mudar_etapa(c, etapa)
+            st.rerun()
+    t1, t2, t3, t4 = st.tabs(["📁 Processos", "📎 Documentos", "✍️ Procuração e contrato", "👤 Dados do cliente"])
+    with t1:
+        procs = processos_do_cliente(c)
+        for p in procs:
+            prazos = [x for x in prazos_abertos() if x["processo"] == p["numero"]]
+            with st.container(border=True, key=f"card_cp_{p['numero']}"):
+                st.markdown(f"**{esc(p.get('numero_fmt'))}** · {esc(p.get('tribunal'))} · {esc(p.get('orgao'))} "
+                            f"<span class='chip'>{esc(p.get('tipo'))}</span><span class='chip cinza'>{esc(p.get('status'))}</span>  \n"
+                            f"<span style='color:{APAGADO};font-size:.85rem'>Última intimação {nc.br(p.get('ultima_mov')) or '—'}: "
+                            f"{esc(p.get('ultima_mov_resumo', ''))}</span>", unsafe_allow_html=True)
+                for x in prazos:
+                    rot, cor, cls = rotulo_prazo(x["vencimento"])
+                    st.markdown(f"<span class='chip {cls}'>{rot}</span> {esc(x['descricao'])}", unsafe_allow_html=True)
+                st.button("Abrir ficha do processo", key=f"fp_{p['numero']}", on_click=ir, args=("processos",),
+                          kwargs={"ficha_num": p["numero"]})
+        if not procs:
+            st.caption("Nenhum processo ligado a este cliente.")
+        livres = [n for n, p in banco["processos"].items() if not p.get("cliente_id") and p not in procs]
+        if livres:
+            c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
+            num = c1.selectbox("Ligar um processo a este cliente", [""] + livres, key=f"lig_{c['id']}",
+                               format_func=lambda n: f"{nome_proc(n)} · {cliente_proc(n)}" if n else "— escolher —")
+            if c2.button("🔗 Ligar", key=f"ligb_{c['id']}", width="stretch") and num:
+                p = banco["processos"][num]
+                p["cliente_id"], p["cliente"] = c["id"], c["nome"]
+                salvar("Processo ligado ao cliente.")
+                st.rerun()
+    with t2:
+        pasta = nc.PASTA_CLIENTES / c["id"]
+        c1, c2 = st.columns([1, 2])
+        tipo = c1.selectbox("Tipo de documento", nc.TIPOS_DOC, key=f"td_{c['id']}")
+        envio = c2.file_uploader("Enviar arquivos (PDF, imagem, Word)", accept_multiple_files=True,
+                                 key=f"up_{c['id']}_{st.session_state.get('n_envios', 0)}")
+        if envio and st.button("💾 Guardar na pasta do cliente", type="primary", key=f"upb_{c['id']}"):
+            pasta.mkdir(parents=True, exist_ok=True)
+            for f in envio:
+                nome = f"{HOJE.isoformat()}_{nc.novo_id()[:4]}_{f.name}"
+                (pasta / nome).write_bytes(f.getvalue())
+                c.setdefault("documentos", []).append({"arquivo": nome, "nome": f.name, "tipo": tipo, "data": HOJE.isoformat()})
+            st.session_state.n_envios = st.session_state.get("n_envios", 0) + 1
+            salvar(f"{len(envio)} arquivo(s) guardado(s).")
+            st.rerun()
+        docs = c.get("documentos", [])
+        for tipo_doc in nc.TIPOS_DOC:
+            grupo = [d for d in docs if d["tipo"] == tipo_doc]
+            if not grupo:
+                continue
+            st.markdown(f"**{tipo_doc}**")
+            for n, d in enumerate(grupo):
+                arq = pasta / d["arquivo"]
+                c1, c2, c3 = st.columns([5, 1, 1], vertical_alignment="center")
+                c1.caption(f"📄 {d['nome']} · {nc.br(d['data'])}" + ("" if arq.exists() else " · ⚠️ arquivo não encontrado neste computador"))
+                if arq.exists():
+                    c2.download_button("⬇️", arq.read_bytes(), file_name=d["nome"], key=f"dl_{n}_{d['arquivo']}", width="stretch")
+                if c3.button("🗑️", key=f"rm_{n}_{d['arquivo']}", width="stretch"):
+                    arq.unlink(missing_ok=True)
+                    docs.remove(d)
+                    salvar("Documento apagado.")
+                    st.rerun()
+        if not docs:
+            st.caption(f"A pasta está vazia. Os arquivos ficam no seu computador em dados/clientes/{c['id']}.")
+        faltam = [t for t in ["Documento pessoal", "Comprovante de residência", "Procuração", "Contrato de honorários"]
+                  if not any(d["tipo"] == t for d in docs)]
+        if faltam and c["etapa"] == "Contrato fechado":
+            st.warning("Falta na pasta: " + ", ".join(faltam))
+    with t3:
+        modelos = nc.ler_modelos_cliente()
+        nome_m = st.selectbox("Documento", list(modelos), key=f"mc_{c['id']}")
+        if not c.get("cpf_cnpj") or not c.get("endereco"):
+            st.info("Complete CPF e endereço na aba 👤 Dados do cliente para a qualificação sair completa.")
+        texto = st.text_area("Texto (pode editar antes de baixar)", nc.preencher(modelos[nome_m], nc.campos_do_cliente(banco, c)),
+                             height=420, key=f"mt_{c['id']}_{nome_m}")
+        b1, b2 = st.columns(2)
+        b1.download_button("⬇️ Baixar Word (.docx)", nc.gerar_docx(nome_m, texto), file_name=f"{nome_m} - {c['nome']}.docx",
+                           width="stretch", type="primary", key=f"mdl_{c['id']}")
+        if b2.button("📎 Guardar cópia na pasta do cliente", width="stretch", key=f"mgu_{c['id']}"):
+            pasta = nc.PASTA_CLIENTES / c["id"]
+            pasta.mkdir(parents=True, exist_ok=True)
+            nome = f"{HOJE.isoformat()}_{nc.novo_id()[:4]}_{nome_m}.docx"
+            (pasta / nome).write_bytes(nc.gerar_docx(nome_m, texto))
+            tipo = "Procuração" if "Procura" in nome_m else ("Contrato de honorários" if "Contrato" in nome_m else "Declaração de hipossuficiência")
+            c.setdefault("documentos", []).append({"arquivo": nome, "nome": f"{nome_m}.docx", "tipo": tipo, "data": HOJE.isoformat()})
+            salvar("Cópia guardada na pasta (versão para assinatura).")
+            st.rerun()
+    with t4, st.form(f"dados_{c['id']}"):
+        c1, c2, c3 = st.columns(3)
+        campos = {}
+        for col, (campo, rot) in zip([c1, c2, c3] * 6, [
+                ("nome", "Nome"), ("cpf_cnpj", "CPF / CNPJ"), ("rg", "RG"), ("nacionalidade", "Nacionalidade"),
+                ("estado_civil", "Estado civil"), ("profissao", "Profissão"), ("telefone", "Telefone / WhatsApp"),
+                ("email", "E-mail"), ("valor", "Valor do contrato (R$)")]):
+            campos[campo] = col.text_input(rot, c.get(campo, ""))
+        campos["endereco"] = st.text_input("Endereço completo (com CEP)", c.get("endereco", ""))
+        c1, c2 = st.columns(2)
+        segs = cfg.get("segmentos") or ["Outros"]
+        campos["segmento"] = c1.selectbox("Segmento", segs, index=segs.index(c["segmento"]) if c.get("segmento") in segs else 0)
+        campos["origem"] = c2.selectbox("Como chegou", nc.ORIGENS + ["Processo existente"],
+                                        index=(nc.ORIGENS + ["Processo existente"]).index(c["origem"]) if c.get("origem") in nc.ORIGENS + ["Processo existente"] else 0)
+        campos["assunto"] = st.text_input("Assunto / objeto do contrato", c.get("assunto", ""))
+        campos["honorarios"] = st.text_input("Honorários combinados", c.get("honorarios", ""),
+                                             placeholder="ex.: R$ 3.000,00 em 3x + 30% do proveito econômico")
+        c1, c2 = st.columns(2)
+        campos["proximo_passo"] = c1.text_input("Próximo passo", c.get("proximo_passo", ""))
+        dp = c2.date_input("Data do próximo passo", value=nc.para_data(c.get("data_proximo")), format="DD/MM/YYYY")
+        campos["obs"] = st.text_area("Anotações (histórico de conversas, combinados)", c.get("obs", ""), height=140)
+        if st.form_submit_button("💾 Salvar dados", type="primary"):
+            antigo = c["nome"]
+            c.update(campos)
+            c["data_proximo"] = dp.isoformat() if dp else None
+            c["atualizado"] = dt.datetime.now().isoformat(timespec="minutes")
+            for p in banco["processos"].values():
+                if p.get("cliente_id") == c["id"] or p.get("cliente") == antigo:
+                    p["cliente"], p["cliente_id"] = c["nome"], c["id"]
+            salvar("Dados salvos.")
+            st.rerun()
+
+
+def pagina_clientes():
+    topo()
+    st.markdown("### 👥 Clientes")
+    pend = lista_clientes(lambda c: c["etapa"] in nc.ETAPAS_ABERTAS)
+    fech = lista_clientes(lambda c: c["etapa"] == "Contrato fechado")
+    opcoes = {"pend": f"⏳ Pendentes de contrato ({len(pend)})", "fech": f"✅ Contratos fechados ({len(fech)})",
+              "pasta": "📂 Pasta do cliente", "novo": "➕ Novo cliente"}
+    aba = st.segmented_control("Ver", list(opcoes), format_func=opcoes.get, key="aba_clientes",
+                               label_visibility="collapsed") or "pend"
+    st.write("")
+    busca = nc.sem_acento(st.text_input("Buscar cliente", placeholder="nome, CPF, telefone...", key="busca_cli")) if aba in ("pend", "fech") else ""
+
+    def bate(c):
+        return not busca or busca in nc.sem_acento(" ".join(str(c.get(k, "")) for k in ("nome", "cpf_cnpj", "telefone", "assunto")))
+    if aba == "pend":
+        st.caption("Quem já conversou com você, mas ainda não assinou o contrato. Clique em ✍️ Fechou quando assinar.")
+        lista_simples([c for c in pend if bate(c)], "pend", mostrar_fechar=True)
+    elif aba == "fech":
+        lista_simples([c for c in fech if bate(c)], "fech")
+    elif aba == "novo":
+        form_novo_contato("cli", "Contrato fechado")
+    else:
+        todos = lista_clientes()
+        if not todos:
+            st.info("Nenhum cliente ainda. Cadastre em ➕ Novo cliente ou em 🎯 Prospecção.")
+            return
+        ids = [c["id"] for c in todos]
+        atual = st.session_state.get("cliente_aberto")
+        cid = st.selectbox("Cliente", ids, index=ids.index(atual) if atual in ids else 0, key="sel_cliente",
+                           format_func=lambda i: f"{banco['clientes'][i]['nome']} · {banco['clientes'][i]['etapa']}")
+        st.session_state.cliente_aberto = cid
+        pasta_cliente(banco["clientes"][cid])
+
+
 # ═════════════ Configurações ═════════════
 def pagina_config():
     topo()
@@ -867,19 +1290,14 @@ def pagina_config():
         esc_ = c1.text_input("Nome do escritório", cfg.get("escritorio"))
         adv = c2.text_input("Seu nome (aparece nas petições)", cfg.get("advogada"))
         cid = c3.text_input("Cidade (fecho das petições)", cfg.get("cidade"))
+        end_esc = st.text_input("Endereço do escritório (vai na procuração e no contrato)", cfg.get("endereco_escritorio", ""))
     with st.container(border=True, key="card_cfg2"):
         cabecalho("Suas OABs (processos de patrocínio)", "principal e suplementares")
         oabs = st.data_editor(pd.DataFrame(cfg.get("oabs") or [], columns=["numero", "uf"]), num_rows="dynamic",
                               key="ed_oabs", width="stretch", hide_index=True,
                               column_config={"numero": st.column_config.TextColumn("Número da OAB", required=True),
                                              "uf": st.column_config.TextColumn("UF", default="PE", max_chars=2)})
-        cabecalho("OABs de parceiros (processos de parceria)", "opcional")
-        st.caption("Se o parceiro é quem recebe a intimação, cadastre a OAB dele aqui: o processo entra na aba Parcerias.")
-        parc = st.data_editor(pd.DataFrame(cfg.get("parceiros") or [], columns=["nome", "numero", "uf"]), num_rows="dynamic",
-                              key="ed_parc", width="stretch", hide_index=True,
-                              column_config={"nome": st.column_config.TextColumn("Nome do parceiro", required=True),
-                                             "numero": st.column_config.TextColumn("Número da OAB", required=True),
-                                             "uf": st.column_config.TextColumn("UF", default="PE", max_chars=2)})
+        st.caption("Os advogados parceiros ficam na aba 🤝 Parceiros.")
     with st.container(border=True, key="card_cfg3"):
         cabecalho("Busca e prazos")
         c1, c2 = st.columns(2)
@@ -890,6 +1308,9 @@ def pagina_config():
         fer = st.text_area("Feriados locais e dias sem expediente (um por linha, dd/mm/aaaa)",
                            "\n".join(nc.br(d) for d in cfg.get("feriados_extras", [])),
                            help="Feriados estaduais, municipais e portarias do tribunal (ex.: TJPE).")
+    with st.container(border=True, key="card_cfg4"):
+        cabecalho("Segmentos de atuação", "usados na prospecção")
+        segs = st.text_area("Um por linha", "\n".join(cfg.get("segmentos") or []), height=200)
     if st.button("💾 Salvar configurações", type="primary"):
         def linhas(df, campos):
             out = []
@@ -901,8 +1322,9 @@ def pagina_config():
                     out.append(item)
             return out
         datas = [nc.para_data(x.strip()) for x in fer.splitlines() if x.strip()]
-        cfg.update({"escritorio": esc_, "advogada": adv, "cidade": cid, "oabs": linhas(oabs, ["numero", "uf"]),
-                    "parceiros": linhas(parc, ["nome", "numero", "uf"]), "dias_busca": int(dias), "feriados_moveis": mov,
+        cfg.update({"escritorio": esc_, "advogada": adv, "cidade": cid, "endereco_escritorio": end_esc, "oabs": linhas(oabs, ["numero", "uf"]),
+                    "segmentos": [s.strip() for s in segs.splitlines() if s.strip()],
+                    "dias_busca": int(dias), "feriados_moveis": mov,
                     "feriados_extras": sorted(d.isoformat() for d in datas if d)})
         salvar("Configurações salvas.")
         st.rerun()
@@ -913,5 +1335,6 @@ def pagina_config():
 
 PAGINA_FN = {"painel": pagina_painel, "intimacoes": pagina_intimacoes, "processos": pagina_processos,
              "prazos": pagina_prazos, "agenda": pagina_agenda, "tarefas": pagina_tarefas, "peticoes": pagina_peticoes,
-             "config": pagina_config}
+             "config": pagina_config, "clientes": pagina_clientes, "prospeccao": pagina_prospeccao,
+             "parceiros": pagina_parceiros}
 PAGINA_FN.get(st.session_state.pagina, pagina_painel)()

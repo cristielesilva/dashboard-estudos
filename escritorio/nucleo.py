@@ -18,6 +18,15 @@ PASTA_DADOS = Path(os.environ.get("CSA_DADOS", BASE / "dados"))
 ARQ_DADOS = PASTA_DADOS / "escritorio.json"
 PASTA_BACKUP = PASTA_DADOS / "backup"
 PASTA_MODELOS = BASE / "modelos"
+PASTA_MODELOS_CLIENTE = BASE / "modelos_cliente"  # procuração, contrato de honorários, declarações
+PASTA_CLIENTES = PASTA_DADOS / "clientes"  # documentos de cada cliente (só no computador)
+
+# Funil de prospecção: da primeira conversa ao contrato assinado
+ETAPAS = ["Primeiro contato", "Consulta agendada", "Proposta enviada", "Negociação", "Contrato fechado", "Perdido"]
+ETAPAS_ABERTAS = ETAPAS[:4]
+ORIGENS = ["Instagram", "Indicação", "WhatsApp", "Google", "Site", "Parceiro", "Cliente antigo", "Outro"]
+TIPOS_DOC = ["Documento pessoal", "Comprovante de residência", "Procuração", "Contrato de honorários",
+             "Declaração de hipossuficiência", "Provas do caso", "Petição / peça", "Decisão / sentença", "Outro"]
 
 # API pública do Diário de Justiça Eletrônico Nacional (Comunica PJe / CNJ). Não precisa de login.
 DJEN_URL = "https://comunicaapi.pje.jus.br/api/v1/comunicacao"
@@ -27,18 +36,21 @@ CONFIG_PADRAO = {
     "escritorio": "CSA ADVOCACIA",
     "advogada": "Cristiele Silva",
     "cidade": "Recife",
+    "endereco_escritorio": "",
     "uf_padrao": "PE",
     "oabs": [],          # [{"numero": "12345", "uf": "PE"}]  -> processos em que você é patrona
-    "parceiros": [],     # [{"nome": "Dr. Fulano", "numero": "54321", "uf": "PE"}] -> processos de parceria
+    "parceiros": [],     # [{"nome", "numero", "uf", "telefone", "email", "area", "divisao", "buscar", "obs"}] -> parcerias
     "dias_busca": 7,     # quantos dias para trás buscar a cada captura
     "feriados_extras": [],  # ["2026-06-24", ...] feriados locais (estado, município, tribunal)
-    "feriados_moveis": False,  # contar Carnaval, Quarta/Quinta Santas e Corpus Christi como dias sem prazo
+    "feriados_moveis": False,
+    "segmentos": ["Previdenciário", "Trabalhista", "Família e Sucessões", "Consumidor", "Cível", "Bancário",
+                  "Penal", "Imobiliário", "Empresarial", "Outros"],  # contar Carnaval, Quarta/Quinta Santas e Corpus Christi como dias sem prazo
 }
 
 
 def novo_banco():
     return {"config": dict(CONFIG_PADRAO), "intimacoes": {}, "processos": {}, "prazos": [], "tarefas": [],
-            "rascunhos": [], "modelos_custom": {}, "ultima_busca": None, "log_buscas": []}
+            "rascunhos": [], "modelos_custom": {}, "ultima_busca": None, "log_buscas": [], "clientes": {}}
 
 
 def ler_dados():
@@ -259,7 +271,8 @@ def capturar(banco, dias=None, hoje=None):
     hoje = hoje or dt.date.today()
     dias = dias or int(cfg.get("dias_busca") or 7)
     inicio = hoje - dt.timedelta(days=dias)
-    alvos = [(o, "patrona") for o in cfg.get("oabs", [])] + [(p, p.get("nome") or "Parceria") for p in cfg.get("parceiros", [])]
+    alvos = [(o, "patrona") for o in cfg.get("oabs", [])] + [(p, p.get("nome") or "Parceria") for p in cfg.get("parceiros", [])
+                                                         if p.get("buscar", True) is not False]
     novas, erros = 0, []
     for oab, origem in alvos:
         if not oab.get("numero"):
@@ -416,12 +429,37 @@ def campos_do_processo(banco, intim=None, proc=None, extra=None):
         "advogada": cfg.get("advogada") or "[ADVOGADA]",
         "oab": f"OAB/{oab.get('uf', 'PE')} nº {oab.get('numero', '')}",
         "escritorio": cfg.get("escritorio", ""),
+        "endereco_escritorio": cfg.get("endereco_escritorio") or "[ENDEREÇO DO ESCRITÓRIO]",
         "cidade": cfg.get("cidade") or "[CIDADE]",
         "data": f"{hoje.day} de {meses[hoje.month - 1]} de {hoje.year}",
         "data_intimacao": br((intim or {}).get("data")),
         "resumo_intimacao": resumo((intim or {}).get("texto", ""), 600) or "[RESUMO DO ATO]",
     }
     campos.update(extra or {})
+    return campos
+
+
+def ler_modelos_cliente():
+    modelos = {}
+    for arq in sorted(PASTA_MODELOS_CLIENTE.glob("*.md")):
+        linhas = arq.read_text(encoding="utf-8").splitlines()
+        modelos[linhas[0].lstrip("# ").strip()] = "\n".join(linhas[1:]).lstrip("\n")
+    return modelos
+
+
+def campos_do_cliente(banco, cli):
+    campos = campos_do_processo(banco)
+    qualif = ", ".join(x for x in [cli.get("nacionalidade") or "brasileiro(a)", cli.get("estado_civil"),
+                                     cli.get("profissao"),
+                                     f"inscrito(a) no CPF/CNPJ sob o nº {cli['cpf_cnpj']}" if cli.get("cpf_cnpj") else "",
+                                     f"RG nº {cli['rg']}" if cli.get("rg") else "",
+                                     f"residente e domiciliado(a) em {cli['endereco']}" if cli.get("endereco") else "",
+                                     f"e-mail {cli['email']}" if cli.get("email") else "",
+                                     f"telefone {cli['telefone']}" if cli.get("telefone") else ""] if x)
+    campos.update({"cliente": cli.get("nome") or "[NOME]", "qualificacao": qualif or "[QUALIFICAÇÃO COMPLETA]",
+                   "cpf_cnpj": cli.get("cpf_cnpj") or "[CPF/CNPJ]", "endereco": cli.get("endereco") or "[ENDEREÇO]",
+                   "assunto": cli.get("assunto") or "[OBJETO DA CAUSA]", "segmento": cli.get("segmento") or "",
+                   "honorarios": cli.get("honorarios") or "[VALOR E FORMA DOS HONORÁRIOS]"})
     return campos
 
 

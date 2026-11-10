@@ -36,6 +36,15 @@ locais e portarias do tribunal você cadastra em Configurações. **O cálculo �
 - Em cada intimação, **📝 Gerar petição** cria o rascunho com o modelo certo; baixe em Word (.docx).
 - O botão "Quer que o Claude escreva a peça completa?" monta o pedido pronto para colar no chat do Claude.
 
+## Clientes, prospecção e parceiros
+- **👥 Clientes**: pendentes de fechar contrato, contratos fechados e a **pasta de cada cliente**, com os processos
+  dele, os documentos (enviados pelo app e guardados em `dados/clientes/`), procuração, contrato de honorários e
+  declaração de hipossuficiência já preenchidos (`modelos_cliente/*.md`).
+- **🎯 Prospecção**: funil (Primeiro contato → Consulta → Proposta → Negociação → Contrato fechado) por segmento,
+  com taxa de fechamento e de onde vêm os clientes. Segmentos editáveis em Configurações.
+- **🤝 Parceiros**: cadastro dos advogados parceiros (OAB, contato, área, divisão de honorários). Com
+  "Buscar intimações" ligado, as intimações da OAB do parceiro entram como processos de parceria.
+
 ## Seus dados
-Ficam em `dados/escritorio.json` (com cópia diária em `dados/backup`). Essa pasta **não vai para o GitHub**
+Ficam em `dados/escritorio.json` e `dados/clientes/` (documentos) (com cópia diária em `dados/backup`). Essa pasta **não vai para o GitHub**
 (dados de clientes, LGPD).
