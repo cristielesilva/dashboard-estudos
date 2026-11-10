@@ -46,5 +46,11 @@ locais e portarias do tribunal você cadastra em Configurações. **O cálculo �
   "Buscar intimações" ligado, as intimações da OAB do parceiro entram como processos de parceria.
 
 ## Seus dados
-Ficam em `dados/escritorio.json` e `dados/clientes/` (documentos) (com cópia diária em `dados/backup`). Essa pasta **não vai para o GitHub**
-(dados de clientes, LGPD).
+Ficam em `dados/escritorio.json` e `dados/clientes/` (documentos), com cópia diária em `dados/backup`. Essa pasta
+não entra no código do GitHub.
+
+## Versão online (celular)
+Com `[github] token` e `senha` nos Secrets do Streamlit (e no `.streamlit/secrets.toml` do computador), os dados e
+os documentos também são guardados no branch privado `dados` do repositório, e o painel pede senha. O computador e
+o online se sincronizam sozinhos (se os dois mexerem ao mesmo tempo, o app junta as mudanças). Passo a passo no
+guia `painel-escritorio-online.md`.

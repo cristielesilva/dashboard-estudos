@@ -2,3 +2,4 @@
 dados/
 captura.log
 __pycache__/
+.streamlit/secrets.toml

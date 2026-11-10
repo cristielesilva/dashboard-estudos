@@ -9,8 +9,11 @@ Rodar (dentro da pasta escritorio):  streamlit run app.py
 """
 import calendar
 import datetime as dt
+import hashlib
+import hmac
 import html
 import re
+import time
 
 import pandas as pd
 import streamlit as st
@@ -122,6 +125,43 @@ MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "A
          "Novembro", "Dezembro"]
 HOJE = dt.date.today()
 
+# ───────────────────────── Senha e cópia online ─────────────────────────
+def ler_segredos():
+    try:
+        return {k: (dict(v) if hasattr(v, "keys") else v) for k, v in st.secrets.items()}
+    except Exception:
+        return nc.segredos_locais()
+
+
+SEGREDOS = ler_segredos()
+SENHA = str(SEGREDOS.get("senha") or "")
+if SENHA and not st.session_state.get("_entrou"):
+    st.markdown("<div style='height:12vh'></div>", unsafe_allow_html=True)
+    _, meio, _ = st.columns([1, 1.2, 1])
+    with meio, st.container(border=True, key="card_login"):
+        st.markdown("<div class='ola'>⚖️ CSA ADVOCACIA</div><div class='ola-sub'>Painel do escritório</div>",
+                    unsafe_allow_html=True)
+        with st.form("login"):
+            tentativa = st.text_input("Senha", type="password")
+            if st.form_submit_button("Entrar", type="primary", width="stretch"):
+                if hmac.compare_digest(tentativa.encode(), SENHA.encode()):
+                    st.session_state._entrou = True
+                    st.rerun()
+                st.error("Senha incorreta.")
+    st.stop()
+
+
+@st.cache_resource(show_spinner=False)
+def ligar_nuvem(_segredos, chave):
+    return nc.ativar_nuvem(_segredos), nc.NUVEM
+
+
+ERRO_NUVEM, nc.NUVEM = ligar_nuvem(SEGREDOS, hashlib.sha256(
+    nc.limpar_token((SEGREDOS.get("github") or {}).get("token")).encode()).hexdigest())
+if nc.NUVEM and time.time() - st.session_state.get("_ultimo_pull", 0) > 20:
+    st.session_state._ultimo_pull = time.time()
+    nc.NUVEM.puxar()
+
 banco = nc.ler_dados()
 cfg = banco["config"]
 st.session_state.setdefault("pagina", "painel")
@@ -129,8 +169,10 @@ st.session_state.setdefault("pagina", "painel")
 
 # ───────────────────────── Ajudantes ─────────────────────────
 def salvar(msg=None, icone="✅"):
-    nc.gravar_dados(banco)
-    if msg:
+    erro = nc.gravar_dados(banco)
+    if erro:
+        st.session_state.aviso = (erro, "⚠️")
+    elif msg:
         st.session_state.aviso = (msg, icone)
 
 
@@ -219,7 +261,9 @@ def capturar_agora(dias=None):
         return
     with st.spinner("Buscando intimações no Diário de Justiça Eletrônico Nacional..."):
         novas, erros = nc.capturar(banco, dias=dias)
-    nc.gravar_dados(banco)
+    erro = nc.gravar_dados(banco)
+    if erro:
+        erros.append(erro)
     if erros:
         st.session_state.aviso = (" · ".join(erros), "⚠️")
     else:
@@ -250,6 +294,10 @@ with st.sidebar:
     st.button("🔄  Buscar intimações agora", key="btn_buscar", width="stretch", on_click=capturar_agora)
     ub = banco.get("ultima_busca")
     st.caption(f"Última busca: {nc.br(ub)} {ub[11:16] if ub else 'nunca'}" if ub else "Última busca: nunca")
+    if nc.NUVEM:
+        st.caption("☁️ Cópia online ligada" + (f" · ⚠️ {nc.NUVEM.ultimo_erro}" if nc.NUVEM.ultimo_erro else " · sincronizada"))
+    elif ERRO_NUVEM:
+        st.caption(f"☁️ Cópia online desligada: {ERRO_NUVEM}")
 
 if "aviso" in st.session_state:
     msg, icone = st.session_state.pop("aviso")
@@ -755,6 +803,7 @@ def pagina_tarefas():
                 st.rerun()
             if c2.button("🗑️", key=f"td_{t['id']}"):
                 banco["tarefas"].remove(t)
+                nc.apagar(banco, t["id"])
                 salvar()
                 st.rerun()
         if not pend:
@@ -765,6 +814,9 @@ def pagina_tarefas():
             for t in feitas[-30:]:
                 st.markdown(f"~~{esc(t['titulo'])}~~")
             if st.button("Limpar concluídas"):
+                for t in banco["tarefas"]:
+                    if t.get("feita"):
+                        nc.apagar(banco, t["id"])
                 banco["tarefas"] = [t for t in banco["tarefas"] if not t.get("feita")]
                 salvar()
                 st.rerun()
@@ -794,6 +846,7 @@ def editor_rascunho(r):
                              width="stretch")
         if b[3].button("🗑️ Apagar", width="stretch", key=f"rdl_{r['id']}"):
             banco["rascunhos"].remove(r)
+            nc.apagar(banco, r["id"])
             st.session_state.pop("rascunho_aberto", None)
             salvar("Rascunho apagado.")
             st.rerun()
@@ -859,6 +912,7 @@ def pagina_peticoes():
                 st.rerun()
             if m["proprio"] and c2.button("🗑️ Apagar meu modelo / voltar ao padrão"):
                 banco["modelos_custom"].pop(nome, None)
+                nc.apagar(banco, nome)
                 salvar("Modelo removido.")
                 st.rerun()
 
@@ -1157,16 +1211,16 @@ def pasta_cliente(c):
                 salvar("Processo ligado ao cliente.")
                 st.rerun()
     with t2:
-        pasta = nc.PASTA_CLIENTES / c["id"]
         c1, c2 = st.columns([1, 2])
         tipo = c1.selectbox("Tipo de documento", nc.TIPOS_DOC, key=f"td_{c['id']}")
         envio = c2.file_uploader("Enviar arquivos (PDF, imagem, Word)", accept_multiple_files=True,
                                  key=f"up_{c['id']}_{st.session_state.get('n_envios', 0)}")
         if envio and st.button("💾 Guardar na pasta do cliente", type="primary", key=f"upb_{c['id']}"):
-            pasta.mkdir(parents=True, exist_ok=True)
             for f in envio:
                 nome = f"{HOJE.isoformat()}_{nc.novo_id()[:4]}_{f.name}"
-                (pasta / nome).write_bytes(f.getvalue())
+                erro = nc.guardar_documento(c["id"], nome, f.getvalue())
+                if erro:
+                    st.session_state.aviso = (erro, "⚠️")
                 c.setdefault("documentos", []).append({"arquivo": nome, "nome": f.name, "tipo": tipo, "data": HOJE.isoformat()})
             st.session_state.n_envios = st.session_state.get("n_envios", 0) + 1
             salvar(f"{len(envio)} arquivo(s) guardado(s).")
@@ -1178,18 +1232,19 @@ def pasta_cliente(c):
                 continue
             st.markdown(f"**{tipo_doc}**")
             for n, d in enumerate(grupo):
-                arq = pasta / d["arquivo"]
+                conteudo = nc.ler_documento(c["id"], d["arquivo"])
                 c1, c2, c3 = st.columns([5, 1, 1], vertical_alignment="center")
-                c1.caption(f"📄 {d['nome']} · {nc.br(d['data'])}" + ("" if arq.exists() else " · ⚠️ arquivo não encontrado neste computador"))
-                if arq.exists():
-                    c2.download_button("⬇️", arq.read_bytes(), file_name=d["nome"], key=f"dl_{n}_{d['arquivo']}", width="stretch")
+                c1.caption(f"📄 {d['nome']} · {nc.br(d['data'])}" + ("" if conteudo is not None else " · ⚠️ arquivo não encontrado"))
+                if conteudo is not None:
+                    c2.download_button("⬇️", conteudo, file_name=d["nome"], key=f"dl_{n}_{d['arquivo']}", width="stretch")
                 if c3.button("🗑️", key=f"rm_{n}_{d['arquivo']}", width="stretch"):
-                    arq.unlink(missing_ok=True)
+                    nc.apagar_documento(c["id"], d["arquivo"])
                     docs.remove(d)
                     salvar("Documento apagado.")
                     st.rerun()
         if not docs:
-            st.caption(f"A pasta está vazia. Os arquivos ficam no seu computador em dados/clientes/{c['id']}.")
+            st.caption("A pasta está vazia." + (" Os arquivos ficam no computador e na cópia online (GitHub privado)."
+                                                 if nc.NUVEM else f" Os arquivos ficam no seu computador em dados/clientes/{c['id']}."))
         faltam = [t for t in ["Documento pessoal", "Comprovante de residência", "Procuração", "Contrato de honorários"]
                   if not any(d["tipo"] == t for d in docs)]
         if faltam and c["etapa"] == "Contrato fechado":
@@ -1205,10 +1260,8 @@ def pasta_cliente(c):
         b1.download_button("⬇️ Baixar Word (.docx)", nc.gerar_docx(nome_m, texto), file_name=f"{nome_m} - {c['nome']}.docx",
                            width="stretch", type="primary", key=f"mdl_{c['id']}")
         if b2.button("📎 Guardar cópia na pasta do cliente", width="stretch", key=f"mgu_{c['id']}"):
-            pasta = nc.PASTA_CLIENTES / c["id"]
-            pasta.mkdir(parents=True, exist_ok=True)
             nome = f"{HOJE.isoformat()}_{nc.novo_id()[:4]}_{nome_m}.docx"
-            (pasta / nome).write_bytes(nc.gerar_docx(nome_m, texto))
+            nc.guardar_documento(c["id"], nome, nc.gerar_docx(nome_m, texto))
             tipo = "Procuração" if "Procura" in nome_m else ("Contrato de honorários" if "Contrato" in nome_m else "Declaração de hipossuficiência")
             c.setdefault("documentos", []).append({"arquivo": nome, "nome": f"{nome_m}.docx", "tipo": tipo, "data": HOJE.isoformat()})
             salvar("Cópia guardada na pasta (versão para assinatura).")
