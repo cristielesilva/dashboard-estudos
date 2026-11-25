@@ -71,14 +71,6 @@
   "LÍNGUA PORTUGUESA/Estrutura e Processos de Formação de Palavras.pdf",
   "LÍNGUA PORTUGUESA/Estrutura e Formação de Palavras.pdf"
  ],
- "PORT-19": [
-  "LÍNGUA PORTUGUESA/Reescrita.pdf",
-  "LÍNGUA PORTUGUESA/Coesão e Coerência, Semântica, Figuras e Vícios de Linguagem, Reescrita.pdf"
- ],
- "PORT-20": [
-  "LÍNGUA PORTUGUESA/As Comunicações Oficiais.pdf",
-  "LÍNGUA PORTUGUESA/As Comunicações Oficiais, Aspectos Gerais da Redação Oficial.pdf"
- ],
  "RLM-01": [
   "RACIOCÍNIO LÓGICO/Lógica Proposicional.pdf",
   "RACIOCÍNIO LÓGICO/Lógica Proposicional (Sintético).pdf"
@@ -106,26 +98,6 @@
  "RLM-07": [
   "RACIOCÍNIO LÓGICO/Probabilidade.pdf",
   "RACIOCÍNIO LÓGICO/Probabilidade (Sintético).pdf"
- ],
- "RLM-08": [
-  "RACIOCÍNIO LÓGICO/Operações com Conjuntos.pdf",
-  "RACIOCÍNIO LÓGICO/Operações com Conjuntos (Sintético).pdf",
-  "MATEMÁTICA/Números Reais.pdf",
-  "MATEMÁTICA/Números Reais (Sintético).pdf"
- ],
- "RLM-09": [
-  "MATEMÁTICA/Razão e Proporção.pdf",
-  "MATEMÁTICA/Razão e Proporção (Sintético).pdf"
- ],
- "RLM-10": [
-  "MATEMÁTICA/Porcentagem.pdf",
-  "MATEMÁTICA/Porcentagem (Sintético).pdf",
-  "MATEMÁTICA/Equações e Sistemas.pdf",
-  "MATEMÁTICA/Equações e Sistemas (Sintético).pdf"
- ],
- "RLM-11": [
-  "RACIOCÍNIO LÓGICO/Raciocínio Sequencial.pdf",
-  "RACIOCÍNIO LÓGICO/Raciocínio Sequencial (Sintético).pdf"
  ],
  "INF-01": [
   "INFORMÁTICA/Windows 10.pdf"
@@ -155,9 +127,6 @@
  ],
  "INF-08": [
   "INFORMÁTICA/Segurança da Informação e Backup.pdf"
- ],
- "INF-09": [
-  "INFORMÁTICA/Redes e Internet.pdf"
  ],
  "DIR-CONST-01": [
   "DIREITO CONSTITUCIONAL/Princípios Fundamentais.pdf",
@@ -329,9 +298,5 @@
  ],
  "LEG-10": [
   "LEGISLAÇÃO PENAL ESPECIAL/Lei n. 12.850-2013 - Organizações Criminosas.pdf"
- ],
- "LEG-PE-02": [
-  "LEGISLAÇÃO ESTADUAL/Lei n. 6.123-1968 - Estatuto dos Servidores Públicos do Estado de Pernambuco.pdf",
-  "LEGISLAÇÃO ESTADUAL/Estatuto dos Servidores Públicos do Estado de Pernambuco (Sintético).pdf"
  ]
 }

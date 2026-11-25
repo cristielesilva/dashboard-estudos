@@ -1,4 +1,4 @@
-# Português & Redação
+# Língua Portuguesa & Redação
 
 Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
 
@@ -239,56 +239,16 @@ Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este
 - P: Mudança de "vossa mercê" para "você" exemplifica qual variação?
   R: Diacrônica (histórica).
 
-## PORT-19
-### Resumo
-- Questões de reescrita perguntam se a nova versão **mantém o sentido e a correção gramatical**.
-- Verifique: troca de conectivos (mesma relação?), concordância após a mudança, regência, crase e pontuação.
-- Mudança de voz: ativa para passiva ("A polícia prendeu o suspeito" / "O suspeito foi preso pela polícia").
-- Deslocamento de termos pode alterar sentido ("Só ele estudou" x "Ele só estudou").
-- Retirar vírgulas de uma oração adjetiva troca explicativa por restritiva e altera o sentido.
-- Cebraspe: julgue se a reescrita é **correta** e se **preserva o sentido original**.
-### Flashcards
-- P: Trocar "embora" por "mas" mantém a correção sem ajustes?
-  R: Não necessariamente. "Embora" pede subjuntivo e subordinação, e "mas" pede indicativo e coordenação.
-- P: Passiva sintética de "Venderam a casa"?
-  R: "Vendeu-se a casa".
-
-## PORT-20
-### Resumo
-- Base: **Manual de Redação da Presidência da República (3ª ed., 2018)**.
-- Atributos da redação oficial: clareza, precisão, objetividade, concisão, coesão, impessoalidade, formalidade, padronização e uso da norma-padrão.
-- Desde 2018, **ofício** é o padrão (o memorando e o aviso passaram a ser ofício). O documento leva identificação, endereçamento, assunto, texto, fecho e assinatura.
-- **Fechos**: "Respeitosamente" para autoridades superiores e "Atenciosamente" para mesma hierarquia ou inferior.
-- Pronomes de tratamento: **Vossa Excelência** (chefes de poder, ministros, juízes) e **Vossa Senhoria** (demais autoridades). A concordância é na 3ª pessoa.
-- O manual de 2018 aboliu "digníssimo" (DD) e "ilustríssimo" (Ilmo.).
-### Flashcards
-- P: Qual fecho usar para autoridade de hierarquia superior?
-  R: "Respeitosamente".
-- P: Com "Vossa Excelência", o verbo e os possessivos ficam em qual pessoa?
-  R: Terceira pessoa ("Vossa Excelência decidiu sobre seu pedido").
-
 ## RED-01
 ### Resumo
-- Estrutura: **introdução** (tema + tese), **desenvolvimento** (2 parágrafos, cada um com um argumento) e **conclusão** (retoma a tese; pode propor solução).
-- Cada parágrafo de desenvolvimento deve ter tópico frasal, fundamentação (dados, leis, exemplos) e fechamento.
-- Use **conectivos** variados entre parágrafos (além disso, por outro lado, portanto).
-- Evite 1ª pessoa, gírias, clichês e fuga ao tema. Respeite o número de linhas.
-- Repertório útil para segurança pública: art. 144 da CF, dados do Anuário Brasileiro de Segurança Pública, Pacto pela Vida (PE) e polícia comunitária.
+- **Soldado**: redação de **15 a 20 linhas**, vale **40 pontos** (4 critérios de 10: tema e argumentação; coesão e coerência; estrutura; norma-padrão). **Oficial**: vale **30 pontos** (8, 8, 7 e 7 nos mesmos critérios).
+- Só tem a redação corrigida quem fica bem colocado na objetiva. Quem não tem a redação corrigida é eliminado. Por isso a objetiva vem primeiro, mas a redação decide.
+- Estrutura: **introdução** (tema + tese), **desenvolvimento** (2 parágrafos, cada um com um argumento) e **conclusão** (retoma a tese e propõe solução).
+- Cada parágrafo: tópico frasal, fundamentação (dados, leis, exemplos) e fechamento. Varie os **conectivos** (além disso, por outro lado, portanto).
+- Evite 1ª pessoa, gírias, clichês e fuga ao tema. Respeite o número mínimo e máximo de linhas.
+- Repertório para segurança pública: art. 144 da CF, Anuário Brasileiro de Segurança Pública, Pacto pela Vida (PE), polícia comunitária, câmeras corporais, violência contra a mulher.
 ### Flashcards
+- P: Quanto vale a redação do Soldado e a do Oficial na PMPE?
+  R: 40 pontos no Soldado e 30 pontos no Oficial.
 - P: O que deve conter a introdução de uma dissertação-argumentativa?
   R: Contextualização do tema e apresentação clara da tese (ponto de vista).
-- P: Qual o papel do tópico frasal?
-  R: Anunciar a ideia central do parágrafo, que será desenvolvida em seguida.
-
-## RED-02
-### Resumo
-- Texto discursivo de até **30 linhas** (Cebraspe): costuma trazer **quesitos** a responder. Responda a todos, na ordem.
-- Estrutura enxuta: introdução curta, um parágrafo por quesito e conclusão de 2 ou 3 linhas.
-- Critérios Cebraspe: **conteúdo** (domínio do tema e dos quesitos) e **aspectos microestruturais** (erros de grafia, morfossintaxe e pontuação, que descontam por erro).
-- Temas prováveis: atividade policial, direitos humanos, inquérito, violência contra a mulher e crime organizado.
-- Escreva com linguagem técnica, precisa e impessoal, sem rasuras.
-### Flashcards
-- P: Como organizar uma discursiva com 3 quesitos em 30 linhas?
-  R: Introdução breve, um parágrafo para cada quesito, na ordem pedida, e conclusão curta.
-- P: O que são aspectos microestruturais na correção Cebraspe?
-  R: Erros de grafia, morfossintaxe e pontuação, que reduzem a nota por ocorrência.

@@ -1,5 +1,7 @@
 # Raciocínio Lógico & Estatística
 
+Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
+
 ## RLM-01
 ### Resumo
 - **Proposição** é uma frase declarativa que pode ser V ou F. Perguntas, ordens, exclamações e sentenças abertas ("x > 2") não são proposições.
@@ -91,57 +93,6 @@
 - P: Quando dois eventos são independentes?
   R: Quando P(A ∩ B) = P(A) · P(B), ou seja, um não altera a chance do outro.
 
-## RLM-08
-### Resumo
-- ℕ (naturais) ⊂ ℤ (inteiros) ⊂ ℚ (racionais) ⊂ ℝ (reais). Os irracionais (√2, π) completam os reais.
-- **Racional**: pode ser escrito como fração a/b, com b ≠ 0, o que inclui as dízimas periódicas.
-- **Operações**: união (∪), interseção (∩), diferença (A − B) e complementar.
-- **n(A ∪ B) = n(A) + n(B) − n(A ∩ B)**. Para 3 conjuntos, use o diagrama começando pela interseção tripla.
-- Nº de subconjuntos de um conjunto com n elementos = **2ⁿ**.
-### Flashcards
-- P: 0,333... é racional?
-  R: Sim. É dízima periódica, igual a 1/3.
-- P: Quantos subconjuntos tem {a, b, c}?
-  R: 2³ = 8.
-
-## RLM-09
-### Resumo
-- **Razão**: a/b. **Proporção**: igualdade de razões (a/b = c/d, logo a·d = b·c).
-- **Divisão proporcional**: direta (partes proporcionais aos números) e inversa (proporcionais aos inversos).
-- **Regra de três simples**: identifique se as grandezas são direta ou inversamente proporcionais.
-- **Regra de três composta**: compare cada grandeza com a incógnita, inverta as inversas e multiplique.
-- Exemplo de grandezas inversas: mais trabalhadores, menos dias.
-### Flashcards
-- P: 4 pedreiros fazem um muro em 6 dias. Em quantos dias 8 pedreiros fazem o mesmo muro?
-  R: 3 dias (grandezas inversamente proporcionais).
-- P: Divida 100 em partes diretamente proporcionais a 2 e 3.
-  R: 40 e 60.
-
-## RLM-10
-### Resumo
-- **Porcentagem**: x% = x/100. Aumento de i% multiplica por (1 + i); desconto de i% multiplica por (1 − i).
-- **Aumentos sucessivos** se multiplicam (10% e depois 10% = 1,1 · 1,1 = 1,21, ou seja, 21%).
-- **1º grau**: ax + b = 0, com raiz x = −b/a. Na inequação, ao multiplicar por número negativo, **inverta o sinal**.
-- **2º grau**: Δ = b² − 4ac; x = (−b ± √Δ) / 2a. Soma das raízes = −b/a; produto = c/a.
-- **Sistemas lineares**: resolva por substituição ou adição.
-### Flashcards
-- P: Um produto sobe 20% e depois cai 20%. Qual a variação final?
-  R: 1,2 · 0,8 = 0,96, ou seja, queda de 4%.
-- P: Soma e produto das raízes de x² − 5x + 6 = 0?
-  R: Soma 5, produto 6 (raízes 2 e 3).
-
-## RLM-11
-### Resumo
-- **PA**: aₙ = a₁ + (n − 1)·r. Soma: Sₙ = (a₁ + aₙ)·n / 2.
-- **PG**: aₙ = a₁ · qⁿ⁻¹. Soma finita: Sₙ = a₁(qⁿ − 1)/(q − 1).
-- **Soma da PG infinita** (para |q| < 1): S = a₁ / (1 − q).
-- Termo médio: na PA é a média aritmética dos vizinhos; na PG é a média geométrica.
-### Flashcards
-- P: 10º termo da PA (2, 5, 8, ...)?
-  R: a₁₀ = 2 + 9·3 = 29.
-- P: Soma da PG infinita 1 + 1/2 + 1/4 + ...?
-  R: 1 / (1 − 1/2) = 2.
-
 ## EST-01
 ### Resumo
 - **População** é o conjunto total; **amostra** é uma parte dela.
@@ -207,3 +158,16 @@
   R: Rejeitar a hipótese nula quando ela é verdadeira (probabilidade α, nível de significância).
 - P: R² = 0,81 significa?
   R: 81% da variação de y é explicada pelo modelo (|r| = 0,9).
+
+## EST-06
+### Resumo
+- A **regressão linear simples** ajusta a reta **ŷ = a + b·x** aos pontos, pelo método dos **mínimos quadrados** (minimiza a soma dos quadrados dos resíduos).
+- Inclinação: **b = Cov(x, y) / Var(x)**. Intercepto: **a = ȳ − b·x̄**. A reta sempre passa pelo ponto médio **(x̄, ȳ)**.
+- **Coeficiente de correlação r** vai de −1 a 1: perto de ±1 é relação linear forte; perto de 0 é relação linear fraca. O sinal de r é o mesmo de b.
+- **Coeficiente de determinação R² = r²**: proporção da variação de y explicada pela reta (ex.: r = 0,8 → R² = 0,64 = 64%).
+- **Resíduo** = valor observado − valor previsto. Correlação não prova causalidade.
+### Flashcards
+- P: Se r = 0,9, quanto vale o coeficiente de determinação?
+  R: R² = 0,81, ou seja, 81% da variação de y é explicada pela reta.
+- P: Por qual ponto a reta de mínimos quadrados sempre passa?
+  R: Pelo ponto médio (x̄, ȳ).
