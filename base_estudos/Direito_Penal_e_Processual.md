@@ -1,5 +1,7 @@
 # Direito Penal & Processual Penal
 
+Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
+
 ## PENAL-01
 ### Resumo
 - **Legalidade (art. 1º do CP)**: não há crime nem pena sem lei anterior que os defina (reserva legal + anterioridade).
@@ -83,6 +85,20 @@
 - P: A embriaguez voluntária exclui a culpabilidade?
   R: Não. Pela teoria da actio libera in causa, o agente responde normalmente.
 
+## PENAL-11
+### Resumo
+- **Penas**: privativas de liberdade (reclusão e detenção), restritivas de direitos e multa.
+- **Dosimetria trifásica** (art. 68): 1) pena-base pelas circunstâncias judiciais do art. 59; 2) agravantes e atenuantes; 3) causas de aumento e de diminuição.
+- **Regimes**: fechado (pena acima de 8 anos), semiaberto (acima de 4 até 8 anos, não reincidente) e aberto (até 4 anos, não reincidente).
+- **Substituição por restritivas de direitos** (art. 44): pena até 4 anos, crime sem violência ou grave ameaça, réu não reincidente em crime doloso.
+- **Extinção da punibilidade (art. 107)**: morte do agente, anistia, graça, indulto, abolitio criminis, prescrição, decadência, perempção e perdão aceito.
+- **Prescrição**: os prazos do art. 109 variam conforme a pena. São **reduzidos pela metade** se o agente tinha menos de 21 anos na data do fato ou mais de 70 na sentença.
+### Flashcards
+- P: Quais são as fases da dosimetria da pena?
+  R: Pena-base (art. 59), agravantes e atenuantes, e causas de aumento e diminuição.
+- P: Quando o prazo prescricional é reduzido pela metade?
+  R: Se o agente tinha menos de 21 anos na data do fato ou mais de 70 na data da sentença (art. 115).
+
 ## PENAL-07
 ### Resumo
 - **Homicídio (art. 121)**: simples, privilegiado (relevante valor moral ou social, ou violenta emoção logo após injusta provocação) e qualificado.
@@ -124,6 +140,19 @@
 - P: Qual a ação penal nos crimes contra a dignidade sexual?
   R: Pública incondicionada (Lei 13.718/2018).
 
+## PENAL-12
+### Resumo
+- **Moeda falsa (art. 289)**: falsificação **grosseira** não engana ninguém. Se usada para enganar, vira **estelionato**, de competência da Justiça Estadual (Súmula 73 STJ).
+- **Falsificação de documento público (art. 297)** e **particular (art. 298)**: falsidade **material** (altera a forma do documento). Equiparam-se a documento público o título ao portador, ações de sociedade, livros mercantis e testamento particular.
+- **Falsidade ideológica (art. 299)**: o documento é formalmente verdadeiro, mas o **conteúdo é falso**.
+- **Uso de documento falso (art. 304)**: tem a pena do crime de falsificação correspondente. A competência é definida pelo órgão a quem o documento foi apresentado (Súmula 546 STJ).
+- **Falsa identidade (art. 307)**: atribuir-se identidade falsa perante a polícia é crime, **mesmo em autodefesa** (Súmula 522 STJ).
+### Flashcards
+- P: Diferença entre falsidade material e ideológica?
+  R: Na material, a forma do documento é forjada ou alterada; na ideológica, a forma é verdadeira e o conteúdo é falso.
+- P: Mentir o nome ao ser abordado pela polícia é crime?
+  R: Sim, falsa identidade (art. 307), mesmo para se defender (Súmula 522 STJ).
+
 ## PENAL-10
 ### Resumo
 - **Peculato (art. 312)**: o funcionário se apropria de bem que tem em razão do cargo, ou o desvia. No **peculato culposo**, a reparação do dano antes da sentença irrecorrível extingue a punibilidade.
@@ -138,19 +167,18 @@
 - P: O que extingue a punibilidade no peculato culposo?
   R: A reparação do dano antes da sentença irrecorrível (art. 312, §3º).
 
-## PENAL-11
+## PROC-PENAL-13
 ### Resumo
-- **Penas**: privativas de liberdade (reclusão e detenção), restritivas de direitos e multa.
-- **Dosimetria trifásica** (art. 68): 1) pena-base pelas circunstâncias judiciais do art. 59; 2) agravantes e atenuantes; 3) causas de aumento e de diminuição.
-- **Regimes**: fechado (pena acima de 8 anos), semiaberto (acima de 4 até 8 anos, não reincidente) e aberto (até 4 anos, não reincidente).
-- **Substituição por restritivas de direitos** (art. 44): pena até 4 anos, crime sem violência ou grave ameaça, réu não reincidente em crime doloso.
-- **Extinção da punibilidade (art. 107)**: morte do agente, anistia, graça, indulto, abolitio criminis, prescrição, decadência, perempção e perdão aceito.
-- **Prescrição**: os prazos do art. 109 variam conforme a pena. São **reduzidos pela metade** se o agente tinha menos de 21 anos na data do fato ou mais de 70 na sentença.
+- **Princípios**: presunção de inocência, contraditório e ampla defesa, devido processo legal, juiz natural, **não autoincriminação** (nemo tenetur), publicidade, vedação das provas ilícitas e duração razoável do processo.
+- **Sistema acusatório**: as funções de acusar, defender e julgar são separadas. O art. 3º-A do CPP (Pacote Anticrime) proíbe o juiz de substituir a atuação probatória da acusação.
+- **Juiz das garantias**: controla a legalidade da investigação (o STF validou, com ajustes).
+- **Lei processual no tempo (art. 2º)**: aplicação **imediata** (*tempus regit actum*), sem invalidar os atos já praticados. Normas **mistas** (penais e processuais) seguem a regra da lei penal e só retroagem para beneficiar.
+- **No espaço**: territorialidade (art. 1º). A lei processual admite **interpretação extensiva e analogia** (art. 3º).
 ### Flashcards
-- P: Quais são as fases da dosimetria da pena?
-  R: Pena-base (art. 59), agravantes e atenuantes, e causas de aumento e diminuição.
-- P: Quando o prazo prescricional é reduzido pela metade?
-  R: Se o agente tinha menos de 21 anos na data do fato ou mais de 70 na data da sentença (art. 115).
+- P: Lei processual penal nova se aplica aos processos em andamento?
+  R: Sim, de imediato, mas os atos já praticados continuam válidos.
+- P: O que diz o princípio nemo tenetur se detegere?
+  R: Ninguém é obrigado a produzir prova contra si mesmo.
 
 ## PROC-PENAL-01
 ### Resumo
@@ -177,6 +205,18 @@
 - P: Em que caso se lavra TCO em vez de instaurar IP?
   R: Nas infrações de menor potencial ofensivo (pena máxima de até 2 anos e contravenções).
 
+## PROC-PENAL-09
+### Resumo
+- **ANPP (art. 28-A do CPP)**: o MP pode propor acordo se não for caso de arquivamento e o investigado **confessar formal e circunstancialmente** uma infração **sem violência ou grave ameaça**, com **pena mínima inferior a 4 anos**.
+- **Não cabe** ANPP: quando cabe transação penal; para reincidente ou criminoso habitual; para quem já teve ANPP, transação ou sursis processual nos **5 anos** anteriores; nos crimes de **violência doméstica** ou contra a mulher por razões da condição de sexo feminino.
+- O acordo é **homologado pelo juiz** em audiência. Cumprido, extingue a punibilidade e não gera maus antecedentes.
+- **Controle externo da atividade policial**: é função institucional do **Ministério Público** (art. 129, VII, da CF).
+### Flashcards
+- P: Cabe ANPP em crime com violência ou grave ameaça?
+  R: Não.
+- P: Quem exerce o controle externo da atividade policial?
+  R: O Ministério Público (art. 129, VII, da CF).
+
 ## PROC-PENAL-03
 ### Resumo
 - **Ação penal pública incondicionada**: é a regra. O titular é o MP.
@@ -190,6 +230,19 @@
   R: 6 meses, contados do dia em que soube quem é o autor do crime (decadencial).
 - P: Até quando a representação pode ser retratada?
   R: Até o oferecimento da denúncia (art. 25 do CPP).
+
+## PROC-PENAL-10
+### Resumo
+- **Regra geral**: competência pelo **lugar em que se consumou a infração** (art. 70 do CPP). Se desconhecido, pelo domicílio do réu.
+- **Tribunal do Júri**: crimes **dolosos contra a vida** (homicídio, infanticídio, aborto e induzimento ao suicídio), tentados ou consumados.
+- **Justiça Militar estadual** julga os militares estaduais nos crimes militares, **exceto o crime doloso contra a vida de civil**, que vai ao **Júri** (art. 125, §4º, da CF).
+- **Conexão e continência** reúnem processos. A prevenção resolve empates entre juízes igualmente competentes.
+- **Súmula 6 STJ**: acidente de trânsito com viatura da PM é da **Justiça comum**, salvo se autor e vítima forem PMs em atividade. **Súmula 90 STJ**: crime militar na Justiça Militar e crime comum conexo na Justiça comum.
+### Flashcards
+- P: PM que mata civil dolosamente é julgado por quem?
+  R: Pelo Tribunal do Júri.
+- P: Qual a regra geral de competência territorial no CPP?
+  R: O lugar da consumação da infração (art. 70).
 
 ## PROC-PENAL-04
 ### Resumo
@@ -244,6 +297,33 @@
   R: Até 4 anos (art. 322 do CPP).
 - P: Crime inafiançável impede a liberdade provisória?
   R: Não. Impede só a fiança, e cabe liberdade provisória sem fiança, com cautelares.
+
+## PROC-PENAL-12
+### Resumo
+- **Sujeitos do processo**: juiz, MP, acusado, defensor e assistente de acusação. Nenhum acusado será processado **sem defensor**.
+- **Citação**: pessoal (regra), **por hora certa** (réu que se oculta, art. 362) e **por edital** (réu não encontrado). Citado por edital que não comparece nem constitui advogado: **suspende o processo e a prescrição** (art. 366).
+- **Questões prejudiciais**: obrigatórias (estado civil das pessoas, art. 92) e facultativas (art. 93).
+- **Exceções**: suspeição, incompetência, litispendência, ilegitimidade de parte e coisa julgada.
+- **Medidas assecuratórias**: **sequestro** (bens adquiridos com o proveito do crime), **hipoteca legal** (imóveis lícitos, para garantir a reparação) e **arresto**.
+- Outros incidentes: restituição de coisas apreendidas, falsidade documental e **insanidade mental** do acusado.
+### Flashcards
+- P: O que acontece se o réu citado por edital não comparece nem constitui advogado?
+  R: Suspendem-se o processo e o prazo prescricional (art. 366).
+- P: Qual medida recai sobre bens adquiridos com os proventos do crime?
+  R: O sequestro.
+
+## PROC-PENAL-11
+### Resumo
+- **Procedimentos**: **ordinário** (pena máxima igual ou superior a 4 anos), **sumário** (inferior a 4 anos) e **sumaríssimo** (infrações de menor potencial ofensivo, nos Juizados).
+- Rito ordinário: denúncia → recebimento → citação → **resposta à acusação em 10 dias** → possível **absolvição sumária** (art. 397) → audiência de instrução (interrogatório **ao final**) → alegações → sentença.
+- **Nulidades**: não se declara nulidade sem prejuízo (*pas de nullité sans grief*, art. 563). **Súmula 523 STF**: a falta de defesa é nulidade absoluta; a deficiência só anula se houver prejuízo.
+- **Recursos**: apelação (5 dias), recurso em sentido estrito (5 dias), embargos de declaração (2 dias). É proibida a **reformatio in pejus** em recurso exclusivo da defesa.
+- **Ações autônomas**: habeas corpus e revisão criminal (só a favor do réu, a qualquer tempo).
+### Flashcards
+- P: Qual o prazo da resposta à acusação?
+  R: 10 dias.
+- P: Revisão criminal pode ser usada contra o réu?
+  R: Não. Ela só existe em favor do condenado.
 
 ## PROC-PENAL-08
 ### Resumo

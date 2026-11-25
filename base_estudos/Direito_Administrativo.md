@@ -1,5 +1,7 @@
 # Direito Administrativo
 
+Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
+
 ## DIR-ADM-01
 ### Resumo
 - **Estado** é formado por povo, território e governo soberano. **Governo** é a atividade política de direção. **Administração Pública** é a execução das políticas.
@@ -37,19 +39,6 @@
 - P: Diferença entre excesso de poder e desvio de finalidade?
   R: Excesso: o agente vai além da sua competência. Desvio: age dentro da competência, mas com fim diverso do previsto.
 
-## DIR-ADM-04
-### Resumo
-- **Elementos (COFIFOMOB)**: COmpetência, FInalidade, FOrma (vinculados), MOtivo e OBjeto (discricionários, podendo formar o mérito).
-- **Atributos (PATI)**: Presunção de legitimidade, Autoexecutoriedade, Tipicidade e Imperatividade.
-- **Convalidação**: é possível para vícios sanáveis de **competência** (não exclusiva) e de **forma** (não essencial).
-- **Extinção**: anulação (ilegalidade, efeito ex tunc, prazo de 5 anos na esfera federal), revogação (conveniência e oportunidade, ex nunc, só pela própria Administração), cassação (o beneficiário descumpriu requisitos) e caducidade (nova norma tornou o ato incompatível).
-- **Teoria dos motivos determinantes**: o motivo declarado vincula a validade do ato.
-### Flashcards
-- P: Quais elementos do ato admitem convalidação?
-  R: Competência (se não exclusiva) e forma (se não essencial).
-- P: O Judiciário pode revogar ato administrativo de outro Poder?
-  R: Não. Pode apenas anular por ilegalidade. A revogação é exclusiva da Administração que editou o ato.
-
 ## DIR-ADM-05
 ### Resumo
 - **Desconcentração**: distribuição interna de competências entre **órgãos**, dentro da mesma pessoa jurídica, com hierarquia.
@@ -62,6 +51,19 @@
   R: Desconcentração (órgão sem personalidade jurídica própria).
 - P: Autarquia é criada como?
   R: Diretamente por lei específica.
+
+## DIR-ADM-04
+### Resumo
+- **Elementos (COFIFOMOB)**: COmpetência, FInalidade, FOrma (vinculados), MOtivo e OBjeto (discricionários, podendo formar o mérito).
+- **Atributos (PATI)**: Presunção de legitimidade, Autoexecutoriedade, Tipicidade e Imperatividade.
+- **Convalidação**: é possível para vícios sanáveis de **competência** (não exclusiva) e de **forma** (não essencial).
+- **Extinção**: anulação (ilegalidade, efeito ex tunc, prazo de 5 anos na esfera federal), revogação (conveniência e oportunidade, ex nunc, só pela própria Administração), cassação (o beneficiário descumpriu requisitos) e caducidade (nova norma tornou o ato incompatível).
+- **Teoria dos motivos determinantes**: o motivo declarado vincula a validade do ato.
+### Flashcards
+- P: Quais elementos do ato admitem convalidação?
+  R: Competência (se não exclusiva) e forma (se não essencial).
+- P: O Judiciário pode revogar ato administrativo de outro Poder?
+  R: Não. Pode apenas anular por ilegalidade. A revogação é exclusiva da Administração que editou o ato.
 
 ## DIR-ADM-06
 ### Resumo
@@ -89,19 +91,18 @@
 - P: Qual teoria rege a responsabilidade do Estado, em regra?
   R: Risco administrativo (objetiva, admite excludentes).
 
-## DIR-ADM-08
+## DIR-ADM-12
 ### Resumo
-- **Serviço público**: atividade prestada pelo Estado ou por delegação para satisfazer necessidades coletivas, sob regime de direito público.
-- Princípios (Lei 8.987/95): continuidade, regularidade, eficiência, segurança, atualidade, generalidade, cortesia e modicidade das tarifas.
-- **Concessão**: contrato com **licitação na modalidade concorrência ou diálogo competitivo**, feito com pessoa jurídica ou consórcio, por prazo determinado.
-- **Permissão**: contrato de adesão, precário, feito com pessoa física ou jurídica, com licitação.
-- **Autorização**: ato unilateral, discricionário e precário.
-- Interromper o serviço após aviso prévio por inadimplemento ou por razões técnicas **não caracteriza descontinuidade**.
+- **Controle administrativo**: feito pela própria Administração (autotutela). Alcança legalidade e mérito.
+- **Controle legislativo**: feito pelo Congresso com auxílio do **Tribunal de Contas**. Inclui CPIs, sustação de atos normativos que exorbitem o poder regulamentar e julgamento das contas.
+- **Controle judicial**: só de **legalidade** (inclui razoabilidade e proporcionalidade), sem entrar no mérito. Instrumentos: MS, ação popular, ação civil pública e ação de improbidade.
+- Classificações: interno x externo, prévio x concomitante x posterior.
+- **Tribunal de Contas** julga as contas dos administradores. As contas do Chefe do Executivo recebem apenas parecer prévio e são julgadas pelo Legislativo.
 ### Flashcards
-- P: Diferença entre concessão e permissão de serviço público?
-  R: Concessão é contratada com pessoa jurídica ou consórcio e é mais estável. Permissão pode ser com pessoa física e tem caráter precário (contrato de adesão).
-- P: Cortar a luz por falta de pagamento, com aviso prévio, viola a continuidade?
-  R: Não. A Lei 8.987/95 admite a interrupção nesse caso.
+- P: O Judiciário pode controlar o mérito do ato administrativo?
+  R: Não. Controla a legalidade, o que inclui razoabilidade e proporcionalidade.
+- P: Quem julga as contas do Governador?
+  R: A Assembleia Legislativa, após parecer prévio do Tribunal de Contas.
 
 ## DIR-ADM-09
 ### Resumo
@@ -117,20 +118,6 @@
 - P: Diferença entre dispensa e inexigibilidade?
   R: Na dispensa, a competição é possível, mas a lei autoriza não licitar. Na inexigibilidade, a competição é inviável.
 
-## DIR-ADM-10
-### Resumo
-- **Lei 8.429/92, alterada pela Lei 14.230/21**: hoje **só há improbidade com dolo**. A modalidade culposa foi extinta.
-- Três espécies: **enriquecimento ilícito** (art. 9º), **prejuízo ao erário** (art. 10) e **violação de princípios** (art. 11, rol taxativo).
-- Sanções: perda dos bens acrescidos, ressarcimento, perda da função, suspensão dos direitos políticos (até 14 anos), multa e proibição de contratar com o Poder Público.
-- **Legitimidade** para a ação: o Ministério Público (o STF restabeleceu também a legitimidade do ente lesado, nas ADIs 7042 e 7043).
-- **Prescrição**: 8 anos, contados do fato.
-- A ação de improbidade não tem natureza penal.
-### Flashcards
-- P: Existe improbidade culposa após a Lei 14.230/2021?
-  R: Não. Exige-se dolo em todas as modalidades.
-- P: Qual o prazo prescricional da ação de improbidade?
-  R: 8 anos, contados da ocorrência do fato.
-
 ## DIR-ADM-11
 ### Resumo
 - **Lei 9.784/99** (federal) e **Lei Estadual 11.781/2000** (Pernambuco) regulam o processo administrativo e têm estrutura muito parecida.
@@ -145,18 +132,19 @@
 - P: Em quanto tempo decai o direito de anular ato favorável ao administrado de boa-fé?
   R: 5 anos.
 
-## DIR-ADM-12
+## DIR-ADM-10
 ### Resumo
-- **Controle administrativo**: feito pela própria Administração (autotutela). Alcança legalidade e mérito.
-- **Controle legislativo**: feito pelo Congresso com auxílio do **Tribunal de Contas**. Inclui CPIs, sustação de atos normativos que exorbitem o poder regulamentar e julgamento das contas.
-- **Controle judicial**: só de **legalidade** (inclui razoabilidade e proporcionalidade), sem entrar no mérito. Instrumentos: MS, ação popular, ação civil pública e ação de improbidade.
-- Classificações: interno x externo, prévio x concomitante x posterior.
-- **Tribunal de Contas** julga as contas dos administradores. As contas do Chefe do Executivo recebem apenas parecer prévio e são julgadas pelo Legislativo.
+- **Lei 8.429/92, alterada pela Lei 14.230/21**: hoje **só há improbidade com dolo**. A modalidade culposa foi extinta.
+- Três espécies: **enriquecimento ilícito** (art. 9º), **prejuízo ao erário** (art. 10) e **violação de princípios** (art. 11, rol taxativo).
+- Sanções: perda dos bens acrescidos, ressarcimento, perda da função, suspensão dos direitos políticos (até 14 anos), multa e proibição de contratar com o Poder Público.
+- **Legitimidade** para a ação: o Ministério Público (o STF restabeleceu também a legitimidade do ente lesado, nas ADIs 7042 e 7043).
+- **Prescrição**: 8 anos, contados do fato.
+- A ação de improbidade não tem natureza penal.
 ### Flashcards
-- P: O Judiciário pode controlar o mérito do ato administrativo?
-  R: Não. Controla a legalidade, o que inclui razoabilidade e proporcionalidade.
-- P: Quem julga as contas do Governador?
-  R: A Assembleia Legislativa, após parecer prévio do Tribunal de Contas.
+- P: Existe improbidade culposa após a Lei 14.230/2021?
+  R: Não. Exige-se dolo em todas as modalidades.
+- P: Qual o prazo prescricional da ação de improbidade?
+  R: 8 anos, contados da ocorrência do fato.
 
 ## DIR-ADM-13
 ### Resumo
@@ -170,6 +158,20 @@
   R: 20 dias, prorrogáveis por mais 10 com justificativa.
 - P: A LGPD se aplica a dados tratados para investigação penal?
   R: Não. O art. 4º, III, exclui segurança pública e investigação, que devem ter lei própria.
+
+## DIR-ADM-08
+### Resumo
+- **Serviço público**: atividade prestada pelo Estado ou por delegação para satisfazer necessidades coletivas, sob regime de direito público.
+- Princípios (Lei 8.987/95): continuidade, regularidade, eficiência, segurança, atualidade, generalidade, cortesia e modicidade das tarifas.
+- **Concessão**: contrato com **licitação na modalidade concorrência ou diálogo competitivo**, feito com pessoa jurídica ou consórcio, por prazo determinado.
+- **Permissão**: contrato de adesão, precário, feito com pessoa física ou jurídica, com licitação.
+- **Autorização**: ato unilateral, discricionário e precário.
+- Interromper o serviço após aviso prévio por inadimplemento ou por razões técnicas **não caracteriza descontinuidade**.
+### Flashcards
+- P: Diferença entre concessão e permissão de serviço público?
+  R: Concessão é contratada com pessoa jurídica ou consórcio e é mais estável. Permissão pode ser com pessoa física e tem caráter precário (contrato de adesão).
+- P: Cortar a luz por falta de pagamento, com aviso prévio, viola a continuidade?
+  R: Não. A Lei 8.987/95 admite a interrupção nesse caso.
 
 ## DIR-ADM-14
 ### Resumo

@@ -1,4 +1,6 @@
-# Direito Constitucional & Direitos Humanos
+# Direito Constitucional
+
+Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
 
 ## DIR-CONST-01
 ### Resumo
@@ -135,19 +137,33 @@
 - P: A polícia civil apura crimes militares?
   R: Não. Ela apura as infrações penais, exceto as militares e as de competência da União.
 
-## DIR-CONST-11
+## DIR-CONST-14
 ### Resumo
-- A Constituição do Estado de Pernambuco (1989) trata da **Segurança Pública** nos arts. 101 a 105-B.
-- Reproduz a lógica do art. 144 da CF: a segurança pública é dever do Estado e é exercida pela Polícia Civil, Polícia Militar, Corpo de Bombeiros Militar e Polícia Penal.
-- A **Polícia Civil** é dirigida por delegado de polícia de carreira e exerce a polícia judiciária e a apuração de infrações penais, exceto as militares.
-- A **Polícia Militar** cuida do policiamento ostensivo e da preservação da ordem pública.
-- Os órgãos de segurança se subordinam ao **Governador** do Estado.
-- **Leia a lei seca** dos arts. 101 a 105-B: as bancas copiam o texto literal.
+- **SV 11**: algemas só em caso de resistência, fundado receio de fuga ou perigo, com justificativa **por escrito**, sob pena de responsabilidade e nulidade.
+- **SV 13**: proíbe o **nepotismo** (parentes até o 3º grau) em cargos em comissão e funções de confiança.
+- **SV 14**: o defensor tem acesso aos elementos de prova **já documentados** no inquérito.
+- **SV 25**: é ilícita a prisão civil do **depositário infiel** (efeito do Pacto de San José). Só cabe prisão civil do devedor de alimentos.
+- **SV 43**: é inconstitucional o provimento em cargo de outra carreira sem concurso. **SV 44**: só a **lei** pode exigir exame psicotécnico em concurso.
+- **Súmula 683 STF**: limite de idade em concurso só vale se justificado pela natureza das atribuições do cargo (é o caso das carreiras policiais).
+- **STF (Tema 541)**: policiais e demais agentes de segurança pública **não podem fazer greve**.
 ### Flashcards
-- P: Quem dirige a Polícia Civil de PE?
-  R: Delegado de polícia de carreira.
-- P: Em quais artigos da Constituição de PE está a segurança pública?
-  R: Arts. 101 a 105-B.
+- P: Algemas podem ser usadas sem justificativa por escrito?
+  R: Não. A SV 11 exige justificativa escrita da excepcionalidade.
+- P: O edital pode exigir psicotécnico sem previsão em lei?
+  R: Não. A SV 44 exige previsão legal.
+
+## DIR-CONST-15
+### Resumo
+- **Classificação da CF/88**: escrita, **promulgada** (democrática), dogmática, **rígida** (alteração por processo mais difícil, art. 60), **analítica** (extensa) e formal.
+- Outros tipos: **outorgada** (imposta: 1824, 1937, 1967), **cesarista** (imposta e depois ratificada por plebiscito), **flexível** (muda como lei comum), **semirrígida** (1824).
+- **Elementos (José Afonso da Silva)**: orgânicos (estrutura do Estado), limitativos (direitos fundamentais), socioideológicos (ordem social e econômica), de estabilização constitucional (intervenção, controle, estado de defesa) e formais de aplicabilidade (preâmbulo, ADCT).
+- **Eficácia das normas**: **plena** (aplicação imediata e integral), **contida** (imediata, mas a lei pode restringir, ex.: art. 5º, XIII) e **limitada** (depende de lei; de princípio institutivo ou **programática**).
+- O **preâmbulo** não tem força normativa (STF) e não é parâmetro de controle.
+### Flashcards
+- P: A norma do art. 5º, XIII (livre exercício de profissão, atendidas as qualificações da lei) tem qual eficácia?
+  R: Contida.
+- P: Por que a CF/88 é rígida?
+  R: Porque só pode ser alterada por processo mais difícil que o das leis comuns (emenda, art. 60).
 
 ## DIR-CONST-12
 ### Resumo
@@ -177,67 +193,30 @@
 - P: O que é a cláusula de reserva de plenário?
   R: Os tribunais só declaram inconstitucionalidade pela maioria absoluta dos membros ou do órgão especial (art. 97).
 
-## DIR-DH-01
+## DIR-CONST-16
 ### Resumo
-- **Direitos humanos**: direitos inerentes a toda pessoa por sua dignidade.
-- Características: universalidade, inalienabilidade, imprescritibilidade, indivisibilidade, interdependência, historicidade e vedação ao retrocesso.
-- **Gerações ou dimensões**: 1ª **liberdade** (civis e políticos, prestação negativa do Estado); 2ª **igualdade** (sociais, econômicos e culturais, prestação positiva); 3ª **fraternidade** (difusos: meio ambiente, paz, desenvolvimento).
-- Alguns autores falam de 4ª dimensão (democracia, informação, biotecnologia) e 5ª dimensão (paz, segundo Bonavides).
-- Marco histórico: pós-Segunda Guerra, com a criação da ONU (1945) e a DUDH (1948).
+- A ordem social tem como **base o primado do trabalho** e como objetivo o **bem-estar e a justiça sociais** (art. 193).
+- **Seguridade social** = saúde + previdência + assistência social (art. 194).
+- **Saúde**: direito de todos e dever do Estado, com acesso universal e igualitário (art. 196), pelo SUS. **Assistência social**: prestada a quem dela precisar, **independentemente de contribuição** (art. 203). **Previdência**: contributiva.
+- **Educação**: direito de todos e dever do Estado e da família (art. 205). Ensino obrigatório e gratuito dos **4 aos 17 anos**.
+- **Família, criança, adolescente, jovem e idoso**: dever de assegurar à criança e ao adolescente, com **prioridade absoluta**, os direitos fundamentais (art. 227). Menores de 18 anos são **penalmente inimputáveis** (art. 228).
+- **Indígenas**: terras tradicionalmente ocupadas são bens da União, inalienáveis e indisponíveis (art. 231).
 ### Flashcards
-- P: Direito ao meio ambiente equilibrado pertence a qual dimensão?
-  R: 3ª dimensão (fraternidade/solidariedade).
-- P: O que significa indivisibilidade dos direitos humanos?
-  R: Os direitos formam um todo e não podem ser aplicados de forma fragmentada.
+- P: Qual ramo da seguridade independe de contribuição?
+  R: A assistência social.
+- P: Qual artigo da CF fixa a inimputabilidade penal dos menores de 18 anos?
+  R: O art. 228.
 
-## DIR-DH-02
+## DIR-CONST-11
 ### Resumo
-- Foi adotada pela Assembleia Geral da ONU em **10/12/1948**, como **resolução**, e não como tratado. Por isso, formalmente não é vinculante, mas é considerada costume internacional.
-- Tem 30 artigos. O art. 1º diz: "Todos os seres humanos nascem livres e iguais em dignidade e direitos."
-- Prevê direitos civis e políticos (vida, liberdade, proibição da tortura e da escravidão, devido processo) e sociais (trabalho, educação, seguridade).
-- Junto com o PIDCP e o PIDESC (1966), forma a **Carta Internacional de Direitos Humanos**.
+- A **Constituição do Estado de Pernambuco** foi promulgada em **5 de outubro de 1989**, seguindo o modelo da CF (princípio da simetria).
+- Organiza os Poderes do Estado: **Assembleia Legislativa** (Legislativo), **Governador** (Executivo) e **Tribunal de Justiça** (Judiciário), além do **Tribunal de Contas do Estado** e das funções essenciais à Justiça.
+- A **segurança pública** está nos **arts. 101 a 105-B**: é dever do Estado e é exercida pela Polícia Civil, **Polícia Militar**, Corpo de Bombeiros Militar e Polícia Penal.
+- A **Polícia Militar** faz o policiamento ostensivo e a preservação da ordem pública, e os órgãos de segurança se subordinam ao **Governador**.
+- Também trata dos **servidores públicos militares** do Estado, que têm estatuto próprio (Lei 6.783/1974).
+- **Leia a lei seca**: a banca copia o texto literal.
 ### Flashcards
-- P: A DUDH é tratado internacional?
-  R: Não. É uma resolução da Assembleia Geral da ONU (1948), sem força de tratado, mas tida como costume internacional.
-- P: Quais documentos formam a Carta Internacional de Direitos Humanos?
-  R: DUDH, PIDCP e PIDESC.
-
-## DIR-DH-03
-### Resumo
-- Também chamada de **Pacto de San José da Costa Rica**. Foi assinada em 1969 e promulgada no Brasil pelo **Decreto nº 678/1992**.
-- Tem status **supralegal** no Brasil (STF, RE 466.343): fica abaixo da CF e acima das leis.
-- Por isso, o STF afastou a **prisão civil do depositário infiel** (Súmula Vinculante 25). Permanece apenas a prisão do devedor de alimentos.
-- Órgãos do sistema: **Comissão Interamericana** (recebe petições) e **Corte Interamericana** (julga Estados).
-- Garantias judiciais: a pessoa presa deve ser levada sem demora a um juiz (base da **audiência de custódia**).
-### Flashcards
-- P: Qual o status hierárquico do Pacto de San José no Brasil?
-  R: Supralegal (abaixo da CF, acima das leis).
-- P: Qual instituto processual tem base no Pacto de San José?
-  R: A audiência de custódia (apresentação do preso sem demora a um juiz).
-
-## DIR-DH-04
-### Resumo
-- **Art. 5º, §2º**: os direitos da CF não excluem outros decorrentes de tratados internacionais.
-- **Art. 5º, §3º** (EC 45/2004): tratados de DH aprovados em cada Casa do Congresso, em **2 turnos, por 3/5** dos votos, equivalem a **emendas constitucionais**.
-- Exemplos com status de emenda: Convenção sobre os Direitos das Pessoas com Deficiência e seu Protocolo, Tratado de Marraqueche e Convenção Interamericana contra o Racismo.
-- Tratados de DH sem esse rito têm status **supralegal**. Tratados comuns têm status de **lei ordinária**.
-- **§4º**: o Brasil se submete à jurisdição do Tribunal Penal Internacional.
-### Flashcards
-- P: Qual o quórum para tratado de DH equivaler a emenda constitucional?
-  R: 3/5 dos votos, em 2 turnos, em cada Casa do Congresso.
-- P: Qual o status de tratado de DH aprovado pelo rito comum?
-  R: Supralegal.
-
-## DIR-DH-05
-### Resumo
-- **Mulheres**: Convenção CEDAW, Convenção de Belém do Pará (violência contra a mulher) e Lei Maria da Penha.
-- **Crianças**: Convenção sobre os Direitos da Criança (ONU, 1989) e ECA, com a doutrina da **proteção integral** e da prioridade absoluta (art. 227 da CF).
-- **Idosos**: Estatuto da Pessoa Idosa (60 anos ou mais).
-- **Pessoas com deficiência**: Convenção de Nova York, com status de emenda, e Lei Brasileira de Inclusão (Lei 13.146/2015).
-- **Igualdade racial**: Estatuto da Igualdade Racial (Lei 12.288/2010) e Lei 7.716/89. A injúria racial foi equiparada ao racismo pela Lei 14.532/2023.
-- Ações afirmativas são constitucionais (cotas, STF ADPF 186).
-### Flashcards
-- P: Qual doutrina orienta o ECA e a Convenção sobre os Direitos da Criança?
-  R: A doutrina da proteção integral, com prioridade absoluta.
-- P: A Convenção sobre os Direitos das Pessoas com Deficiência tem qual status no Brasil?
-  R: Equivalente a emenda constitucional (aprovada pelo rito do art. 5º, §3º).
+- P: Quando foi promulgada a Constituição de Pernambuco?
+  R: Em 5 de outubro de 1989.
+- P: Em quais artigos da Constituição de PE está a segurança pública?
+  R: Arts. 101 a 105-B.

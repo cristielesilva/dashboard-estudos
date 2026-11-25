@@ -1,9 +1,9 @@
 """
-Dashboard de Estudos · PMPE & PCPE 2026/2027
+Dashboard de Estudos · PMPE 2026/2027 (Soldado e Oficial · Instituto AOCP)
 Rodar (dentro da pasta):  streamlit run app.py
 
 Fontes de dados (mesma pasta deste arquivo):
-- "CRONOGRAMA - ASSUNTO.xlsx": progresso. Toda edição feita no app é gravada nela.
+- "CRONOGRAMA PMPE.xlsx": progresso, questões e plano. Toda edição feita no app é gravada nela.
 - "cronograma - MATÉRIAS.xlsx": grade semanal usada no Plano de hoje (só leitura).
 - pasta "base_estudos": resumos e flashcards (.md, um arquivo por matéria) e suas anotações.
 """
@@ -26,7 +26,7 @@ from openpyxl import load_workbook
 
 # ───────────────────────── Configuração ─────────────────────────
 BASE = Path(__file__).parent
-ARQ = BASE / "CRONOGRAMA - ASSUNTO.xlsx"
+ARQ = BASE / "CRONOGRAMA PMPE.xlsx"
 ARQ_FASES = BASE / "cronograma - MATÉRIAS.xlsx"
 PASTA_BACKUP = BASE / "backup"
 PASTA_ESTUDOS = BASE / "base_estudos"
@@ -36,16 +36,13 @@ PASTA_MATERIAIS = BASE / "materiais"  # PDFs baixados do curso: ficam só no com
 PASTA_CURSO = Path.home() / "Documents" / "PC-PE"  # pasta do curso, organizada por matéria
 ARQ_MAPA = PASTA_ESTUDOS / "materiais_mapa.json"  # tópico -> PDFs da PASTA_CURSO
 ARQ_VIDEOS = PASTA_ESTUDOS / "videos.json"  # tópico -> videoaulas do YouTube
-PERFIL_BANCA = {
-    "AOCP": "Múltipla escolha com 5 alternativas, e o erro não anula acerto. Cobra muito a letra da lei, "
-            "conceitos diretos e \"de acordo com o texto\". Leia todas as alternativas.",
-    "Cebraspe": "Certo/Errado, e cada erro anula um acerto. Itens longos com pegadinhas em palavras como "
-                "\"sempre\", \"somente\" e \"exclusivamente\". Gosta de jurisprudência e de reescrita. Na dúvida, deixe em branco.",
-}
+PERFIL_BANCA = ("Múltipla escolha com 5 alternativas e só uma correta. O erro não desconta ponto, então nunca deixe "
+                "em branco. Cobra muito a letra da lei, conceitos diretos e \"de acordo com o texto\". Leia todas as alternativas.")
 ABA_REGISTRO = "Registro_Estudos"
 ABA_CONFIG = "Config_App"
 ABA_PLANO = "Plano_Diario"
 ABA_DASH = "Dashboard_Estratégico"
+ABA_QUESTOES = "Registro_Questoes"
 LINHA_INICIAL = 5  # 1ª linha de tópicos (cabeçalho na linha 4)
 
 VINHO, VINHO_CLARO, ROSE, PRETO, TEXTO, APAGADO = "#8E2436", "#C04A5E", "#E8C3CA", "#0A0708", "#EFE6E7", "#A88E93"
@@ -65,24 +62,58 @@ FEITO = {"Concluído", "Revisado"}
 
 # Cada matéria (aba da planilha) tem nome curto, cor e marcador
 MATERIAS = {
-    "Português_e_Redação": ("Português & Redação", "#E0B84A", "🟡"),
+    "Língua_Portuguesa": ("Português & Redação", "#E0B84A", "🟡"),
     "Raciocínio_e_Estatística": ("Raciocínio & Estatística", "#4FA3E0", "🔵"),
-    "Informática_e_Arquivologia": ("Informática & Arquivologia", "#5DBB63", "🟢"),
-    "Direito_Constitucional_e_DH": ("Dir. Constitucional & DH", "#E05A5A", "🔴"),
+    "Informática": ("Informática", "#5DBB63", "🟢"),
+    "Direito_Constitucional": ("Dir. Constitucional", "#E05A5A", "🔴"),
+    "Direitos_Humanos": ("Direitos Humanos", "#F28DB2", "🌸"),
+    "Legislação_Extravagante": ("Legislação Extravagante", "#F08A3C", "🟠"),
+    "História_de_Pernambuco": ("História de PE", "#A47551", "🟤"),
     "Direito_Administrativo": ("Dir. Administrativo", "#A66CD1", "🟣"),
-    "Direito_Penal_e_Processual": ("Dir. Penal & Processual", "#F08A3C", "🟠"),
-    "Legislação_e_História_PE": ("Legislação & História PE", "#A47551", "🟤"),
-    "Matérias_Específicas_Outras": ("Específicas (Oficial)", "#D9D9D9", "⚪"),
+    "Direito_Penal_e_Processual": ("Dir. Penal & Proc. Penal", "#C0392B", "🔺"),
+    "Direito_Militar": ("Direito Militar", "#7FD1C7", "🎖️"),
+    "Língua_Estrangeira": ("Inglês / Espanhol", "#D9D9D9", "⚪"),
+}
+# Peso de cada matéria nas duas provas (nº de questões). Serve para dividir a meta de questões da semana.
+QUESTOES_PROVA = {
+    "Língua_Portuguesa": (10, 10), "Raciocínio_e_Estatística": (10, 10), "Informática": (10, 5),
+    "Direito_Constitucional": (10, 5), "Direitos_Humanos": (5, 10), "Legislação_Extravagante": (5, 5),
+    "História_de_Pernambuco": (10, 0), "Direito_Administrativo": (0, 5), "Direito_Penal_e_Processual": (0, 10),
+    "Direito_Militar": (0, 10), "Língua_Estrangeira": (0, 5),
+}
+# Disciplina e assunto como aparecem nos filtros do QConcursos e do TecConcursos
+DISCIPLINA_SITE = {
+    "Língua_Portuguesa": "Língua Portuguesa", "Raciocínio_e_Estatística": "Raciocínio Lógico", "Informática": "Noções de Informática",
+    "Direito_Constitucional": "Direito Constitucional", "Direitos_Humanos": "Direitos Humanos",
+    "Legislação_Extravagante": "Legislação Penal Especial", "História_de_Pernambuco": "História de Pernambuco",
+    "Direito_Administrativo": "Direito Administrativo", "Direito_Penal_e_Processual": "Direito Penal",
+    "Direito_Militar": "Direito Penal Militar", "Língua_Estrangeira": "Inglês",
 }
 
-CARGOS = ["Soldado", "Oficial", "Agente", "Escrivão", "Delegado"]
-# Cada concurso junta os cargos da mesma prova: o tópico entra se valer para qualquer um deles.
+CARGOS = ["Soldado", "Oficial"]
+PROVA = dt.date(2027, 2, 21)
 CONCURSOS = {
-    "PMPE": {"nome": "PMPE · Oficial & Soldado", "cargos": ["Oficial", "Soldado"], "icone": "🎖️",
-             "prova": dt.date(2027, 2, 21), "banca": "Instituto AOCP"},
-    "PCPE": {"nome": "PCPE · Agente & Escrivão", "cargos": ["Agente", "Escrivão"], "icone": "🔎",
-             "prova": dt.date(2027, 3, 7), "banca": "Cebraspe"},
+    "Soldado": {"nome": "PMPE · Soldado (QPMG)", "cargos": ["Soldado"], "icone": "🪖", "prova": PROVA,
+                "banca": "Instituto AOCP", "turno": "manhã",
+                "matriz": "60 questões (Português 10 · História de PE 10 · Raciocínio 10 · Informática 10 · "
+                          "Constitucional 10 · DH e Legislação 10) + redação de 40 pontos"},
+    "Oficial": {"nome": "PMPE · Oficial (2º Tenente QOPM)", "cargos": ["Oficial"], "icone": "⭐", "prova": PROVA,
+                "banca": "Instituto AOCP", "turno": "tarde",
+                "matriz": "70 questões (Português 10 · Língua Estrangeira 5 · Raciocínio 5 · Estatística 5 · Informática 5 · "
+                          "Constitucional 5 · Administrativo 5 · Penal 5 · Proc. Penal 5 · Direitos e Garantias 10 · "
+                          "Penal Militar 5 · Proc. Penal Militar 5) + redação de 30 pontos"},
 }
+# Próximas etapas do concurso (edital 001/2026 e retificações). Confira sempre no site da banca.
+ETAPAS = [
+    (dt.date(2026, 12, 4), "Deferimento das inscrições"),
+    (dt.date(2027, 2, 2), "Local e horário da prova"),
+    (dt.date(2027, 2, 21), "Prova objetiva + redação"),
+    (dt.date(2027, 3, 25), "Resultado preliminar da objetiva"),
+    (dt.date(2027, 4, 26), "Resultado preliminar da redação"),
+    (dt.date(2027, 6, 25), "Exames médicos (até 29/06)"),
+    (dt.date(2027, 7, 23), "TAF (até 01/08)"),
+    (dt.date(2027, 8, 29), "Avaliação psicológica"),
+]
 
 st.set_page_config(page_title="Dashboard de Estudos", page_icon="📚", layout="wide")
 
@@ -175,28 +206,10 @@ def acerto_fracao(v):
 
 
 def cargos_do_topico(txt):
-    t = str(txt or "")
-    if "todos" in t.lower():
-        return set(CARGOS)
-    achados = set()
-    for tok in re.split(r"[/()\s,]+", t):
-        tok = tok.strip().lower()
-        if tok.startswith("sold"):
-            achados.add("Soldado")
-        elif tok.startswith("ofic"):
-            achados.add("Oficial")
-        elif tok.startswith("agen"):
-            achados.add("Agente")
-        elif tok.startswith("escr"):
-            achados.add("Escrivão")
-        elif tok.startswith("del"):
-            achados.add("Delegado")
-    if not achados:
-        if "PMPE" in t:
-            achados |= {"Soldado", "Oficial"}
-        if "PCPE" in t:
-            achados |= {"Agente", "Escrivão", "Delegado"}
-    return achados
+    """'PMPE Soldado / Oficial' -> {Soldado, Oficial}. Texto sem cargo vale para os dois."""
+    t = str(txt or "").lower()
+    achados = {c for c in CARGOS if c.lower()[:4] in t}
+    return achados or set(CARGOS)
 
 
 def info_materia(aba):
@@ -255,23 +268,35 @@ def carregar(_mtime):
             registros["Minutos"] = registros["Minutos"].map(para_num)
             registros = registros.dropna(subset=["Data"])
 
+    questoes = pd.DataFrame(columns=["Data", "Matéria", "Cód", "Questões", "Acertos", "Fonte"])
+    if ABA_QUESTOES in wb.sheetnames:
+        dados = [r for r in wb[ABA_QUESTOES].iter_rows(min_row=2, values_only=True) if r and not vazio(r[0])]
+        if dados:
+            questoes = pd.DataFrame([list(r[:6]) + [None] * (6 - len(r[:6])) for r in dados], columns=questoes.columns)
+            questoes["Data"] = questoes["Data"].map(para_data)
+            questoes["Questões"] = questoes["Questões"].map(para_num)
+            questoes["Acertos"] = questoes["Acertos"].map(para_num)
+            questoes = questoes.dropna(subset=["Data"])
+
     plano_feito = {}
     if ABA_PLANO in wb.sheetnames:
         for d, item, feito in wb[ABA_PLANO].iter_rows(min_row=2, max_col=3, values_only=True):
             if para_data(d) and item:
                 plano_feito[(para_data(d), str(item))] = bool(feito)
 
-    config = {"meta": 27.0, "inicio": None}
+    config = {"meta": 27.0, "inicio": None, "meta_q": 30}
     if ABA_CONFIG in wb.sheetnames:
         for chave, valor in wb[ABA_CONFIG].iter_rows(min_row=1, max_col=2, values_only=True):
             if chave == "Meta semanal (h)":
                 config["meta"] = para_num(valor) or 27.0
             elif chave == "Início do plano":
                 config["inicio"] = para_data(valor)
+            elif chave == "Meta de questões por dia":
+                config["meta_q"] = int(para_num(valor)) or 30
     if config["inicio"] is None:
         datas = list(registros["Data"]) + [d for d in topicos["Data Estudada"] if d]
         config["inicio"] = min(datas) if datas else dt.date.today()
-    return topicos, registros, plano_feito, config
+    return topicos, registros, questoes, plano_feito, config
 
 
 @st.cache_data(show_spinner=False)
@@ -314,20 +339,20 @@ def carregar_base(_assinatura):
 
 @st.cache_data(show_spinner=False)
 def carregar_banca(_mtime):
-    """Lê base_estudos/analise_banca.md: '## CÓD' + linhas 'Palavras-chave:', 'AOCP:', 'Cebraspe:'."""
+    """Lê base_estudos/analise_banca.md: '## CÓD' + linhas 'Palavras-chave:' e 'AOCP:'."""
     if not ARQ_BANCA.exists():
         return {}
     dados = {}
     for bloco in re.split(r"^## ", ARQ_BANCA.read_text(encoding="utf-8"), flags=re.M)[1:]:
         cod, _, corpo = bloco.partition("\n")
-        item = {"palavras": [], "AOCP": "", "Cebraspe": ""}
+        item = {"palavras": [], "AOCP": ""}
         for linha in corpo.splitlines():
             chave, sep, valor = linha.partition(":")
             if not sep:
                 continue
             if chave.strip() == "Palavras-chave":
                 item["palavras"] = [p.strip() for p in valor.split(";") if p.strip()]
-            elif chave.strip() in ("AOCP", "Cebraspe"):
+            elif chave.strip() == "AOCP":
                 item[chave.strip()] = valor.strip()
         dados[cod.strip()] = item
     return dados
@@ -457,8 +482,8 @@ def fazer_backup():
         return
     PASTA_BACKUP.mkdir(exist_ok=True)
     carimbo = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
-    shutil.copy2(ARQ, PASTA_BACKUP / f"CRONOGRAMA - ASSUNTO_{carimbo}.xlsx")
-    for velho in sorted(PASTA_BACKUP.glob("CRONOGRAMA - ASSUNTO_*.xlsx"))[:-10]:  # guarda os 10 últimos
+    shutil.copy2(ARQ, PASTA_BACKUP / f"{ARQ.stem}_{carimbo}.xlsx")
+    for velho in sorted(PASTA_BACKUP.glob(f"{ARQ.stem}_*.xlsx"))[:-10]:  # guarda os 10 últimos
         velho.unlink(missing_ok=True)
     st.session_state.backup_feito = True
 
@@ -482,13 +507,13 @@ def atualizar_dashboard(wb):
     for r in range(1, ws.max_row + 1):
         nome = str(ws.cell(r, 1).value or "")
         for c in CARGOS:
-            if c.lower() in nome.lower() and total[c]:
+            if nome.startswith("PMPE -") and c.lower() in nome.lower() and total[c]:
                 cel = ws.cell(r, 8)
                 cel.value = feitos[c] / total[c]
                 cel.number_format = "0.0%"
 
 
-def salvar(alteracoes=(), novos_registros=(), config=None, plano=None):
+def salvar(alteracoes=(), novos_registros=(), config=None, plano=None, novas_questoes=()):
     """alteracoes: lista de (id, coluna, valor). Grava tudo de uma vez na planilha original."""
     try:
         fazer_backup()
@@ -514,6 +539,13 @@ def salvar(alteracoes=(), novos_registros=(), config=None, plano=None):
             for reg in novos_registros:
                 ws.append(reg)
                 ws.cell(ws.max_row, 1).number_format = "DD/MM/YYYY"
+        if novas_questoes:
+            if ABA_QUESTOES not in wb.sheetnames:
+                wb.create_sheet(ABA_QUESTOES).append(["Data", "Matéria", "Cód", "Questões", "Acertos", "Fonte"])
+            ws = wb[ABA_QUESTOES]
+            for reg in novas_questoes:
+                ws.append(reg)
+                ws.cell(ws.max_row, 1).number_format = "DD/MM/YYYY"
         if plano:
             data, item, feito = plano
             if ABA_PLANO not in wb.sheetnames:
@@ -533,6 +565,7 @@ def salvar(alteracoes=(), novos_registros=(), config=None, plano=None):
             ws.append(["Meta semanal (h)", config["meta"]])
             ws.append(["Início do plano", config["inicio"]])
             ws.cell(2, 2).number_format = "DD/MM/YYYY"
+            ws.append(["Meta de questões por dia", config.get("meta_q", 30)])
         atualizar_dashboard(wb)
         wb.save(ARQ)
         enviar_ao_github(ARQ)
@@ -786,9 +819,7 @@ if not ARQ.exists():
     st.error(f"Não encontrei a planilha **{ARQ.name}** na pasta {BASE}. Coloque o app.py na mesma pasta dela.")
     st.stop()
 
-todos, registros, plano_feito, config = carregar(ARQ.stat().st_mtime)
-# Só entram os tópicos de PMPE (Oficial + Soldado) e PCPE (Agente + Escrivão); os exclusivos de Delegado ficam de fora.
-topicos = todos[todos[list(CONCURSOS)].any(axis=1)]
+topicos, registros, questoes, plano_feito, config = carregar(ARQ.stat().st_mtime)
 grade = plano_semanal(ARQ_FASES.stat().st_mtime if ARQ_FASES.exists() else 0)
 banca = carregar_banca(ARQ_BANCA.stat().st_mtime if ARQ_BANCA.exists() else 0)
 base_estudos = carregar_base(tuple(f.stat().st_mtime for f in sorted(PASTA_ESTUDOS.glob("*.md"))))
@@ -810,6 +841,9 @@ with st.sidebar:
               type="primary" if pagina == "estudar" else "secondary")
     st.button("📝 Resumo do dia", on_click=ir, args=("resumo_dia",), width="stretch",
               type="primary" if pagina == "resumo_dia" else "secondary")
+    q_hoje = int(questoes.loc[questoes["Data"] == hoje, "Questões"].sum()) if len(questoes) else 0
+    st.button(f"❓ Questões ({q_hoje}/{config['meta_q']} hoje)", on_click=ir, args=("questoes",), width="stretch",
+              type="primary" if pagina == "questoes" else "secondary")
     n_rev = len(revisoes_pendentes(topicos, hoje))
     st.button(f"🔁 Revisões ({n_rev})", on_click=ir, args=("revisoes",), width="stretch",
               type="primary" if pagina == "revisoes" else "secondary")
@@ -818,7 +852,7 @@ with st.sidebar:
         df_c = topicos[topicos[chave]]
         pct = df_c["Status"].isin(FEITO).mean() * 100 if len(df_c) else 0
         ativo = pagina == f"conc:{chave}"
-        with st.expander(f"{conc['icone']} {chave} · {pct:.0f}%", expanded=ativo):
+        with st.expander(f"{conc['icone']} PMPE {chave} · {pct:.0f}%", expanded=ativo):
             mat_ativa = st.session_state.get("materia_sel") if ativo else None
             st.button("📋 Todas as matérias", key=f"nav_{chave}_todas", width="stretch",
                       on_click=ir, args=(f"conc:{chave}",), kwargs={"materia_sel": None},
@@ -831,11 +865,12 @@ with st.sidebar:
     st.write("")
     with st.expander("⚙️ Metas e arquivo"):
         meta = st.number_input("Meta semanal de horas", 1.0, 80.0, float(config["meta"]), 0.5, format="%.1f",
-                               help="A planilha sugere 24h–30h/semana na Fase 1.")
+                               help="O cronograma sugere 24h a 30h por semana até janeiro e 30h a 35h em fevereiro.")
         inicio = st.date_input("Início do plano", config["inicio"], format="DD/MM/YYYY")
-        if (meta, inicio) != (config["meta"], config["inicio"]):
+        meta_q = st.number_input("Meta de questões por dia", 5, 200, int(config["meta_q"]), 5)
+        if (meta, inicio, meta_q) != (config["meta"], config["inicio"], config["meta_q"]):
             if st.button("Salvar metas", width="stretch"):
-                if salvar(config={"meta": meta, "inicio": inicio}):
+                if salvar(config={"meta": meta, "inicio": inicio, "meta_q": meta_q}):
                     st.rerun()
         st.caption(f"💾 Último salvamento: {st.session_state.get('ultimo_salvo', '—')}")
         if st.button("🔄 Recarregar planilha", width="stretch",
@@ -849,8 +884,11 @@ with st.sidebar:
 # ═════════════ Página: Início ═════════════
 def pagina_inicio():
     st.markdown('<div class="titulo">Bom estudo, <span>Chris</span></div>', unsafe_allow_html=True)
-    chips = "".join(f'<span class="chip">{c["icone"]} {k} · <b>{(c["prova"] - hoje).days} dias</b> para a prova</span>'
-                    for k, c in CONCURSOS.items())
+    prox = next(((d, e) for d, e in ETAPAS if d >= hoje), None)
+    chips = (f'<span class="chip">🎯 PMPE · <b>{(PROVA - hoje).days} dias</b> para a prova ({PROVA:%d/%m/%Y})</span>'
+             '<span class="chip">🪖 Soldado de manhã · ⭐ Oficial à tarde</span>' if hoje <= PROVA else "")
+    if prox:
+        chips += f'<span class="chip">Próxima etapa: <b>{prox[1]}</b> em {prox[0]:%d/%m/%Y}</span>'
     st.markdown(chips, unsafe_allow_html=True)
     st.write("")
 
@@ -882,13 +920,27 @@ def pagina_inicio():
         st.markdown("### 🎯 Plano de hoje")
         dias = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"]
         dia = dias[hoje.weekday()]
-        if hoje <= CONCURSOS["PMPE"]["prova"] and dia in grade:
+        planejados = topicos[(topicos["Data Planejada"] == hoje)]
+        if len(planejados):
+            st.caption(f"📌 Tópicos planejados para hoje ({len(planejados)})")
+            for ident, t in planejados.iterrows():
+                feito = "✅" if t["Status"] in FEITO else "▫️"
+                st.button(f"{feito} {t['Matéria'].split(' ', 1)[0]} {t['Cód']} · {str(t['Tópico'])[:55]}",
+                          key=f"plan_top_{ident}", width="stretch", on_click=ir, args=("estudar",),
+                          kwargs={"estudo_id": ident})
+        atrasados = topicos[topicos["Data Planejada"].map(lambda d: bool(d) and d < hoje)
+                            & (topicos["Status"] == "Não Iniciado")]
+        if len(atrasados):
+            st.caption(f"⏳ {len(atrasados)} tópico(s) planejado(s) para dias anteriores ainda não iniciados. "
+                       "Veja na página do cargo, filtrando por Não Iniciado.")
+        if hoje < PROVA and dia in grade:
             linha = grade[dia]
             itens = [(k, str(v)) for k, v in linha.items()
                      if k and k not in ("Dia da Semana", "Status Semanal", "Observações / Ajustes")
                      and not vazio(v) and str(v).strip() != "-"]
             feitos_plano = sum(plano_feito.get((hoje, f"{k}: {v}"), False) for k, v in itens)
-            st.caption(f"{dia} · Fase 1 · {feitos_plano} de {len(itens)} feitos")
+            fase = "Fase 1 · Base" if hoje <= dt.date(2027, 1, 31) else "Fase 2 · Revisão e simulados"
+            st.caption(f"{dia} · {fase} · {feitos_plano} de {len(itens)} feitos")
             for i, (k, v) in enumerate(itens):
                 item = f"{k}: {v}"
                 chave = f"plano_{hoje}_{i}_v{st.session_state.get('versao', 0)}"
@@ -898,10 +950,11 @@ def pagina_inicio():
             obs = linha.get("Observações / Ajustes")
             if not vazio(obs):
                 st.caption(f"💡 {obs}")
-        elif hoje <= CONCURSOS["PCPE"]["prova"]:
-            st.info("Fase 2 (22/02 a 06/03): imersão PCPE no estilo Cebraspe (Certo/Errado).")
+        elif hoje == PROVA:
+            st.success("Dia de prova! Soldado de manhã e Oficial à tarde. Boa prova, Chris! 💪")
         else:
-            st.info("Provas concluídas. Mantenha as revisões em dia.")
+            st.info("Prova objetiva feita. Agora o foco é o TAF: barra, salto em distância, natação 50 m, "
+                    "abdominal remador e corrida de 2.400 m. Veja as próximas etapas no topo da página.")
         if n_rev:
             st.button(f"🔁 Você tem {n_rev} revisão(ões) para hoje", on_click=ir, args=("revisoes",), width="stretch")
 
@@ -951,7 +1004,7 @@ def pagina_inicio():
             st.plotly_chart(estilo(fig, titulo="Horas por dia · últimos 14 dias"), width="stretch")
 
 
-# ═════════════ Página: concurso (PMPE ou PCPE) ═════════════
+# ═════════════ Página: cargo (Soldado ou Oficial) ═════════════
 def pagina_concurso(chave):
     conc = CONCURSOS[chave]
     df = topicos[topicos[chave]]
@@ -959,7 +1012,9 @@ def pagina_concurso(chave):
     st.markdown(f'<div class="titulo">{conc["icone"]} <span>{conc["nome"]}</span></div>', unsafe_allow_html=True)
     st.markdown(f"<span class='chip'>Banca <b>{conc['banca']}</b></span>"
                 f"<span class='chip'>Prova <b>{conc['prova']:%d/%m/%Y}</b> · faltam {(conc['prova'] - hoje).days} dias</span>"
-                f"<span class='chip'>Tópicos comuns aos dois concursos atualizam nos dois</span>", unsafe_allow_html=True)
+                f"<span class='chip'>Turno <b>{conc['turno']}</b></span>"
+                f"<span class='chip'>Tópicos comuns a Soldado e Oficial atualizam nos dois</span>", unsafe_allow_html=True)
+    st.caption(f"📋 Prova: {conc['matriz']}. Para não ser eliminada: 30% em cada bloco e no total, sem zerar disciplina.")
     st.write("")
     f_ = df["Status"].isin(FEITO).sum()
     p_ = f_ / len(df) * 100
@@ -1088,14 +1143,16 @@ def pagina_estudar():
         st.rerun()
     t = topicos.loc[escolhido]
     cod = t["Cód"]
-    concursos = " · ".join(k for k in CONCURSOS if t[k])
+    concursos = " e ".join(k for k in CONCURSOS if t[k])
     st.markdown(f"<span class='chip' style='border-color:{t['Cor']}'>{t['Matéria']}</span>"
                 f"<span class='chip'>Cód <b>{cod}</b></span><span class='chip'>Cai em <b>{concursos}</b></span>"
-                f"<span class='chip'>Status <b>{t['Status']}</b></span>", unsafe_allow_html=True)
+                f"<span class='chip'>Status <b>{t['Status']}</b></span>"
+                + (f"<span class='chip'>Peso <b>{t['Fase']}</b></span>" if not vazio(t["Fase"]) else ""),
+                unsafe_allow_html=True)
     st.markdown(f"## {t['Tópico']}")
 
     conteudo = base_estudos.get(cod, {"resumo": "", "flashcards": []})
-    analise = banca.get(cod, {"palavras": [], "AOCP": "", "Cebraspe": ""})
+    analise = banca.get(cod, {"palavras": [], "AOCP": ""})
     aba_res, aba_pts, aba_banca, aba_mat, aba_fc, aba_nota, aba_prog = st.tabs(
         ["📖 Resumo", "📌 Pontos para anotar", "🎯 Como a banca cobra", "🎬 Materiais", "🃏 Flashcards",
          "✍️ Minhas anotações", "✅ Progresso"])
@@ -1127,14 +1184,12 @@ def pagina_estudar():
         else:
             st.info("Ainda não há pontos para este tópico.")
     with aba_banca:
-        for nome_banca, conc in (("AOCP", "PMPE"), ("Cebraspe", "PCPE")):
-            if not t[conc]:
-                continue
-            st.markdown(f"#### {CONCURSOS[conc]['icone']} {nome_banca} · {conc}")
-            st.markdown(f"<div class='resumo'><b>Neste assunto:</b> {analise[nome_banca] or 'sem análise cadastrada.'}"
-                        f"<br><br><small style='color:{APAGADO}'>Estilo da banca: {PERFIL_BANCA[nome_banca]}</small></div>",
-                        unsafe_allow_html=True)
-            st.write("")
+        st.markdown(f"#### Instituto AOCP · cai em {concursos}")
+        st.markdown(f"<div class='resumo'><b>Neste assunto:</b> {analise['AOCP'] or 'sem análise cadastrada.'}"
+                    f"<br><br><small style='color:{APAGADO}'>Estilo da banca: {PERFIL_BANCA}</small></div>",
+                    unsafe_allow_html=True)
+        st.write("")
+        links_questoes(t, f"est_{cod}")
         st.caption("Tendências observadas em provas anteriores, e não garantia de cobrança. Resolva questões recentes da banca.")
     with aba_fc:
         cartas = conteudo["flashcards"]
@@ -1190,6 +1245,187 @@ def pagina_estudar():
         p1.button("◀ Tópico anterior", width="stretch", on_click=ir, args=("estudar",), kwargs={"estudo_id": ids[pos - 1]})
     if pos < len(ids) - 1:
         p2.button("Próximo tópico ▶", width="stretch", on_click=ir, args=("estudar",), kwargs={"estudo_id": ids[pos + 1]})
+
+
+# ═════════════ Questões (meta por dia e por matéria) ═════════════
+# Matérias de cada dia da semana na grade (segunda = 0). Igual ao cronograma - MATÉRIAS.xlsx.
+GRADE_MATERIAS = {
+    0: ["Língua_Portuguesa", "Direito_Constitucional", "História_de_Pernambuco"],
+    1: ["Raciocínio_e_Estatística", "Direito_Penal_e_Processual", "Direitos_Humanos"],
+    2: ["Informática", "Direito_Penal_e_Processual", "Direito_Militar"],
+    3: ["Língua_Portuguesa", "Legislação_Extravagante", "Direito_Administrativo"],
+    4: ["Direito_Constitucional", "Legislação_Extravagante", "Língua_Estrangeira"],
+    5: ["Raciocínio_e_Estatística", "Direito_Administrativo"],
+    6: [],
+}
+FONTES = ["QConcursos", "TecConcursos", "Simulado", "Outro"]
+
+
+def disciplina_site(t):
+    cod = t["Cód"]
+    if cod.startswith("EST-"):
+        return "Estatística"
+    if cod.startswith("PROC-PENAL"):
+        return "Direito Processual Penal"
+    if cod in ("DIR-MIL-02", "DIR-MIL-05", "DIR-MIL-06", "DIR-MIL-07"):
+        return "Direito Processual Penal Militar"
+    if cod.startswith("ESP-"):
+        return "Espanhol"
+    if cod.startswith("RED-"):
+        return "Redação"
+    return DISCIPLINA_SITE.get(t["aba"], t["MatériaNome"])
+
+
+def assunto_curto(topico):
+    txt = re.split(r"[:(;]", str(topico))[0].strip()
+    return " ".join(txt.split()[:8])
+
+
+def links_questoes(t, chave):
+    """Botões que abrem a busca de questões da AOCP sobre o tópico no QConcursos e no TecConcursos."""
+    disc, assunto = disciplina_site(t), assunto_curto(t["Tópico"])
+    st.markdown("#### ❓ Questões deste assunto")
+    c1, c2 = st.columns(2)
+    for col, nome, site in ((c1, "QConcursos", "qconcursos.com"), (c2, "TecConcursos", "tecconcursos.com.br")):
+        busca = "https://www.google.com/search?q=" + quote_plus(f'site:{site} "Instituto AOCP" {disc} {assunto}')
+        col.link_button(f"🔎 {nome} · AOCP", busca, width="stretch")
+    st.caption("No site, use o filtro de questões e copie estes campos:")
+    st.code(f"Banca: Instituto AOCP\nDisciplina: {disc}\nAssunto: {assunto}", language=None)
+
+
+def materias_do_dia(dia):
+    """Matérias com tópico planejado no dia; sem planejamento, usa a grade semanal."""
+    planejadas = list(dict.fromkeys(topicos.loc[topicos["Data Planejada"] == dia, "aba"]))
+    return planejadas or GRADE_MATERIAS[dia.weekday()]
+
+
+def registrar_questoes(chave, aba_padrao=None):
+    abas = list(dict.fromkeys(topicos["aba"]))
+    with st.form(f"form_q_{chave}", clear_on_submit=True):
+        c1, c2 = st.columns([1, 2])
+        aba = c1.selectbox("Matéria", abas, index=abas.index(aba_padrao) if aba_padrao in abas else 0,
+                           format_func=lambda a: " ".join(info_materia(a)[::-2]))
+        sub = topicos[topicos["aba"] == aba]
+        opcoes = [""] + list(sub.index)
+        ident = c2.selectbox("Tópico (opcional)", opcoes,
+                             format_func=lambda i: "— vários tópicos / não sei —" if not i
+                             else f"{topicos.at[i, 'Cód']} · {str(topicos.at[i, 'Tópico'])[:60]}")
+        d1, d2, d3 = st.columns(3)
+        feitas = d1.number_input("Questões feitas", 0, 500, 10, 1)
+        acertos = d2.number_input("Acertos", 0, 500, 0, 1)
+        fonte = d3.selectbox("Onde fez", FONTES)
+        if st.form_submit_button("💾 Registrar questões", width="stretch"):
+            if feitas <= 0:
+                st.warning("Coloque quantas questões você fez.")
+                return
+            if acertos > feitas:
+                st.warning("Os acertos não podem passar do total de questões.")
+                return
+            nome = info_materia(aba)[0]
+            cod = topicos.at[ident, "Cód"] if ident else ""
+            alt = []
+            if ident:
+                q0, p0 = topicos.at[ident, "Nº Questões"], topicos.at[ident, "% Acerto"]
+                total = q0 + feitas
+                alt += [(ident, "Nº Questões", total), (ident, "% Acerto", round((q0 * p0 + acertos * 100) / total, 1))]
+                if topicos.at[ident, "Status"] == "Não Iniciado":
+                    alt.append((ident, "Status", "Em Andamento"))
+            if salvar(alt, novas_questoes=[[hoje, nome, cod, int(feitas), int(acertos), fonte]]):
+                avisar(f"{feitas} questões de {nome} registradas ✓ ({acertos / feitas:.0%} de acerto)", "❓")
+                st.rerun()
+
+
+def pagina_questoes():
+    st.markdown('<div class="titulo">❓ <span>Questões</span></div>', unsafe_allow_html=True)
+    st.caption("Resolva no QConcursos ou no TecConcursos, filtrando pela banca **Instituto AOCP**, e registre aqui "
+               "quantas fez e acertou. O app soma por dia e por matéria.")
+    meta_dia = int(config["meta_q"])
+    q = questoes.copy()
+    q_hoje = q[q["Data"] == hoje] if len(q) else q
+    seg = hoje - dt.timedelta(days=hoje.weekday())
+    q_sem = q[q["Data"] >= seg] if len(q) else q
+    feitas_hoje, acertos_hoje = (q_hoje["Questões"].sum(), q_hoje["Acertos"].sum()) if len(q_hoje) else (0, 0)
+    feitas_sem = q_sem["Questões"].sum() if len(q_sem) else 0
+    meta_sem = meta_dia * 6
+    total, total_ac = (q["Questões"].sum(), q["Acertos"].sum()) if len(q) else (0, 0)
+    k1, k2, k3 = st.columns(3)
+    with k1:
+        kpi("Hoje", f"{int(feitas_hoje)} / {meta_dia}", f"{acertos_hoje / feitas_hoje:.0%} de acerto" if feitas_hoje else "nenhuma ainda",
+            feitas_hoje / meta_dia * 100)
+    with k2:
+        kpi("Nesta semana", f"{int(feitas_sem)} / {meta_sem}", "segunda a sábado", feitas_sem / meta_sem * 100)
+    with k3:
+        kpi("Acerto geral", fmt_p(total_ac / total * 100 if total else 0), f"{int(total)} questões no total",
+            total_ac / total * 100 if total else 0)
+    st.write("")
+
+    st.markdown("### 🎯 Meta de hoje por matéria")
+    mats = materias_do_dia(hoje)
+    if not mats:
+        st.info(f"Domingo é dia de revisão: faça {meta_dia} questões das matérias em que você mais errou na semana.")
+        mats = []
+    por_mat = meta_dia // len(mats) if mats else 0
+    for aba in mats:
+        nome, cor, emoji = info_materia(aba)
+        feitas = q_hoje.loc[q_hoje["Matéria"] == nome, "Questões"].sum() if len(q_hoje) else 0
+        acert = q_hoje.loc[q_hoje["Matéria"] == nome, "Acertos"].sum() if len(q_hoje) else 0
+        ok = "✅" if feitas >= por_mat else "▫️"
+        titulo = f"{ok} {emoji} {nome} · {int(feitas)} de {por_mat} questões" + (f" · {acert / feitas:.0%} de acerto" if feitas else "")
+        with st.expander(titulo, expanded=feitas < por_mat):
+            sub = topicos[topicos["aba"] == aba]
+            hoje_top = sub[sub["Data Planejada"] == hoje]
+            recentes = sub[sub["Data Estudada"].map(lambda d: bool(d) and (hoje - d).days <= 7)]
+            sugest = pd.concat([hoje_top, recentes])
+            sugest = sugest[~sugest.index.duplicated()]
+            if sugest.empty:
+                sugest = sub[sub["Status"] != "Não Iniciado"].head(3)
+            if sugest.empty:
+                sugest = sub.head(1)
+            escolhido = st.selectbox("Assunto para as questões", list(sugest.index), key=f"q_sel_{aba}",
+                                     format_func=lambda i: f"{topicos.at[i, 'Cód']} · {topicos.at[i, 'Tópico']}")
+            links_questoes(topicos.loc[escolhido], f"q_{aba}")
+            registrar_questoes(f"hoje_{aba}", aba)
+
+    with st.expander("➕ Registrar questões de outra matéria"):
+        registrar_questoes("outra")
+
+    st.markdown("### 📅 Semana por matéria")
+    pesos = {a: sum(v) for a, v in QUESTOES_PROVA.items()}
+    soma = sum(pesos.values())
+    linhas = []
+    for aba, p in pesos.items():
+        nome = info_materia(aba)[0]
+        f = q_sem.loc[q_sem["Matéria"] == nome, "Questões"].sum() if len(q_sem) else 0
+        a = q_sem.loc[q_sem["Matéria"] == nome, "Acertos"].sum() if len(q_sem) else 0
+        meta_m = max(5, round(meta_sem * p / soma / 5) * 5)
+        s_, o_ = QUESTOES_PROVA[aba]
+        linhas.append({"Matéria": f"{info_materia(aba)[2]} {nome}", "Na prova": f"Sold. {s_} · Of. {o_}",
+                       "Meta da semana": meta_m, "Feitas": int(f), "Progresso": min(100.0, f / meta_m * 100),
+                       "% Acerto": round(a / f * 100, 1) if f else None})
+    st.dataframe(pd.DataFrame(linhas), hide_index=True, width="stretch", column_config={
+        "Progresso": st.column_config.ProgressColumn("Progresso", min_value=0, max_value=100, format="%.0f%%"),
+        "% Acerto": st.column_config.NumberColumn("% Acerto", format="%.0f%%")})
+    st.caption("A meta da semana é dividida pelo peso de cada matéria nas duas provas. Acerto abaixo de 70%? "
+               "Volte ao resumo do assunto antes de fazer mais questões.")
+
+    if len(q):
+        st.markdown("### 📈 Histórico")
+        dias14 = pd.date_range(hoje - dt.timedelta(days=13), hoje).date
+        por_dia = q.groupby("Data")[["Questões", "Acertos"]].sum()
+        serie = pd.DataFrame({"Dia": dias14,
+                              "Questões": [por_dia["Questões"].get(d, 0) for d in dias14],
+                              "Acertos": [por_dia["Acertos"].get(d, 0) for d in dias14]})
+        fig = go.Figure()
+        fig.add_bar(x=serie["Dia"], y=serie["Questões"], name="Feitas", marker_color="#3a1820")
+        fig.add_bar(x=serie["Dia"], y=serie["Acertos"], name="Acertos", marker_color=VINHO_CLARO)
+        fig.add_hline(y=meta_dia, line_dash="dot", line_color=APAGADO, annotation_text=f"meta {meta_dia}",
+                      annotation_font_color=APAGADO)
+        fig.update_layout(barmode="overlay")
+        fig.update_xaxes(tickformat="%d/%m")
+        st.plotly_chart(estilo(fig, titulo="Questões por dia · últimos 14 dias"), width="stretch")
+        with st.expander("Ver registros"):
+            st.dataframe(q.sort_values("Data", ascending=False), hide_index=True, width="stretch",
+                         column_config={"Data": st.column_config.DateColumn(format="DD/MM/YYYY")})
 
 
 # ═════════════ Página: revisões ═════════════
@@ -1261,7 +1497,7 @@ def pagina_resumo_dia():
         for ident, t in grupo.iterrows():
             cod = t["Cód"]
             conteudo = base_estudos.get(cod, {"resumo": ""})
-            analise = banca.get(cod, {"palavras": [], "AOCP": "", "Cebraspe": ""})
+            analise = banca.get(cod, {"palavras": [], "AOCP": ""})
             with st.expander(f"{cod} · {t['Tópico']}", expanded=True):
                 if analise["palavras"]:
                     st.markdown("🔑 " + "".join(f"<span class='chip'>{p}</span>" for p in analise["palavras"]),
@@ -1269,18 +1505,16 @@ def pagina_resumo_dia():
                 pontos = pontos_do_resumo(conteudo["resumo"])
                 if pontos:
                     st.markdown("**📌 Pontos para anotar**\n" + "\n".join(f"- {p}" for p in pontos))
-                for nome_banca, conc in (("AOCP", "PMPE"), ("Cebraspe", "PCPE")):
-                    if t[conc] and analise[nome_banca]:
-                        st.markdown(f"**🎯 {nome_banca}:** {analise[nome_banca]}")
+                if analise["AOCP"]:
+                    st.markdown(f"**🎯 AOCP:** {analise['AOCP']}")
                 st.button("📚 Abrir para estudar", key=f"rd_abrir_{ident}", on_click=ir, args=("estudar",),
                           kwargs={"estudo_id": ident})
             texto_md.append(f"\n### {cod} · {t['Tópico']}\n")
             if analise["palavras"]:
                 texto_md.append("Palavras-chave: " + "; ".join(analise["palavras"]) + "\n")
             texto_md += [f"- {p}" for p in pontos]
-            for nome_banca, conc in (("AOCP", "PMPE"), ("Cebraspe", "PCPE")):
-                if t[conc] and analise[nome_banca]:
-                    texto_md.append(f"\nComo a {nome_banca} cobra: {analise[nome_banca]}")
+            if analise["AOCP"]:
+                texto_md.append(f"\nComo a AOCP cobra: {analise['AOCP']}")
     st.download_button("⬇️ Baixar resumo do dia", "\n".join(texto_md), file_name=f"resumo_{hoje:%Y-%m-%d}.md",
                        mime="text/markdown")
 
@@ -1293,5 +1527,7 @@ elif pagina == "resumo_dia":
     pagina_resumo_dia()
 elif pagina == "revisoes":
     pagina_revisoes()
+elif pagina == "questoes":
+    pagina_questoes()
 else:
     pagina_inicio()

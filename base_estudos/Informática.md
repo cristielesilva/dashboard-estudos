@@ -1,4 +1,6 @@
-# Informática & Arquivologia
+# Informática
+
+Formato: cada tópico começa com "## CÓDIGO". Edite à vontade; o app lê este arquivo.
 
 ## INF-01
 ### Resumo
@@ -61,8 +63,8 @@
 ### Flashcards
 - P: Intranet usa os mesmos protocolos da Internet?
   R: Sim (TCP/IP, HTTP), mas com acesso restrito à organização.
-- P: Como buscar só PDFs no site da PCPE?
-  R: site:policiacivil.pe.gov.br filetype:pdf (mais os termos).
+- P: Como buscar só PDFs no site da PMPE?
+  R: site:pm.pe.gov.br filetype:pdf (mais os termos).
 
 ## INF-06
 ### Resumo
@@ -103,80 +105,16 @@
 - P: E no diferencial?
   R: O último completo e o último diferencial.
 
-## INF-09
+## INF-10
 ### Resumo
-- Por abrangência: **LAN** (local), **MAN** (metropolitana), **WAN** (longa distância) e **PAN** (pessoal, como Bluetooth).
-- Equipamentos: **switch** (conecta dispositivos na LAN), **roteador** (interliga redes) e **modem**/ponto de acesso Wi-Fi.
-- **Endereço IP** (IPv4 32 bits, IPv6 128 bits). **DHCP** atribui IP automaticamente. **DNS** traduz nomes.
-- **TCP** é confiável e orientado a conexão. **UDP** é rápido e sem confirmação, usado em streaming e VoIP.
-- Ferramentas de comunicação: e-mail (com CC e CCO, sendo que o CCO oculta destinatários) e videoconferência.
+- **CPU (processador)**: Unidade de Controle (UC) coordena; Unidade Lógica e Aritmética (ULA) faz os cálculos; **registradores** são a memória mais rápida e interna.
+- **Memória RAM**: principal, **volátil** (apaga ao desligar), leitura e escrita. **ROM**: não volátil, guarda o firmware (BIOS/UEFI). **Cache**: pequena e muito rápida, entre CPU e RAM.
+- **Memória secundária (armazenamento)**: HD (magnético), **SSD** (flash, mais rápido e sem partes móveis), pendrive, cartão de memória.
+- **Periféricos**: entrada (teclado, mouse, scanner, microfone), saída (monitor, impressora, caixa de som) e **entrada e saída** (touchscreen, impressora multifuncional, pendrive, placa de rede).
+- Unidades: 1 byte = 8 bits; 1 KB = 1024 bytes; depois MB, GB e TB.
+- **Arquivos e pastas**: extensão indica o tipo (.docx, .xlsx, .pdf, .exe); caminho absoluto começa na unidade (C:\Usuarios\...).
 ### Flashcards
-- P: Qual protocolo atribui IP automaticamente?
-  R: DHCP.
-- P: No e-mail, quem está em CCO aparece para os demais destinatários?
-  R: Não. A cópia oculta esconde esses endereços.
-
-## ARQ-01
-### Resumo
-- **Arquivo**: conjunto de documentos produzidos e recebidos por uma instituição no exercício de suas atividades.
-- **Princípio da proveniência** (respeito aos fundos): não misturar documentos de origens diferentes.
-- Outros princípios: organicidade, unicidade, indivisibilidade (integridade) e cumulatividade.
-- **Funções arquivísticas**: criação, avaliação, aquisição, conservação, classificação, descrição e difusão.
-- **Teoria das três idades**: corrente, intermediária e permanente.
-### Flashcards
-- P: O que diz o princípio da proveniência?
-  R: Os documentos de uma entidade devem ser mantidos juntos, sem se misturar aos de outras origens.
-- P: Quais são as três idades dos documentos?
-  R: Corrente (uso frequente), intermediária (uso eventual) e permanente (guarda definitiva por valor histórico).
-
-## ARQ-02
-### Resumo
-- **Lei nº 8.159/1991** (Política Nacional de Arquivos): é dever do poder público a gestão documental e a proteção dos arquivos.
-- **CONARQ** (Conselho Nacional de Arquivos) define a política nacional. O **SINAR** é o Sistema Nacional de Arquivos.
-- Arquivos públicos x privados. Os privados podem ser declarados de **interesse público e social**.
-- **Eliminação** de documentos públicos depende de autorização da instituição arquivística competente.
-- Documentos de valor permanente são **inalienáveis e imprescritíveis**.
-### Flashcards
-- P: Qual lei institui a Política Nacional de Arquivos?
-  R: Lei nº 8.159/1991.
-- P: Documento público de valor permanente pode ser eliminado?
-  R: Não. É inalienável e imprescritível.
-
-## ARQ-03
-### Resumo
-- **Gestão de documentos**: procedimentos de produção, tramitação, uso, avaliação e arquivamento nas fases corrente e intermediária.
-- **Protocolo**: recebimento, registro, classificação, distribuição, tramitação e expedição.
-- **Registro**: anotar dados do documento (número, data, procedência, assunto) para controle.
-- **Autuação**: transformar documentos em processo. Juntada pode ser por anexação ou apensação.
-- **Tramitação**: movimentação do documento entre setores, com controle de onde ele está.
-### Flashcards
-- P: Diferença entre anexação e apensação?
-  R: Anexação é a união definitiva de processos; apensação é a união temporária, para estudo conjunto.
-- P: Qual a primeira atividade do protocolo ao receber um documento?
-  R: O recebimento, seguido do registro.
-
-## ARQ-04
-### Resumo
-- **Avaliação**: define prazos de guarda e destinação (eliminação ou guarda permanente) pela **Tabela de Temporalidade**.
-- **Classificação**: organizar segundo o plano de classificação (por funções e atividades).
-- **Ordenação** pode ser alfabética, numérica, cronológica, geográfica ou ideográfica (por assunto).
-- **Arquivamento**: guardar em local e forma adequados (pastas, caixas).
-- **Conservação preventiva**: controle de temperatura, umidade, luz e pragas. **Restauração** é a intervenção no documento danificado.
-### Flashcards
-- P: Qual instrumento define prazos de guarda e destinação?
-  R: A Tabela de Temporalidade de Documentos.
-- P: Método de ordenação por assunto chama-se?
-  R: Ideográfico (alfabético ou numérico).
-
-## ARQ-05
-### Resumo
-- **SIGAD** (Sistema Informatizado de Gestão Arquivística de Documentos) segue o modelo **e-ARQ Brasil**.
-- **Documento digital**: codificado em dígitos binários e acessível por sistema computacional. **Digitalizado** é a representação digital de um documento físico.
-- **Metadados**: dados sobre os dados (autor, data, formato, classificação), que garantem contexto, autenticidade e preservação.
-- **RDC-Arq**: repositório digital confiável para preservação de longo prazo.
-- Preservação digital envolve migração de formatos, emulação e cópias de segurança.
-### Flashcards
-- P: Qual o modelo de requisitos para SIGAD no Brasil?
-  R: e-ARQ Brasil.
-- P: O que são metadados?
-  R: Informações que descrevem o documento (contexto, conteúdo, estrutura) e garantem sua gestão e autenticidade.
+- P: Qual memória é volátil: RAM ou ROM?
+  R: RAM. Ela perde os dados quando o computador desliga.
+- P: Touchscreen é periférico de entrada, saída ou ambos?
+  R: Ambos (entrada e saída).
